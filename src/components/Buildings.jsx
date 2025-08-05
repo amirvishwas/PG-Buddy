@@ -4,7 +4,7 @@ const Buildings = () => {
   return (
     <div>
       <div className="relative">
-        <div className="relative w-full h-60 md:h-72">
+        <div className="relative w-full h-60  md:h-72">
           {/* 3D Building Container */}
           <div className="absolute inset-0 perspective-1000">
             <div className="relative w-full h-full transform-gpu">
