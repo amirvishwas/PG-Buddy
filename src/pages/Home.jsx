@@ -14,9 +14,18 @@ const Home = () => {
           <p className="mb-4 text-md md:text-lg text-gray-700 max-w-xl">
             PGBuddy helps you find nearby PGs/Hostel and compatible roommates.
           </p>
-          <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition font-semibold mb-4">
-            Search PGs
-          </button>
+          <div className="max-w-7xl md:w-3xl mx-auto mb-6">
+            <div className="flex items-center border rounded-2xl px-4 py-2 bg-white">
+              <input
+                type="text"
+                placeholder="Select city"
+                className="flex-1 outline-none"
+              />
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-xl  w-22">
+                Search
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* 🏙 Building at bottom */}
