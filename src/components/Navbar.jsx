@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Menu,
-  X,
-  Home,
-  Search,
-  User,
-  MessageCircle,
-  Settings,
-} from "lucide-react";
+import { Menu, X, Home, Search, User, Map } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,9 +11,8 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", href: "#", icon: Home },
     { name: "Find PG", href: "#", icon: Search },
-    { name: "Messages", href: "#", icon: MessageCircle },
-    { name: "Profile", href: "#", icon: User },
-    { name: "Settings", href: "#", icon: Settings },
+    { name: "Map", href: "#", icon: Map },
+    { name: "Account", href: "#", icon: User },
   ];
 
   return (
@@ -57,7 +48,7 @@ const Navbar = () => {
           {/* CTA Button - Desktop */}
           <div className="hidden md:block">
             <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-              List Your PG
+              Sign Up
             </button>
           </div>
 
@@ -101,7 +92,7 @@ const Navbar = () => {
               className="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
               onClick={() => setIsOpen(false)}
             >
-              List Your PG
+              Sign Up
             </button>
           </div>
         </div>
