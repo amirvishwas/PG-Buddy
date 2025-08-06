@@ -53,7 +53,7 @@ const Listings = () => {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <p className="font-medium text-sm">Verified By</p>
           <label className="block">
             <input type="checkbox" defaultChecked /> Renets
@@ -64,7 +64,7 @@ const Listings = () => {
           <label className="block">
             <input type="checkbox" /> Mixed
           </label>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex-1">

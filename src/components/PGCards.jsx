@@ -27,7 +27,8 @@ const properties = [
     price: "₹7,200 / mo",
     amenities: ["WiFi", "Laundry", "AC"],
     gender: "Mixed",
-    image: "https://via.placeholder.com/300x200?text=Maple+Stay",
+    image:
+      "https://assets.simplotel.com/simplotel/image/upload/x_0,y_117,w_2250,h_1266,r_0,c_crop,q_80,fl_progressive/w_400,f_auto,c_fit/daizzo-maple-residency-hotel-gangtok/Exterior_day_nbm2da",
   },
   {
     name: "Cozy Haven",
@@ -35,7 +36,8 @@ const properties = [
     price: "₹9,000 / mo",
     amenities: [],
     gender: "Boys",
-    image: "https://via.placeholder.com/300x200?text=Cozy+Haven",
+    image:
+      "https://www.itchotels.com/content/dam/itchotels/in/umbrella/welcomHotel/hotels/welcomhoteljabalpur/images/overview-landing-page/overview/d/hotel-facade-dusk-view.jpg",
   },
 ];
 
