@@ -29,9 +29,7 @@ const Home = () => {
         </div>
 
         {/* 🏙 Building at bottom */}
-        <div className="w-full max-w-5xl mb-2">
-          <Buildings />
-        </div>
+        <div className="w-full max-w-5xl mb-2"></div>
       </div>
     </>
   );
