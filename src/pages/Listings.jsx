@@ -1,7 +1,7 @@
 import React from "react";
 import PGCards from "../components/PGCards";
 
-const Listings = () => {
+const Listings = ({ properties }) => {
   return (
     <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-6 p-4">
       {/* Filters */}
@@ -57,7 +57,7 @@ const Listings = () => {
 
       {/* Cards */}
       <div className="flex-1 order-1 lg:order-2">
-        <PGCards />
+        <PGCards properties={properties} />
       </div>
     </div>
   );

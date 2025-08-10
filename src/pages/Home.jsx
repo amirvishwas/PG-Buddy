@@ -1,8 +1,17 @@
-import React from "react";
-
+import React, { useState } from "react";
 import Listings from "./Listings";
+import propertiesData from "../data/properties";
 
 const Home = () => {
+  const [search, setSearch] = useState("");
+
+  // Filter properties based on search
+  const filteredProperties = propertiesData.filter(
+    (p) =>
+      p.location.toLowerCase().includes(search.toLowerCase()) ||
+      p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <>
       {/* Hero Section */}
@@ -19,6 +28,8 @@ const Home = () => {
               <input
                 type="text"
                 placeholder="Select city"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 outline-none"
               />
               <button className="bg-blue-600 text-white px-4 py-2 rounded-xl w-22">
@@ -31,7 +42,7 @@ const Home = () => {
 
       {/* PG Cards & Filters */}
       <div className="mt-8">
-        <Listings />
+        <Listings properties={filteredProperties} />
       </div>
     </>
   );
