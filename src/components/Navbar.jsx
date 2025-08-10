@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { Menu, X, Home, Search, User, Map } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const navItems = [
-    { name: "Home", href: "#", icon: Home },
-    { name: "Find PG", href: "#", icon: Search },
-    { name: "Map", href: "#", icon: Map },
-    { name: "Account", href: "#", icon: User },
+    { name: "Home", path: "/", icon: Home },
+    { name: "Find PG", path: "/find-pg", icon: Search },
+    { name: "Map", path: "/map", icon: Map },
+    { name: "Account", path: "/account", icon: User },
+    { name: "Login", path: "/login", icon: User },
   ];
 
   return (
@@ -21,9 +24,9 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <div className="text-2xl font-bold text-blue-600">
+            <Link to="/" className="text-2xl font-bold text-blue-600">
               PG<span className="text-gray-800">Buddy</span>
-            </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -32,14 +35,14 @@ const Navbar = () => {
               {navItems.map((item) => {
                 const IconComponent = item.icon;
                 return (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.path}
                     className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
                   >
                     <IconComponent size={18} />
                     <span>{item.name}</span>
-                  </a>
+                  </Link>
                 );
               })}
             </div>
@@ -47,7 +50,10 @@ const Navbar = () => {
 
           {/* CTA Button - Desktop */}
           <div className="hidden md:block">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+            <button
+              onClick={() => navigate("/signup")}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200"
+            >
               Sign Up
             </button>
           </div>
@@ -56,7 +62,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-200"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -74,23 +80,26 @@ const Navbar = () => {
           {navItems.map((item) => {
             const IconComponent = item.icon;
             return (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
-                className="flex items-center space-x-3 text-gray-600 hover:text-blue-600 hover:bg-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+                to={item.path}
                 onClick={() => setIsOpen(false)}
+                className="flex items-center space-x-3 text-gray-600 hover:text-blue-600 hover:bg-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
               >
                 <IconComponent size={20} />
                 <span>{item.name}</span>
-              </a>
+              </Link>
             );
           })}
 
           {/* Mobile CTA Button */}
           <div className="pt-2">
             <button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                navigate("/signup");
+                setIsOpen(false);
+              }}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium"
             >
               Sign Up
             </button>

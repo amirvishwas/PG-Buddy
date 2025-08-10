@@ -1,12 +1,12 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Buildings from "../components/buildings";
+
+import Listings from "./Listings";
 
 const Home = () => {
   return (
     <>
-      <Navbar />
-      <div className="h-[calc(100vh-64px)]  flex flex-col items-center px-4">
+      {/* Hero Section */}
+      <div className="h-[calc(100vh-64px)] flex flex-col items-center px-4">
         <div className="flex flex-col items-center max-w-7xl justify-center text-center flex-grow">
           <h1 className="text-3xl md:text-7xl font-bold mb-2 text-gray-900">
             Find your perfect <br /> PG or Hostel
@@ -21,15 +21,17 @@ const Home = () => {
                 placeholder="Select city"
                 className="flex-1 outline-none"
               />
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-xl  w-22">
+              <button className="bg-blue-600 text-white px-4 py-2 rounded-xl w-22">
                 Search
               </button>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* 🏙 Building at bottom */}
-        <div className="w-full max-w-5xl mb-2"></div>
+      {/* PG Cards & Filters */}
+      <div className="mt-8">
+        <Listings />
       </div>
     </>
   );
