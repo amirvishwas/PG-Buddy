@@ -1,93 +1,82 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 
 const Signup = () => {
-  return (
-    <div className="bg-gray-300 min-h-screen flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg flex flex-col md:flex-row w-full max-w-4xl overflow-hidden">
-        <div
-          className="hidden md:flex md:w-1/2 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://storage.googleapis.com/pictographic/thumbnails/cartoon-cute/qsIeMutlkuVL1iRU1rGn.png')",
-          }}
-        ></div>
+  const [role, setRole] = useState("tenant");
 
-        {/* Form Section */}
-        <div className="w-full md:w-1/2 p-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800">
-              Create an Account
-            </h2>
-            <p className="text-gray-600">Please signup to get started.</p>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+          Create Account
+        </h2>
+        <form className="space-y-4">
+          {/* Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Full Name
+            </label>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
           </div>
 
-          {/* Signup Form */}
-          <form className="space-y-4">
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-600"
-              >
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                placeholder="Enter full name"
-              />
-            </div>
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
+          </div>
 
-            <div>
-              <label
-                htmlFor="signup-email"
-                className="block text-sm font-medium text-gray-600"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="signup-email"
-                className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                placeholder="you@example.com"
-              />
-            </div>
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            />
+          </div>
 
-            <div>
-              <label
-                htmlFor="signup-password"
-                className="block text-sm font-medium text-gray-600"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="signup-password"
-                className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                placeholder="••••••••"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition"
+          {/* Role Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Select Role
+            </label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             >
-              Signup
-            </button>
-          </form>
+              <option value="tenant">Tenant (Find PG/Hostel)</option>
+              <option value="owner">PG Owner (List PG/Hostel)</option>
+            </select>
+          </div>
 
-          {/* Have an account? */}
-          <p className="mt-4 text-center text-gray-600">
-            Have an account?{" "}
-            <Link
-              to="/login"
-              className="text-indigo-500 hover:underline font-medium"
-            >
-              Log in
-            </Link>
-          </p>
-        </div>
+          {/* Signup Button */}
+          <button
+            type="submit"
+            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition-colors"
+          >
+            Sign Up
+          </button>
+        </form>
+
+        {/* Link to Login */}
+        <p className="text-center text-sm text-gray-500 mt-4">
+          Already have an account?{" "}
+          <a href="/login" className="text-indigo-500 hover:underline">
+            Log in
+          </a>
+        </p>
       </div>
     </div>
   );

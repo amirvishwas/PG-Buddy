@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Singup";
 import Navbar from "./components/Navbar";
 import "./App.css";
+import AddPGForm from "./pages/AddPGForm";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />{" "}
       </Routes>
+      <AddPGForm />
     </Router>
   );
 }

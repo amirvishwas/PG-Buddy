@@ -18,7 +18,7 @@ const Home = () => {
       <div className="h-[calc(100vh-64px)] flex flex-col items-center px-4">
         <div className="flex flex-col items-center max-w-7xl justify-center text-center flex-grow">
           <h1 className="text-3xl md:text-7xl font-bold mb-2 text-gray-900">
-            Find your perfect <br /> PG or Hostel
+            Find Your Next Home Away From Home
           </h1>
           <p className="mb-4 text-md md:text-lg text-gray-700 max-w-xl">
             PGBuddy helps you find nearby PGs/Hostel and compatible roommates.
