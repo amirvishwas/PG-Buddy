@@ -1,13 +1,15 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
+import { Link } from "react-router-dom"; // 👈 import Link
 
 const PGCards = ({ properties }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 flex-1">
       {properties.length > 0 ? (
         properties.map((p, i) => (
-          <div
+          <Link
             key={i}
+            to={`/pg/${p.id}`} // 👈 navigate to PGDetails with ID
             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
           >
             {/* Image */}
@@ -59,7 +61,7 @@ const PGCards = ({ properties }) => {
                 {p.gender}
               </span>
             </div>
-          </div>
+          </Link>
         ))
       ) : (
         <p className="text-gray-500">No results found.</p>

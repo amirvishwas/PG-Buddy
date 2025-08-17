@@ -13,7 +13,7 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", path: "/", icon: Home },
     { name: "Browse PG", path: "/find-pg", icon: Search },
-    { name: "Map", path: "/map", icon: Map },
+    { name: "PG Owners", path: "/map", icon: Home },
     { name: "Account", path: "/account", icon: User },
     { name: "Login", path: "/login", icon: User },
   ];
