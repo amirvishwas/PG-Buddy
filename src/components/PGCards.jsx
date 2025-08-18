@@ -1,6 +1,6 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { Link } from "react-router-dom"; // 👈 import Link
+import { Link } from "react-router-dom";
 
 const PGCards = ({ properties }) => {
   return (
@@ -9,7 +9,7 @@ const PGCards = ({ properties }) => {
         properties.map((p, i) => (
           <Link
             key={i}
-            to={`/pg/${p.id}`} // 👈 navigate to PGDetails with ID
+            to={`/pg/${i}`}
             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
           >
             {/* Image */}

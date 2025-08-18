@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, X, Home, Search, User, Map } from "lucide-react";
+import { Menu, X, Home, Search, User, Map, Building } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -12,9 +12,8 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", path: "/", icon: Home },
-    { name: "Browse PG", path: "/find-pg", icon: Search },
-    { name: "PG Owners", path: "/map", icon: Home },
-    { name: "Account", path: "/account", icon: User },
+    { name: "Browse PG", path: "/browsepg", icon: Search },
+    { name: "PG Owners", path: "/map", icon: Building },
     { name: "Login", path: "/login", icon: User },
   ];
 

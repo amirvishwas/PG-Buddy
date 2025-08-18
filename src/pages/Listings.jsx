@@ -5,7 +5,7 @@ const Listings = ({ properties }) => {
   return (
     <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-6 p-4">
       {/* Filters */}
-      <div className="w-full md:w-64 bg-white p-4 rounded shadow-sm space-y-4 order-1 md:order-none">
+      <div className="w-full md:w-64 bg-white p-4 rounded-2xl shadow-sm space-y-4 order-1 md:order-none">
         <h3 className="font-semibold text-lg text-gray-800">Filter</h3>
 
         {/* Gender Filter */}
