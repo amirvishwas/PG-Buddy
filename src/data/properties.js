@@ -4,6 +4,7 @@ const properties = [
     name: "Greenview PG",
     location: "Bellandur, Bangalore",
     price: "₹8500 / mo",
+    priceValue: 8500,
     amenities: ["Food", "WiFi", "Laundry"],
     gender: "Boys",
     verified: true,
@@ -13,7 +14,8 @@ const properties = [
   {
     name: "UrbanNest Hostel",
     location: "Koramangala, Bangalore",
-    price: "₹10,000 / mo",
+    price: "₹12,000 / mo",
+    priceValue: 12000,
     amenities: ["Food", "Laundry", "AC"],
     gender: "Girls",
     image:
@@ -23,6 +25,7 @@ const properties = [
     name: "Maple Stay",
     location: "HSR Layout, Bangalore",
     price: "₹7,200 / mo",
+    priceValue: 7200,
     amenities: ["WiFi", "Laundry", "AC"],
     gender: "Mixed",
     image:
@@ -32,10 +35,41 @@ const properties = [
     name: "Cozy Haven",
     location: "Indiranagar, Bangalore",
     price: "₹9,000 / mo",
-    amenities: [],
+    priceValue: 9000,
+    amenities: ["Food", "WiFi", "Laundry"],
     gender: "Boys",
     image:
       "https://www.itchotels.com/content/dam/itchotels/in/umbrella/welcomHotel/hotels/welcomhoteljabalpur/images/overview-landing-page/overview/d/hotel-facade-dusk-view.jpg",
+  },
+  {
+    name: "Urban Nest",
+    location: "Koramangala, Bangalore",
+    price: "₹14,500 / mo",
+    priceValue: 14500,
+    amenities: ["WiFi", "AC", "Laundry"],
+    gender: "Girls",
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80",
+  },
+  {
+    name: "Sunrise Residency",
+    location: "Gokulpura, Jaipur",
+    price: "₹7,200 / mo",
+    priceValue: 7200,
+    amenities: ["Food", "WiFi", "Housekeeping"],
+    gender: "Mixed",
+    image:
+      "https://images.unsplash.com/photo-1560448075-bb3fb9b9de88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80",
+  },
+  {
+    name: "Lakeview PG",
+    location: "Powai, Mumbai",
+    price: "₹11,500 / mo",
+    priceValue: 11500,
+    amenities: ["Food", "WiFi", "AC", "Laundry"],
+    gender: "Boys",
+    image:
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80",
   },
 ];
 
