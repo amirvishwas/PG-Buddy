@@ -16,16 +16,16 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <div className="h-[calc(100vh-64px)] flex flex-col items-center px-4 bg-gradient-to-br from-blue-50 via-white to-blue-100 font-[Inter]">
+      <div className="h-[calc(100vh-64px)] flex flex-col items-center px-4  font-[Poppins]">
         <div className="flex flex-col items-center max-w-7xl justify-center text-center flex-grow">
-          <h1 className="text-4xl md:text-7xl font-extrabold mb-4 text-gray-900 leading-tight uppercase font-[Outfit] tracking-wide">
+          <h1 className="text-4xl md:text-7xl font-extrabold mb-4 text-gray-900 leading-tight uppercase font-[Poppins] tracking-wide">
             FIND YOUR NEXT HOME <br />
             <span className="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
               AWAY FROM HOME
             </span>
           </h1>
 
-          <p className="mb-6 text-lg md:text-xl text-gray-700 max-w-2xl font-[Inter]">
+          <p className="mb-6 text-lg md:text-xl text-gray-700 max-w-2xl font-[Poppins]">
             PGBuddy helps you find{" "}
             <span className="font-semibold text-blue-600">PGs, Hostels </span>
             and even{" "}
@@ -42,9 +42,9 @@ const Home = () => {
                 placeholder="Search by city or PG name..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 outline-none text-gray-800 placeholder-gray-500 font-[Inter]"
+                className="flex-1 outline-none text-gray-800 placeholder-gray-500 font-[Poppins]"
               />
-              <button className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-5 py-2 rounded-xl hover:scale-105 transform transition font-[Inter]">
+              <button className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-5 py-2 rounded-xl hover:scale-105 transform transition font-[Poppins]">
                 Search
               </button>
             </div>
@@ -55,7 +55,7 @@ const Home = () => {
                 <button
                   key={city}
                   onClick={() => setSearch(city)}
-                  className="px-4 py-2 rounded-full border text-sm bg-white shadow-sm hover:bg-blue-100 transition font-[Inter]"
+                  className="px-4 py-2 rounded-full border text-sm bg-white shadow-sm hover:bg-blue-100 transition font-[Poppins]"
                 >
                   {city}
                 </button>
