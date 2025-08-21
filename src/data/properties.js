@@ -59,7 +59,7 @@ const properties = [
     amenities: ["Food", "WiFi", "Housekeeping"],
     gender: "Mixed",
     image:
-      "https://images.unsplash.com/photo-1560448075-bb3fb9b9de88?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Gg5JDAjo325QVNmqyin2K-0pbWDROXFMAQ&s",
   },
   {
     name: "Lakeview PG",

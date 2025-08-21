@@ -24,18 +24,15 @@ const Listings = ({ properties }) => {
     );
   };
 
-  // Filtering logic
   const filteredProperties = properties.filter((p) => {
     const priceMatch = p.priceValue <= maxPrice;
 
     const genderMatch =
       selectedGenders.length === 0 || selectedGenders.includes(p.gender);
-    // assuming property has "gender" field (Boys/Girls/Mixed)
 
     const amenitiesMatch =
       selectedAmenities.length === 0 ||
       selectedAmenities.every((a) => p.amenities?.includes(a));
-    // assuming property has amenities: ["Wi-Fi","Food"] etc.
 
     return priceMatch && genderMatch && amenitiesMatch;
   });
