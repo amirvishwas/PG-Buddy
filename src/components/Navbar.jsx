@@ -51,7 +51,7 @@ const Navbar = () => {
           <div className="hidden md:block">
             <button
               onClick={() => navigate("/signup")}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200"
+              className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 hover:cursor-pointer"
             >
               Sign Up
             </button>

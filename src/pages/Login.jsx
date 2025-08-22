@@ -35,7 +35,7 @@ const Login = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition-colors"
+            className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white py-2 px-4 rounded-lg hover:cursor-pointer  transition-colors"
           >
             Login
           </button>
@@ -44,7 +44,7 @@ const Login = () => {
         {/* Link to Signup */}
         <p className="text-center text-sm text-gray-500 mt-4">
           Don’t have an account?{" "}
-          <a href="/signup" className="text-indigo-500 hover:underline">
+          <a href="/signup" className="text-indigo-700 hover:underline">
             Sign up
           </a>
         </p>

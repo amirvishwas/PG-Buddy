@@ -50,7 +50,7 @@ const Signup = () => {
           {/* Signup Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition-colors"
+            className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white py-2 px-4 rounded-lg hover:bg-gradient-to-l hover:cursor-pointer transition-colors"
           >
             Sign Up
           </button>
