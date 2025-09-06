@@ -83,7 +83,7 @@ const Navbar = () => {
                 key={item.name}
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                className="flex items-center space-x-3 text-gray-600 hover:text-blue-600 hover:bg-white block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+                className="flex items-center space-x-3 text-gray-600 hover:text-blue-600 hover:bg-white  px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
               >
                 <IconComponent size={20} />
                 <span>{item.name}</span>
