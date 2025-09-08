@@ -69,7 +69,6 @@ const PGDetails = () => {
       water: Droplets,
       power: Zap,
     };
-
     const IconComponent = iconMap[amenity.toLowerCase()] || CheckCircle;
     return <IconComponent className="w-5 h-5" />;
   };
@@ -125,10 +124,10 @@ const PGDetails = () => {
         </div>
       </div>
 
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Main Content */}
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column - Images & Details */}
+          {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
             {/* Image Gallery */}
             <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
@@ -151,7 +150,7 @@ const PGDetails = () => {
                 </button>
               </div>
 
-              {/* Thumbnail Gallery */}
+              {/* Thumbnails */}
               <div className="p-4">
                 <div className="grid grid-cols-4 gap-3">
                   {images.slice(0, 4).map((img, index) => (
@@ -265,49 +264,46 @@ const PGDetails = () => {
                 Location & House Rules
               </h3>
               <div className="grid md:grid-cols-2 gap-6">
+                {/* Nearby Locations */}
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-3">
                     Nearby Locations
                   </h4>
-                  <div className="space-y-2 text-sm text-gray-600">
-                    <div className="flex justify-between">
-                      <span>Metro Station</span>
-                      <span className="font-medium">0.5 km</span>
+                  {pg.nearbyPlaces?.map((place, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between text-sm text-gray-600 mb-2"
+                    >
+                      <span>{place.name}</span>
+                      <span className="font-medium">{place.distance}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Shopping Mall</span>
-                      <span className="font-medium">1.2 km</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Hospital</span>
-                      <span className="font-medium">0.8 km</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
+
+                {/* House Rules */}
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-3">
                     House Rules
                   </h4>
-                  <div className="space-y-2 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-500" />
-                      <span>No smoking inside</span>
+                  {pg.houseRules?.map((rule, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-2 text-sm text-gray-600 mb-2"
+                    >
+                      {rule.allowed ? (
+                        <CheckCircle className="w-4 h-4 text-green-500" />
+                      ) : (
+                        <XCircle className="w-4 h-4 text-red-500" />
+                      )}
+                      <span>{rule.rule}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-500" />
-                      <span>Visitors allowed till 9 PM</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <XCircle className="w-4 h-4 text-red-500" />
-                      <span>No pets allowed</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column - Booking Card */}
+          {/* Right Column */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
@@ -354,7 +350,7 @@ const PGDetails = () => {
                 </div>
               </div>
 
-              {/* Quick Info Card */}
+              {/* Quick Info */}
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 mt-6 border border-blue-100">
                 <h4 className="font-semibold text-gray-900 mb-3">Quick Info</h4>
                 <div className="space-y-3 text-sm">
@@ -403,7 +399,6 @@ const BookingModal = ({ pg, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle booking submission
     console.log("Booking submitted:", formData);
     alert("Booking request submitted! Owner will contact you soon.");
     onClose();
