@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Signup = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+  };
+
   return (
     <div
       id="signup"
@@ -10,7 +25,7 @@ const Signup = () => {
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           Create Account
         </h2>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-600">
@@ -18,8 +33,12 @@ const Signup = () => {
             </label>
             <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Enter your name"
               className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              required
             />
           </div>
 
@@ -30,8 +49,12 @@ const Signup = () => {
             </label>
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="Enter your email"
               className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              required
             />
           </div>
 
@@ -42,8 +65,12 @@ const Signup = () => {
             </label>
             <input
               type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
               placeholder="Enter your password"
               className="mt-1 block w-full px-4 py-2 bg-gray-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              required
             />
           </div>
 
