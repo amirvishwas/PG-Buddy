@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Listings from "./Listings";
 import propertiesData from "../data/properties";
 import { MdLocationOn } from "react-icons/md";
+import HowItWorks from "../components/howItWorks";
+import Testimonials from "../components/Testimonials";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -69,6 +71,8 @@ const Home = () => {
       <div className="mt-8 px-4">
         <Listings properties={filteredProperties} />
       </div>
+      <HowItWorks />
+      <Testimonials />
     </>
   );
 };
