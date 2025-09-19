@@ -1,6 +1,6 @@
 # 🏠 PG Buddy
 
-("[github](https://github.com/calvintakasi/PG-Buddy)") helps students and professionals easily find Paying Guest (PG) accommodations and hostels. 
+("[PG Buddy](https://github.com/calvintakasi/PG-Buddy)") helps students and professionals easily find Paying Guest (PG) accommodations and hostels. 
 It provides verified listings, detailed PG information, and an easy-to-use interface for browsing, booking, and managing PGs.
 
 ## 🚀 Features  
