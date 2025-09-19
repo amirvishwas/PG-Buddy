@@ -4,6 +4,7 @@ import propertiesData from "../data/properties";
 import { MdLocationOn } from "react-icons/md";
 import HowItWorks from "../components/howItWorks";
 import Testimonials from "../components/Testimonials";
+import Footer from "../components/Footer";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -73,6 +74,7 @@ const Home = () => {
       </div>
       <HowItWorks />
       <Testimonials />
+      <Footer />
     </>
   );
 };
