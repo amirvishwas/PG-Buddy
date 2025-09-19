@@ -66,7 +66,7 @@ const Testimonials = () => {
           {marqueeReviews.map((review, index) => (
             <div
               key={index}
-              className="w-[500px] bg-gray-50 p-6 rounded-2xl shadow-md min-w-[250px] flex-shrink-0 hover:shadow-lg transition"
+              className="w-[350px] bg-gray-50 p-6 rounded-2xl shadow-md  flex-shrink-0 hover:shadow-lg transition"
             >
               <img
                 src={review.image}
