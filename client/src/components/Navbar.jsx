@@ -6,6 +6,9 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -14,7 +17,6 @@ const Navbar = () => {
     { name: "Home", path: "/", icon: Home },
     { name: "Browse PG", path: "/browsepg", icon: Search },
     { name: "PG Owners", path: "/map", icon: Building },
-    { name: "Login", path: "/login", icon: User },
   ];
 
   return (
@@ -50,10 +52,10 @@ const Navbar = () => {
           {/* CTA Button - Desktop */}
           <div className="hidden md:block">
             <button
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/login")}
               className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 hover:cursor-pointer"
             >
-              Sign Up
+              Login
             </button>
           </div>
 
