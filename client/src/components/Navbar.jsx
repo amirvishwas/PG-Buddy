@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Menu, X, Home, Search, User, Map, Building } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useClerk, useUser, UserButton } from "@clerk/clerk-react";
+
+const BookIcon = () => (
+  
+)
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +13,10 @@ const Navbar = () => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { openSignIn } = useClerk();
+  const { user } = useUser();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -51,13 +60,22 @@ const Navbar = () => {
 
           {/* CTA Button - Desktop */}
           <div className="hidden md:block">
-            <button
-              onClick={() => navigate("/login")}
-              className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 hover:cursor-pointer"
-            >
-              Login
-            </button>
+            {user ? (
+              <UserButton >
+                <UserButton.MenuItems>
+                  <UserButton.Action label = "My Bookings" labelIcon = {<BookIcon/>} onClick = {()=>navigate("/mybookings")}/>
+                </UserButton.MenuItems>
+                <UserButton/>
+              ) : (
+              <button
+                onClick={openSignIn}
+                className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 hover:cursor-pointer"
+              >
+                Login
+              </button>
+            )}
           </div>
+        
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -96,10 +114,7 @@ const Navbar = () => {
           {/* Mobile CTA Button */}
           <div className="pt-2">
             <button
-              onClick={() => {
-                navigate("/signup");
-                setIsOpen(false);
-              }}
+              onClick={openSignIn}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium"
             >
               Sign Up
