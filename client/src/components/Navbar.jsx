@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Menu, X, Home, Search, Building } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useClerk, useUser, UserButton } from "@clerk/clerk-react";
+import { MdDashboard } from "react-icons/md";
 
 const BookIcon = () => (
   <svg
@@ -74,6 +75,19 @@ const Navbar = () => {
                   </Link>
                 );
               })}
+
+              <div className="hidden md:flex items-center space-x-2">
+                {user && (
+                  <Link
+                    to="/dashboard"
+                    onClick={() => (navigate("/dashboard"), setIsOpen(false))}
+                    className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  >
+                    <MdDashboard size={18} />
+                    <span>Dashboard</span>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
 
@@ -92,7 +106,7 @@ const Navbar = () => {
             ) : (
               <button
                 onClick={openSignIn}
-                className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 hover:cursor-pointer"
+                className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 hover:cursor-pointer"
               >
                 Login
               </button>
@@ -100,7 +114,21 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+
+          <div className="md:hidden flex center items-center">
+            {user && (
+              <div className="ml-2">
+                <UserButton>
+                  <UserButton.MenuItems>
+                    <UserButton.Action
+                      label="My Bookings"
+                      labelIcon={<BookIcon />}
+                      onClick={() => navigate("/mybookings")}
+                    />
+                  </UserButton.MenuItems>
+                </UserButton>
+              </div>
+            )}
             <button
               onClick={toggleMenu}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50"
@@ -133,24 +161,26 @@ const Navbar = () => {
             );
           })}
 
+          {/* Dashboard Link */}
+          {user && (
+            <Link
+              to="/dashboard"
+              onClick={() => (navigate("/dashboard"), setIsOpen(false))}
+              className="flex items-center space-x-3 text-gray-600 hover:text-blue-600 hover:bg-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+            >
+              <MdDashboard size={20} />
+              <span>Dashboard</span>
+            </Link>
+          )}
+
           {/* Mobile CTA Button */}
           <div className="pt-2">
-            {user ? (
-              <UserButton>
-                <UserButton.MenuItems>
-                  <UserButton.Action
-                    label="My Bookings"
-                    labelIcon={<BookIcon />}
-                    onClick={() => navigate("/mybookings")}
-                  />
-                </UserButton.MenuItems>
-              </UserButton>
-            ) : (
+            {!user && (
               <button
                 onClick={openSignIn}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-base font-medium"
+                className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 hover:cursor-pointer"
               >
-                Sign Up
+                Login
               </button>
             )}
           </div>
