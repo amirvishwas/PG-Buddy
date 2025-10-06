@@ -3,7 +3,7 @@ import PGCards from "../components/PGCards";
 
 const Listings = ({ properties }) => {
   const [maxPrice, setMaxPrice] = useState(15000);
-  const [selectedGenders, setSelectedGenders] = useState(["Boys"]);
+  const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
 
@@ -50,9 +50,6 @@ const Listings = ({ properties }) => {
         {/* Mobile Filter Toggle */}
         <div className="lg:hidden mb-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">
-              PG Listings ({filteredProperties.length})
-            </h2>
             <button
               onClick={() => setShowFilters(!showFilters)}
               className="relative inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
@@ -152,23 +149,11 @@ const Listings = ({ properties }) => {
             </div>
           )}
 
-          {/* Main Content */}
-          <div className="flex-1 min-w-0">
-            {/* Desktop Header */}
-            <div className="hidden lg:block mb-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  PG Listings ({filteredProperties.length})
-                </h2>
-                {activeFiltersCount > 0 && (
-                  <button
-                    onClick={clearFilters}
-                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                  >
-                    Clear all filters
-                  </button>
-                )}
-              </div>
+          <div className="hidden lg:block mb-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent mb-3 ">
+                Best Seller
+              </h2>
             </div>
 
             {/* Results */}
