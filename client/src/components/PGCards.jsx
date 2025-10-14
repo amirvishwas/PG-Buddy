@@ -194,7 +194,7 @@ const PropertyCard = ({
           {property.amenities && property.amenities.length > 0 ? (
             <div className="space-y-2">
               <div className="flex flex-wrap gap-2">
-                {property.amenities.slice(0, 3).map((amenity, amenityIndex) => (
+                {property.amenities.map((amenity, amenityIndex) => (
                   <div
                     key={amenityIndex}
                     className="flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-medium"

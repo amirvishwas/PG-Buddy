@@ -149,48 +149,40 @@ const Listings = ({ properties }) => {
             </div>
           )}
 
-          <div className="hidden lg:block mb-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent mb-3 ">
-                Best Seller
-              </h2>
-            </div>
-
-            {/* Results */}
-            {filteredProperties.length > 0 ? (
-              <PGCards properties={filteredProperties} />
-            ) : (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-8 h-8 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  No properties found
-                </h3>
-                <p className="text-gray-500 mb-4">
-                  Try adjusting your filters to see more results
-                </p>
-                <button
-                  onClick={clearFilters}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+          {/* Results */}
+          {filteredProperties.length > 0 ? (
+            <PGCards properties={filteredProperties} />
+          ) : (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                <svg
+                  className="w-8 h-8 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Clear filters
-                </button>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
               </div>
-            )}
-          </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No properties found
+              </h3>
+              <p className="text-gray-500 mb-4">
+                Try adjusting your filters to see more results
+              </p>
+              <button
+                onClick={clearFilters}
+                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
