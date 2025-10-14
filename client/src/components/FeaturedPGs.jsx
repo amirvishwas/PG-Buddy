@@ -52,9 +52,8 @@ const PGCard = ({ pg, index }) => {
           </div>
         )}
 
-        {/* Price */}
         <div className="mt-auto pt-4">
-          <p className="text-blue-600 font-bold text-lg">{pg.price}/month</p>
+          <p className="text-blue-600 font-bold text-lg">{pg.price}nth</p>
         </div>
       </div>
     </div>
@@ -89,7 +88,6 @@ const FeaturedPGs = () => {
         ))}
       </div>
 
-      {/* View All Button */}
       <div className="max-w-7xl mx-auto mt-10 flex justify-end">
         <button
           onClick={handleViewAll}
