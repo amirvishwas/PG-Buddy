@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { MdLocationOn } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import HowItWorks from "../components/howItWorks";
 import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
@@ -7,6 +8,17 @@ import FeaturedPGs from "../components/FeaturedPGs";
 
 const Home = () => {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (search.trim() !== "") {
+      navigate(`/listings?search=${encodeURIComponent(search.trim())}`);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") handleSearch();
+  };
 
   return (
     <>
@@ -37,9 +49,13 @@ const Home = () => {
                 placeholder="Search by city or PG name..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={handleKeyPress}
                 className="flex-1 outline-none text-gray-800 placeholder-gray-500"
               />
-              <button className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-5 py-2 rounded-xl hover:scale-105 transform transition">
+              <button
+                onClick={handleSearch}
+                className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-5 py-2 rounded-xl hover:scale-105 transform transition"
+              >
                 Search
               </button>
             </div>
@@ -49,7 +65,10 @@ const Home = () => {
               {["Delhi", "Bangalore", "Mumbai", "Chandigarh"].map((city) => (
                 <button
                   key={city}
-                  onClick={() => setSearch(city)}
+                  onClick={() => {
+                    setSearch(city);
+                    navigate(`/listings?search=${encodeURIComponent(city)}`);
+                  }}
                   className="px-4 py-2 rounded-full border text-sm bg-white shadow-sm hover:bg-blue-100 transition"
                 >
                   {city}

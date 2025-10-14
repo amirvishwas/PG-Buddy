@@ -1,11 +1,19 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import properties from "../data/properties";
 import PGCards from "../components/PGCards";
 
-const Listings = ({ properties }) => {
+const Listings = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get("search")?.toLowerCase().trim() || "";
+
   const [maxPrice, setMaxPrice] = useState(15000);
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
+
+  const safeProperties = Array.isArray(properties) ? properties : [];
 
   const handleGenderChange = (gender) => {
     setSelectedGenders((prev) =>
@@ -29,14 +37,20 @@ const Listings = ({ properties }) => {
     setSelectedAmenities([]);
   };
 
-  const filteredProperties = properties.filter((p) => {
+  const filteredProperties = safeProperties.filter((p) => {
     const priceMatch = p.priceValue <= maxPrice;
     const genderMatch =
       selectedGenders.length === 0 || selectedGenders.includes(p.gender);
     const amenitiesMatch =
       selectedAmenities.length === 0 ||
       selectedAmenities.every((a) => p.amenities?.includes(a));
-    return priceMatch && genderMatch && amenitiesMatch;
+
+    // ✅search functionality
+    const nameMatch = p.name.toLowerCase().includes(searchQuery);
+    const locationMatch = p.location.toLowerCase().includes(searchQuery);
+    const searchMatch = searchQuery === "" || nameMatch || locationMatch;
+
+    return priceMatch && genderMatch && amenitiesMatch && searchMatch;
   });
 
   const activeFiltersCount =
@@ -46,7 +60,15 @@ const Listings = ({ properties }) => {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 ">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Search Heading */}
+        {searchQuery && (
+          <h2 className="text-2xl font-semibold mb-4">
+            Search results for "
+            <span className="text-blue-600">{searchQuery}</span>"
+          </h2>
+        )}
+
         {/* Mobile Filter Toggle */}
         <div className="lg:hidden mb-4">
           <div className="flex items-center justify-between">
@@ -173,7 +195,7 @@ const Listings = ({ properties }) => {
                 No properties found
               </h3>
               <p className="text-gray-500 mb-4">
-                Try adjusting your filters to see more results
+                Try adjusting your filters or search keywords
               </p>
               <button
                 onClick={clearFilters}
@@ -189,7 +211,7 @@ const Listings = ({ properties }) => {
   );
 };
 
-// Filter Panel Component
+// ✅ Filter Panel
 const FilterPanel = ({
   maxPrice,
   setMaxPrice,
@@ -226,35 +248,12 @@ const FilterPanel = ({
               key={gender}
               className="flex items-center space-x-3 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-colors"
             >
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={selectedGenders.includes(gender)}
-                  onChange={() => handleGenderChange(gender)}
-                  className="sr-only"
-                />
-                <div
-                  className={`w-5 h-5 border-2 rounded ${
-                    selectedGenders.includes(gender)
-                      ? "bg-blue-600 border-blue-600"
-                      : "border-gray-300"
-                  } flex items-center justify-center transition-colors`}
-                >
-                  {selectedGenders.includes(gender) && (
-                    <svg
-                      className="w-3 h-3 text-white"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  )}
-                </div>
-              </div>
+              <input
+                type="checkbox"
+                checked={selectedGenders.includes(gender)}
+                onChange={() => handleGenderChange(gender)}
+                className="w-5 h-5 accent-blue-600"
+              />
               <span className="text-gray-700 font-medium">{gender}</span>
             </label>
           ))}
@@ -270,35 +269,12 @@ const FilterPanel = ({
               key={amenity}
               className="flex items-center space-x-2 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-colors"
             >
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={selectedAmenities.includes(amenity)}
-                  onChange={() => handleAmenityChange(amenity)}
-                  className="sr-only"
-                />
-                <div
-                  className={`w-5 h-5 border-2 rounded ${
-                    selectedAmenities.includes(amenity)
-                      ? "bg-blue-600 border-blue-600"
-                      : "border-gray-300"
-                  } flex items-center justify-center transition-colors`}
-                >
-                  {selectedAmenities.includes(amenity) && (
-                    <svg
-                      className="w-3 h-3 text-white"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  )}
-                </div>
-              </div>
+              <input
+                type="checkbox"
+                checked={selectedAmenities.includes(amenity)}
+                onChange={() => handleAmenityChange(amenity)}
+                className="w-5 h-5 accent-blue-600"
+              />
               <span className="text-sm text-gray-700">{amenity}</span>
             </label>
           ))}
@@ -308,41 +284,39 @@ const FilterPanel = ({
       {/* Price Range Filter */}
       <div className="space-y-3">
         <h4 className="font-medium text-gray-900">Price Range</h4>
-        <div className="space-y-3">
-          <input
-            type="range"
-            min="5000"
-            max="20000"
-            step="500"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-          />
-          <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-600">₹5,000</span>
-            <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-              Up to ₹{maxPrice.toLocaleString()}
-            </div>
-            <span className="text-sm font-medium text-gray-600">₹20,000</span>
+        <input
+          type="range"
+          min="5000"
+          max="20000"
+          step="500"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(Number(e.target.value))}
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+        />
+        <div className="flex justify-between items-center">
+          <span className="text-sm font-medium text-gray-600">₹5,000</span>
+          <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+            Up to ₹{maxPrice.toLocaleString()}
           </div>
+          <span className="text-sm font-medium text-gray-600">₹20,000</span>
         </div>
       </div>
 
       {/* Results Summary */}
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <p className="text-sm text-gray-600 text-center">
-          <span className="font-medium text-gray-900">{filteredCount}</span>{" "}
-          properties match your criteria
+      <div className="bg-gray-50 p-4 rounded-lg text-center">
+        <p className="text-sm text-gray-600">
+          <span className="font-medium text-gray-900">{filteredCount}</span> PGs
+          match your filters
         </p>
       </div>
 
-      {/* Mobile Apply Button */}
+      {/* Mobile Apply */}
       {isMobile && (
         <button
           onClick={onClose}
           className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
         >
-          Show {filteredCount} Properties
+          Show {filteredCount} PGs
         </button>
       )}
     </div>
