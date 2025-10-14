@@ -62,11 +62,17 @@ const PGCard = ({ pg, index }) => {
 };
 
 const FeaturedPGs = () => {
+  const navigate = useNavigate();
   const properties = Array.isArray(propertiesData) ? propertiesData : [];
   const featured = properties.slice(0, 4);
 
+  const handleViewAll = () => {
+    navigate("/listings");
+  };
+
   return (
-    <section className="py-12 px-4 font-[Poppins] ">
+    <section className="py-12 px-4 font-[Poppins]">
+      {/* Section Header */}
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
           Best Seller
@@ -76,10 +82,21 @@ const FeaturedPGs = () => {
         </p>
       </div>
 
+      {/* Cards Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {featured.map((pg, index) => (
           <PGCard key={index} pg={pg} index={index} />
         ))}
+      </div>
+
+      {/* View All Button */}
+      <div className="max-w-7xl mx-auto mt-10 flex justify-end">
+        <button
+          onClick={handleViewAll}
+          className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-6 py-2 rounded-full font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-300"
+        >
+          View All PGs →
+        </button>
       </div>
     </section>
   );
