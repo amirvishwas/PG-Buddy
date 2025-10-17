@@ -61,6 +61,20 @@ const Listings = () => {
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center text-gray-600 text-md mb-6 font-[Poppins]">
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="text-blue-600 hover:text-blue-700 font-medium"
+          >
+            Home
+          </button>
+          <span className="mx-2">{">"}</span>
+          <span className="text-gray-800 capitalize">
+            {searchQuery ? searchQuery : "All Locations"}
+          </span>
+        </div>
+
         {/* Search Heading */}
         {searchQuery && (
           <h2 className="text-2xl font-semibold mb-4">

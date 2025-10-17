@@ -21,7 +21,7 @@ const PGCard = ({ pg, index }) => {
           alt={pg.name}
           className="h-48 sm:h-56 w-full object-cover"
         />
-        <div className="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+        <div className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
           Featured
         </div>
       </div>
@@ -91,7 +91,7 @@ const FeaturedPGs = () => {
       <div className="max-w-7xl mx-auto mt-10 flex justify-end">
         <button
           onClick={handleViewAll}
-          className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-6 py-2 rounded-full font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-300"
+          className="bg-blue-600 text-white px-6 py-2 rounded-xl font-semibold shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-300"
         >
           View All PGs →
         </button>
