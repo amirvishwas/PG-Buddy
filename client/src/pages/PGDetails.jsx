@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+
 import {
   MapPin,
   Bed,
@@ -169,9 +170,15 @@ const PGDetails = () => {
                         className="w-full h-20 object-cover hover:scale-110 transition-transform"
                       />
                       {index === 3 && (
-                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-sm font-medium">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate(`/gallery/${id}`);
+                          }}
+                          className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-sm font-medium hover:bg-black/60 transition"
+                        >
                           +5 more
-                        </div>
+                        </button>
                       )}
                     </button>
                   ))}
