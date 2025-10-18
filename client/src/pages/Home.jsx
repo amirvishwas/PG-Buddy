@@ -5,6 +5,7 @@ import HowItWorks from "../components/howItWorks";
 import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
 import FeaturedPGs from "../components/FeaturedPGs";
+import ServicesSection from "../components/ServicesSection";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -84,6 +85,7 @@ const Home = () => {
       </div>
 
       <HowItWorks />
+      <ServicesSection />
       <Testimonials />
       <Footer />
     </>
