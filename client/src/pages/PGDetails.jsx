@@ -399,7 +399,8 @@ const BookingModal = ({ pg, onClose }) => {
     name: "",
     email: "",
     phone: "",
-    moveInDate: "",
+    checkInDate: "",
+    checkOutDate: "",
     roomType: "single",
   });
 
@@ -476,12 +477,25 @@ const BookingModal = ({ pg, onClose }) => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Preferred Move-in Date
+                Check-in Date
               </label>
               <input
                 type="date"
                 name="moveInDate"
-                value={formData.moveInDate}
+                value={formData.checkInDate}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Check-out Date
+              </label>
+              <input
+                type="date"
+                name="checkOutDate"
+                value={formData.checkOutDate}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
