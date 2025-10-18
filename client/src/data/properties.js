@@ -9,11 +9,7 @@ const properties = [
     gender: "Boys",
     verified: true,
     images: [
-      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/385388071.jpg?k=de0b51f296a3d9431866b51b974921c9ebb50cacf08eb55c1eec1d468849ffe2&o=",
-      "https://r1imghtlak.mmtcdn.com/4ee8b782cef311ed80900a58a9feac02.jpg",
-      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/385388073.jpg?k=example2",
-      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/385388074.jpg?k=example3",
-      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/385388075.jpg?k=example4",
+      "https://gsh-cdn.sgp1.cdn.digitaloceanspaces.com/assets/img/no-broker-indore/PRT841/room-on-rent-in-indore/pg-in-new-gayatri-nagar_1713339219.jpg",
     ],
     description:
       "Modern PG accommodation with all essential amenities in the heart of Bellandur. Perfect for working professionals.",

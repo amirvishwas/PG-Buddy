@@ -15,7 +15,7 @@ function App() {
         <Route path="/browsepg" element={<Listings />} />
         <Route path="/listings" element={<Listings />} />
         <Route path="/pg/:id" element={<PGDetails />} />
-        <Route path="/pg/:id/images" element={<ImageGallery />} />
+        <Route path="/gallery/:id" element={<ImageGallery />} />
       </Routes>
     </Router>
   );
