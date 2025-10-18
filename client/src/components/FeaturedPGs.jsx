@@ -53,7 +53,7 @@ const PGCard = ({ pg, index }) => {
         )}
 
         <div className="mt-auto pt-4">
-          <p className="text-blue-600 font-bold text-lg">{pg.price}nth</p>
+          <p className="text-blue-600 font-bold text-lg">{pg.price}</p>
         </div>
       </div>
     </div>
