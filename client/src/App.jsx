@@ -3,8 +3,9 @@ import Home from "./pages/Home";
 import Listings from "./pages/Listings";
 import PGDetails from "./pages/PGDetails";
 import Navbar from "./components/Navbar";
-import "./App.css";
 import ImageGallery from "./pages/ImageGallery";
+import MyBookings from "./pages/MyBookings";
+import "./App.css";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/listings" element={<Listings />} />
         <Route path="/pg/:id" element={<PGDetails />} />
         <Route path="/gallery/:id" element={<ImageGallery />} />
+        <Route path="/my-bookings" element={<MyBookings />} />
       </Routes>
     </Router>
   );
