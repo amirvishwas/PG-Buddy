@@ -12,7 +12,7 @@ const MyBookings = () => {
     checkIn: "October 20, 2025",
     checkOut: "October 25, 2025",
     paymentStatus: index % 2 === 0 ? "paid" : "unpaid",
-    image: property.image || property.images?.[0],
+    image: property.image || property.image?.[0],
     type: property.gender === "Mixed" ? "(Shared)" : "(Single Bed)",
   }));
 

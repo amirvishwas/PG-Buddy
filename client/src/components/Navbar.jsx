@@ -3,34 +3,9 @@ import { Menu, X, Home, Search, Building } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useClerk, useUser, UserButton } from "@clerk/clerk-react";
 import { MdDashboard } from "react-icons/md";
+import { BsBookmarkCheckFill } from "react-icons/bs";
 
-const BookIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 64 64"
-    xmlSpace="preserve"
-    style={{
-      fillRule: "evenodd",
-      clipRule: "evenodd",
-      strokeLinecap: "round",
-      strokeLinejoin: "round",
-      strokeMiterlimit: 2,
-    }}
-  >
-    <path
-      d="M52.5 7H19a3.995 3.995 0 0 0-2.828 1.172A3.995 3.995 0 0 0 15 11v42c0 1.061.421 2.078 1.172 2.828A3.995 3.995 0 0 0 19 57h7"
-      style={{ fill: "none", stroke: "#222a33", strokeWidth: "2px" }}
-    />
-    <path
-      d="M38 57h7a3.995 3.995 0 0 0 2.828-1.172A3.995 3.995 0 0 0 49 53V10.5a3.5 3.5 0 1 1 7 0V26a4 4 0 0 1-4 4h-2.9M24 22.5V33a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V22.5"
-      style={{ fill: "none", stroke: "#222a33", strokeWidth: "2px" }}
-    />
-    <path
-      d="M21 24.603 32 16l11 8.603M25.5 42h13M25.5 47h13M29 55l2.5 3 5.5-6"
-      style={{ fill: "none", stroke: "#222a33", strokeWidth: "2px" }}
-    />
-  </svg>
-);
+const BookIcon = () => <BsBookmarkCheckFill />;
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
