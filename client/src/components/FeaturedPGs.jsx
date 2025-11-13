@@ -17,7 +17,7 @@ const PGCard = ({ pg, index }) => {
       {/* Image Section */}
       <div className="relative">
         <img
-          src={pg.image}
+          src={pg.images && pg.images.length > 0 ? pg.images[0] : pg.image}
           alt={pg.name}
           className="h-48 sm:h-56 w-full object-cover"
         />
