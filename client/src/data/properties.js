@@ -8,8 +8,13 @@ const properties = [
     amenities: ["Food", "WiFi", "Laundry"],
     gender: "Boys",
     verified: true,
-    image:
+    images: [
       "https://cf.bstatic.com/xdata/images/hotel/max1024x768/385388071.jpg?k=de0b51f296a3d9431866b51b974921c9ebb50cacf08eb55c1eec1d468849ffe2&o=",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914",
+      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+    ],
     description:
       "Modern PG accommodation with all essential amenities in the heart of Bellandur. Perfect for working professionals.",
     ownerContact: "+91 9876543210",
@@ -38,8 +43,13 @@ const properties = [
     amenities: ["Food", "Laundry", "AC"],
     gender: "Girls",
     verified: true,
-    image:
-      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/385388495.jpg?k=d7eaa4dfa75d4acedb1bdb8378cb8c6da37257b409db0519f940f8827d4c653e&o=",
+    images: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa",
+      "https://images.unsplash.com/photo-1560448075-bb485b065d71",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
+    ],
     description:
       "Premium hostel for women with modern facilities and 24/7 security in Koramangala's vibrant neighborhood.",
     ownerContact: "+91 9876543211",
@@ -68,8 +78,13 @@ const properties = [
     amenities: ["WiFi", "Laundry", "AC"],
     gender: "Mixed",
     verified: false,
-    image:
-      "https://assets.simplotel.com/simplotel/image/upload/x_0,y_117,w_2250,h_1266,r_0,c_crop,q_80,fl_progressive/w_400,f_auto,c_fit/daizzo-maple-residency-hotel-gangtok/Exterior_day_nbm2da",
+    images: [
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914",
+      "https://images.unsplash.com/photo-1600585154209-32f5e3d39ce3",
+      "https://images.unsplash.com/photo-1505843513577-22bb7d21e455",
+      "https://images.unsplash.com/photo-1586105251261-72a756497a11",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
+    ],
     description:
       "Budget-friendly accommodation with basic amenities in HSR Layout. Suitable for students and young professionals.",
     ownerContact: "+91 9876543212",
@@ -98,8 +113,13 @@ const properties = [
     amenities: ["Food", "WiFi", "Laundry"],
     gender: "Boys",
     verified: true,
-    image:
-      "https://www.itchotels.com/content/dam/itchotels/in/umbrella/welcomHotel/hotels/welcomhoteljabalpur/images/overview-landing-page/overview/d/hotel-facade-dusk-view.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1505691723518-36a5ac3be353",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae",
+      "https://images.unsplash.com/photo-1502673530728-f79b4cab31b1",
+      "https://images.unsplash.com/photo-1499914485622-a88fac536970",
+      "https://images.unsplash.com/photo-1586105251261-72a756497a11",
+    ],
     description:
       "Comfortable PG with homely atmosphere and quality food service in trendy Indiranagar locality.",
     ownerContact: "+91 9876543213",
@@ -121,36 +141,6 @@ const properties = [
   },
   {
     id: 4,
-    name: "Urban Nest",
-    location: "Koramangala, Bangalore",
-    price: "₹14,500 / month",
-    priceValue: 14500,
-    amenities: ["WiFi", "AC", "Laundry"],
-    gender: "Girls",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80",
-    description:
-      "Premium women's accommodation with modern amenities and excellent security in prime Koramangala location.",
-    ownerContact: "+91 9876543214",
-    securityDeposit: "₹18,000",
-    noticePeriod: "2 months",
-    gateTimings: "6 AM - 10 PM",
-    nearbyPlaces: [
-      { name: "Metro Station", distance: "0.3 km" },
-      { name: "Shopping Mall", distance: "0.8 km" },
-      { name: "Gym", distance: "0.2 km" },
-      { name: "Restaurant Hub", distance: "0.4 km" },
-    ],
-    houseRules: [
-      { rule: "No male visitors", allowed: false },
-      { rule: "Visitor registration required", allowed: true },
-      { rule: "Quiet hours after 9 PM", allowed: true },
-      { rule: "No outside food delivery after 10 PM", allowed: false },
-    ],
-  },
-  {
-    id: 5,
     name: "Sunrise Residency",
     location: "Gokulpura, Jaipur",
     price: "₹7,200 / month",
@@ -158,8 +148,13 @@ const properties = [
     amenities: ["Food", "WiFi", "Housekeeping"],
     gender: "Mixed",
     verified: false,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Gg5JDAjo325QVNmqyin2K-0pbWDROXFMAQ&s",
+    images: [
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
+      "https://images.unsplash.com/photo-1560184897-ae75f418493e",
+      "https://images.unsplash.com/photo-1556912173-3bb406ef7e77",
+      "https://images.unsplash.com/photo-1554995207-c18c203602cb",
+    ],
     description:
       "Affordable accommodation with regular housekeeping service in peaceful Gokulpura area of Jaipur.",
     ownerContact: "+91 9876543215",
@@ -180,7 +175,7 @@ const properties = [
     ],
   },
   {
-    id: 6,
+    id: 5,
     name: "Lakeview PG",
     location: "Powai, Mumbai",
     price: "₹11,500 / month",
@@ -188,8 +183,13 @@ const properties = [
     amenities: ["Food", "WiFi", "AC", "Laundry"],
     gender: "Boys",
     verified: true,
-    image:
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=1050&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914",
+      "https://images.unsplash.com/photo-1600585154209-32f5e3d39ce3",
+      "https://images.unsplash.com/photo-1586105251261-72a756497a11",
+      "https://images.unsplash.com/photo-1527030280862-64139fba04ca",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+    ],
     description:
       "Beautiful PG with lake view and comprehensive amenities in Mumbai's tech hub Powai.",
     ownerContact: "+91 9876543216",
@@ -209,9 +209,8 @@ const properties = [
       { rule: "No loud music after 10 PM", allowed: false },
     ],
   },
-
   {
-    id: 7,
+    id: 6,
     name: "Skyline PG",
     location: "Whitefield, Bangalore",
     price: "₹9,800 / month",
@@ -219,8 +218,13 @@ const properties = [
     amenities: ["WiFi", "Laundry", "Food"],
     gender: "Mixed",
     verified: true,
-    image:
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG90ZWx8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000",
+    images: [
+      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
+      "https://images.unsplash.com/photo-1560448075-bb485b065d71",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+      "https://images.unsplash.com/photo-1554995207-c18c203602cb",
+    ],
     description: "Affordable PG with rooftop dining and spacious rooms.",
     ownerContact: "+91 9876543217",
     securityDeposit: "₹10,000",
@@ -237,6 +241,41 @@ const properties = [
       { rule: "Visitors till 9 PM", allowed: true },
       { rule: "No smoking indoors", allowed: false },
       { rule: "Common kitchen access", allowed: true },
+    ],
+  },
+  {
+    id: 7,
+    name: "Metro Stay",
+    location: "Sector 62, Noida",
+    price: "₹8,000 / month",
+    priceValue: 8000,
+    amenities: ["WiFi", "Food", "Laundry"],
+    gender: "Girls",
+    verified: true,
+    images: [
+      "https://images.unsplash.com/photo-1505691938895-1758d7feb511",
+      "https://images.unsplash.com/photo-1502673530728-f79b4cab31b1",
+      "https://images.unsplash.com/photo-1586105251261-72a756497a11",
+      "https://images.unsplash.com/photo-1560185127-6c9d56a82d1b",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+    ],
+    description:
+      "Secure and peaceful PG accommodation for girls, located close to Noida's business and college hubs.",
+    ownerContact: "+91 9876543220",
+    securityDeposit: "₹9,000",
+    noticePeriod: "1 month",
+    gateTimings: "6 AM - 10 PM",
+    nearbyPlaces: [
+      { name: "Metro Station", distance: "0.4 km" },
+      { name: "College", distance: "0.8 km" },
+      { name: "Mall", distance: "1.1 km" },
+      { name: "Hospital", distance: "0.7 km" },
+    ],
+    houseRules: [
+      { rule: "No boys allowed inside rooms", allowed: false },
+      { rule: "Visitors allowed till 8 PM", allowed: true },
+      { rule: "No loud music", allowed: false },
+      { rule: "Daily housekeeping included", allowed: true },
     ],
   },
 ];

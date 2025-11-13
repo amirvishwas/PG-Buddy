@@ -87,8 +87,8 @@ const PGDetails = () => {
     }
   };
 
-  // Mock additional images for demonstration
-  const images = [pg.image, pg.image, pg.image, pg.image];
+  // Mock additional images
+  const images = pg.images?.length ? pg.images : [pg.image];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -481,7 +481,7 @@ const BookingModal = ({ pg, onClose }) => {
               </label>
               <input
                 type="date"
-                name="moveInDate"
+                name="checkInDate"
                 value={formData.checkInDate}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

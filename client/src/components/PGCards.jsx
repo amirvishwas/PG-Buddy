@@ -111,7 +111,11 @@ const PropertyCard = ({
               </div>
             )}
             <img
-              src={property.image}
+              src={
+                property.images && property.images.length > 0
+                  ? property.images[0]
+                  : property.image
+              }
               alt={property.name}
               className={`w-full h-52 sm:h-48 lg:h-52 object-cover transition-transform duration-500 ${
                 isHovered ? "scale-110" : "scale-100"

@@ -17,16 +17,7 @@ const ImageGallery = () => {
     );
   }
 
-  const images = [
-    pg.image,
-    pg.image,
-    pg.image,
-    pg.image,
-    pg.image,
-    pg.image,
-    pg.image,
-    pg.image,
-  ];
+  const images = pg.images?.length ? pg.images : [pg.image];
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
