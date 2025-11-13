@@ -63,16 +63,43 @@ const Home = () => {
 
             {/* Suggested Cities */}
             <div className="flex gap-3 mt-4 justify-center flex-wrap">
-              {["Delhi", "Bangalore", "Mumbai", "Chandigarh"].map((city) => (
+              {[
+                {
+                  name: "Delhi",
+                  img: "https://cdn-icons-png.flaticon.com/512/854/854878.png",
+                },
+                {
+                  name: "Bangalore",
+                  img: "https://cdn-icons-png.flaticon.com/512/3175/3175170.png",
+                },
+                {
+                  name: "Mumbai",
+                  img: "https://cdn-icons-png.flaticon.com/512/3175/3175180.png",
+                },
+                {
+                  name: "Chandigarh",
+                  img: "https://cdn-icons-png.flaticon.com/512/3175/3175164.png",
+                },
+              ].map((city) => (
                 <button
-                  key={city}
+                  key={city.name}
                   onClick={() => {
-                    setSearch(city);
-                    navigate(`/listings?search=${encodeURIComponent(city)}`);
+                    setSearch(city.name);
+                    navigate(
+                      `/listings?search=${encodeURIComponent(city.name)}`
+                    );
                   }}
-                  className="px-4 py-2 rounded-full border text-sm bg-white shadow-sm hover:bg-blue-100 transition"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border text-sm bg-white shadow-sm hover:shadow-md hover:bg-blue-50 transition-all duration-200"
                 >
-                  {city}
+                  {/* City Icon */}
+                  <img
+                    src={city.img}
+                    alt={city.name}
+                    className="w-5 h-5 object-contain"
+                  />
+
+                  {/* City Name */}
+                  <span className="font-medium text-gray-800">{city.name}</span>
                 </button>
               ))}
             </div>
