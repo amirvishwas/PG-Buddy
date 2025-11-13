@@ -12,7 +12,10 @@ const MyBookings = () => {
     checkIn: "October 20, 2025",
     checkOut: "October 25, 2025",
     paymentStatus: index % 2 === 0 ? "paid" : "unpaid",
-    image: property.image || property.image?.[0],
+    image:
+      property.images && property.images.length > 0
+        ? property.images[0]
+        : property.image,
     type: property.gender === "Mixed" ? "(Shared)" : "(Single Bed)",
   }));
 
@@ -51,31 +54,6 @@ const MyBookings = () => {
                     alt={booking.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                        <svg
-                          className="w-6 h-6 text-gray-700"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="flex flex-col justify-center">
@@ -85,14 +63,17 @@ const MyBookings = () => {
                       {booking.type}
                     </span>
                   </h3>
+
                   <div className="flex items-center gap-1 text-gray-600 text-sm mb-2">
                     <MapPin className="w-4 h-4" />
                     <span>{booking.location}</span>
                   </div>
+
                   <div className="flex items-center gap-1 text-gray-600 text-sm mb-3">
                     <Users className="w-4 h-4" />
                     <span>Guests: {booking.guests}</span>
                   </div>
+
                   <div className="text-gray-900 font-bold">
                     Total: ₹{booking.total.toLocaleString()}
                   </div>
@@ -110,6 +91,7 @@ const MyBookings = () => {
                       {booking.checkIn}
                     </div>
                   </div>
+
                   <div>
                     <div className="text-sm font-semibold text-gray-900 mb-1">
                       Check-Out:
@@ -134,6 +116,7 @@ const MyBookings = () => {
                       <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                       <span className="text-red-600 font-semibold">Unpaid</span>
                     </div>
+
                     <button className="px-6 py-2 border-2 border-gray-900 text-gray-900 rounded-full font-medium hover:bg-gray-900 hover:text-white transition-colors">
                       Pay now
                     </button>
