@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Menu, X, Home, Search, Building } from "lucide-react";
+import { Menu, X, Home, Search, Building, Compass, Info } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useClerk, useUser, UserButton } from "@clerk/clerk-react";
-import { MdDashboard } from "react-icons/md";
 import { BsBookmarkCheckFill } from "react-icons/bs";
 
 const BookIcon = () => <BsBookmarkCheckFill />;
@@ -20,7 +19,8 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", path: "/", icon: Home },
     { name: "Browse PG", path: "/browsepg", icon: Search },
-    { name: "PG Owners", path: "/map", icon: Building },
+    { name: "PG Owners", path: "/owner", icon: Building },
+    { name: "About", path: "/about", icon: Info },
   ];
 
   return (
@@ -50,19 +50,6 @@ const Navbar = () => {
                   </Link>
                 );
               })}
-
-              <div className="hidden md:flex items-center space-x-2">
-                {user && (
-                  <Link
-                    to="/dashboard"
-                    onClick={() => (navigate("/dashboard"), setIsOpen(false))}
-                    className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-                  >
-                    <MdDashboard size={18} />
-                    <span>Dashboard</span>
-                  </Link>
-                )}
-              </div>
             </div>
           </div>
 
@@ -135,18 +122,6 @@ const Navbar = () => {
               </Link>
             );
           })}
-
-          {/* Dashboard Link */}
-          {user && (
-            <Link
-              to="/dashboard"
-              onClick={() => (navigate("/dashboard"), setIsOpen(false))}
-              className="flex items-center space-x-3 text-gray-600 hover:text-blue-600 hover:bg-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-            >
-              <MdDashboard size={20} />
-              <span>Dashboard</span>
-            </Link>
-          )}
 
           {/* Mobile CTA Button */}
           <div className="pt-2">

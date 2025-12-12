@@ -6,12 +6,17 @@ import Navbar from "./components/Navbar";
 import ImageGallery from "./pages/ImageGallery";
 import MyBookings from "./pages/MyBookings";
 import PgReg from "./components/PgReg";
+import Layout from "./pages/pgOwner/Layout";
+import Dashboard from "./pages/pgOwner/Dashboard";
+import AddRoom from "./pages/pgOwner/AddRoom";
+import ListRoom from "./pages/pgOwner/ListRoom";
+import About from "./pages/About";
 import "./App.css";
 
 function App() {
   return (
     <div>
-      {/*<PgReg />*/}
+      {/* {true && <PgReg />} */}
       <div>
         <Router>
           <Navbar />
@@ -22,6 +27,13 @@ function App() {
             <Route path="/pg/:id" element={<PGDetails />} />
             <Route path="/gallery/:id" element={<ImageGallery />} />
             <Route path="/my-bookings" element={<MyBookings />} />
+            <Route path="/about" element={<About />} />
+
+            <Route path="/owner" element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="addroom" element={<AddRoom />} />{" "}
+              <Route path="listroom" element={<ListRoom />} />
+            </Route>
           </Routes>
         </Router>
       </div>
