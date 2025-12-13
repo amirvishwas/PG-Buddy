@@ -9,7 +9,13 @@ connectDB();
 
 const app = express();
 const cors = require("cors");
-app.use(cors());
+const corsConfig = {
+  origin: true,
+  credentials: true,
+  methods:["GET","POST","PUT","DELETE","OPTIONS"],
+};
+app.options("/api/clerk", cors(corsConfig));
+app.use(cors(corsConfig));
 
 //api to listen to clerk webhooks
 app.use("/api/clerk", clerkWebhooks);
