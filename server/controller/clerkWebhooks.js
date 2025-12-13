@@ -3,7 +3,7 @@ import { Webhook } from "svix";
 
 const clerkWebhooks = async (req, res) => {
   try {
-    const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
+    const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
 
     const headers = {
       "svix-id": req.headers["svix-id"],
@@ -11,53 +11,33 @@ const clerkWebhooks = async (req, res) => {
       "svix-signature": req.headers["svix-signature"],
     };
 
-    // ✅ VERIFY AND GET EVENT 
-    const event = whook.verify(req.body, headers);
+    const payload = req.body.toString();
+    const evt = wh.verify(payload, headers);
 
-    const { data, type } = event;
+    const { data, type } = evt;
 
     const userData = {
       _id: data.id,
-      email: data.email_addresses?.[0]?.email_address || "no-email",
-
-      username:
-        data.username ||
-        data.first_name ||
-        data.email_addresses?.[0]?.email_address.split("@")[0],
-
+      email: data.email_addresses?.[0]?.email_address || "",
+      username: `${data.first_name || ""} ${data.last_name || ""}`,
       image: data.image_url || "",
     };
 
-    switch (type) {
-      case "user.created": {
-        const user = await User.create(userData);
-        console.log("✅ User created in MongoDB:", user._id);
-        break;
-      }
-
-      case "user.updated": {
-        await User.findByIdAndUpdate(data.id, userData, { new: true });
-        console.log("✅ User updated in MongoDB:", data.id);
-        break;
-      }
-
-      case "user.deleted": {
-        await User.findByIdAndDelete(data.id);
-        console.log("🗑️ User deleted from MongoDB:", data.id);
-        break;
-      }
-
-      default:
-        console.log("ℹ️ Ignored event:", type);
+    if (type === "user.created" || type === "user.updated") {
+      await User.findByIdAndUpdate(data.id, userData, {
+        upsert: true,
+        new: true,
+      });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Clerk webhook processed successfully",
-    });
+    if (type === "user.deleted") {
+      await User.findByIdAndDelete(data.id);
+    }
+
+    return res.status(200).json({ success: true });
   } catch (error) {
-    console.error("❌ Clerk Webhook Error:", error.message);
-    res.status(400).json({ success: false, error: error.message });
+    console.error("❌ Clerk Webhook Error:", error);
+    return res.status(400).json({ error: error.message });
   }
 };
 

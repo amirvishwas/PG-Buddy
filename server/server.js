@@ -7,11 +7,11 @@ import clerkWebhooks from "./controller/clerkWebhooks.js";
 
 const app = express();
 
-// Connect DB
-connectDB();
-
 // Enable CORS
 app.use(cors());
+
+// Connect DB
+connectDB();
 
 // Clerk webhook
 app.post(
