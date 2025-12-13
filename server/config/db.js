@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
+
   try {
-    mongoose.connection.on("connected", () => {
-      console.log("MongoDB connected successfully");
-    });
-    await mongoose.connect(`${process.env.MONGODB_URI}/pgbuddy`);
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("MongoDB connected successfully");
   } catch (error) {
-    console.log(error.message);
+    console.error("MongoDB connection failed:", error.message);
+    throw error;
   }
 };
 
