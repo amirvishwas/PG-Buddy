@@ -1,7 +1,14 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return;
+  if (mongoose.connection.readyState >= 1) {
+    console.log("MongoDB already connected");
+    return;
+  }
+
+  if (!process.env.MONGODB_URI) {
+    throw new Error("MONGODB_URI is not defined");
+  }
 
   try {
     await mongoose.connect(process.env.MONGODB_URI);
