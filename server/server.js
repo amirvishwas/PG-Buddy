@@ -8,7 +8,7 @@ import clerkWebhooks from "./controller/clerkWebhooks.js";
 connectDB();
 
 const app = express();
-
+const cors = require("cors");
 app.use(cors());
 
 //api to listen to clerk webhooks
