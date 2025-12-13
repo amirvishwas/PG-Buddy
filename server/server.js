@@ -7,29 +7,31 @@ import clerkWebhooks from "./controller/clerkWebhooks.js";
 
 const app = express();
 
-/* ---------- MIDDLEWARE ---------- */
-const corsConfig = {
-  origin: true,
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-};
+/* ---------- CORS ---------- */
+app.use(cors({ origin: true, credentials: true }));
 
-app.use(cors(corsConfig));
+/* ---------- CLERK WEBHOOK---------- */
+app.post(
+  "/api/clerk",
+  express.raw({ type: "application/json" }),
+  clerkWebhooks
+);
+
 app.use(express.json());
-
-/* ---------- DATABASE ---------- */
-await connectDB();
-
-/* ---------- CLERK ---------- */
-app.use("/api/clerk", clerkWebhooks);
 app.use(clerkMiddleware());
 
 /* ---------- ROUTES ---------- */
-app.get("/", (req, res) => {
-  res.send("PG Buddy Backend Running 🚀");
+app.get("/", async (req, res) => {
+  try {
+    await connectDB();
+    res.send("PG Buddy Backend Running 🚀");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("DB connection failed");
+  }
 });
 
-/* ---------- LOCAL SERVER ONLY ---------- */
+/* ---------- LOCAL SERVER ---------- */
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () =>
