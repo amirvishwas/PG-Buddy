@@ -23,7 +23,7 @@ app.post(
 // JSON parser for normal routes
 app.use(express.json());
 
-// Clerk auth middleware (AFTER webhook)
+// Clerk auth middleware
 app.use(clerkMiddleware());
 
 // Test route
