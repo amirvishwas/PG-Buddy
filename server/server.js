@@ -5,27 +5,36 @@ import connectDB from "./config/db.js";
 import { clerkMiddleware } from "@clerk/express";
 import clerkWebhooks from "./controller/clerkWebhooks.js";
 
-connectDB();
-
 const app = express();
-const cors = require("cors");
+
+/* ---------- MIDDLEWARE ---------- */
 const corsConfig = {
   origin: true,
   credentials: true,
-  methods:["GET","POST","PUT","DELETE","OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 };
-app.options("/api/clerk", cors(corsConfig));
-app.use(cors(corsConfig));
 
-//api to listen to clerk webhooks
-app.use("/api/clerk", clerkWebhooks);
-//clerk middleware
+app.use(cors(corsConfig));
 app.use(express.json());
+
+/* ---------- DATABASE ---------- */
+await connectDB();
+
+/* ---------- CLERK ---------- */
+app.use("/api/clerk", clerkWebhooks);
 app.use(clerkMiddleware());
 
-app.get("/", (res, req) => req.send("Hello from pgbuddy server"));
+/* ---------- ROUTES ---------- */
+app.get("/", (req, res) => {
+  res.send("PG Buddy Backend Running 🚀");
+});
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+/* ---------- LOCAL SERVER ONLY ---------- */
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () =>
+    console.log(`Local server running on port ${PORT}`)
+  );
+}
 
 export default app;
