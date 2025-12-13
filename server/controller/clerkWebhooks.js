@@ -19,27 +19,32 @@ const clerkWebhooks = async (req, res) => {
 
     const userData = {
       _id: data.id,
-      email: data.email_addresses?.[0]?.email_address || "",
-      username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
+      email: data.email_addresses?.[0]?.email_address || "no-email",
+
+      username:
+        data.username ||
+        data.first_name ||
+        data.email_addresses?.[0]?.email_address.split("@")[0],
+
       image: data.image_url || "",
     };
 
     switch (type) {
       case "user.created":
-        await User.create(userData);
+        try {
+          await User.create(userData);
+          console.log("User created in MongoDB:", userData._id);
+        } catch (dbErr) {
+          console.error("MongoDB create failed:", dbErr.message);
+        }
         break;
 
       case "user.updated":
-        await User.findByIdAndUpdate(data.id, userData, {
-          new: true,
-        });
+        await User.findByIdAndUpdate(data.id, userData, { new: true });
         break;
 
       case "user.deleted":
         await User.findByIdAndDelete(data.id);
-        break;
-
-      default:
         break;
     }
 
