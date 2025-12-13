@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     _id: {
       type: String,
@@ -9,7 +9,6 @@ const userSchema = mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true,
     },
     email: {
       type: String,
@@ -17,7 +16,7 @@ const userSchema = mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
+      default: "",
     },
     role: {
       type: String,
@@ -25,8 +24,8 @@ const userSchema = mongoose.Schema(
       default: "user",
     },
     recentSearchedCities: {
-      type: String,
-      required: true,
+      type: [String],
+      default: [],
     },
   },
   { timestamps: true }
