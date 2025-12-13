@@ -17,7 +17,7 @@ app.use("/api/clerk", clerkWebhooks);
 app.use(express.json());
 app.use(clerkMiddleware());
 
-app.get("/", (res, req) => req.send("Hello from pgbuddy server <3"));
+app.get("/", (res, req) => req.send("Hello from pgbuddy server"));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
