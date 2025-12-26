@@ -23,6 +23,7 @@ export const createRoom = async (req, res) => {
     }
 
     // Upload images to Cloudinary
+    let images = [];
     if (req.files?.length) {
       const uploads = req.files.map((file) =>
         cloudinary.uploader.upload(
