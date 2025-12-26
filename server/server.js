@@ -1,37 +1,68 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import connectDB from "./config/connectDB.js";
+import fs from "fs";
 import { clerkMiddleware } from "@clerk/express";
+
+import connectDB from "./config/connectDB.js";
+import connectToCloudinary from "./config/cloudinary.js";
+
 import clerkWebhooks from "./controller/clerkWebhooks.js";
+import userRouter from "./routes/userRoutes.js";
+import pgRouter from "./routes/pgRoutes.js";
+import roomRouter from "./routes/roomRoutes.js";
+import bookingRouter from "./routes/bookingRoutes.js";
 
 const app = express();
 
-// Enable CORS
-app.use(cors());
+// Create uploads folder if not exists
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 
-// Connect DB
-connectDB();
+// CORS
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"],
+    credentials: true,
+  })
+);
 
-// Clerk webhook
+app.use(
+  clerkMiddleware({
+    enableAuthHeader: true,
+    publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+    secretKey: process.env.CLERK_SECRET_KEY,
+  })
+);
+
+// Webhook (RAW BODY FIRST)
 app.post(
   "/api/clerk/webhook",
   express.raw({ type: "application/json" }),
   clerkWebhooks
 );
 
-// JSON parser for normal routes
+// Normal JSON routes
 app.use(express.json());
 
-// Clerk auth middleware
-app.use(clerkMiddleware());
+// DB & Services
+connectDB();
+connectToCloudinary();
 
-// Test route
+// Test Route
 app.get("/", (req, res) => {
   res.send("Hello from PG Buddy Server 🚀");
 });
 
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+// Routes
+app.use("/api/user", userRouter);
+app.use("/api/pg", pgRouter);
+app.use("/api/rooms", roomRouter);
+app.use("/api/bookings", bookingRouter);
+
+// Server Start
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
 export default app;

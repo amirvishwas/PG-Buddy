@@ -1,25 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
-import properties from "../data/properties";
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  Home,
+} from "lucide-react";
+import { useAppContext } from "../context/AppContext";
 
 const ImageGallery = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const pg = properties.find((p) => p.id === Number(id));
+  const { pgs, loadingPgs } = useAppContext();
 
+  const [room, setRoom] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
-  if (!pg) {
+  useEffect(() => {
+    if (!loadingPgs && pgs.length > 0) {
+      const foundRoom = pgs.find((r) => r._id === id);
+      setRoom(foundRoom || null);
+      setLoading(false);
+    } else if (!loadingPgs) {
+      setLoading(false);
+    }
+  }, [id, pgs, loadingPgs]);
+
+  if (loading || loadingPgs) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-700">
-        <p>PG not found.</p>
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-400">Loading gallery...</p>
+        </div>
       </div>
     );
   }
 
-  const images = pg.images?.length ? pg.images : [pg.image];
+  if (!room) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-24 h-24 mx-auto mb-6 bg-gray-800 rounded-full flex items-center justify-center">
+            <Home className="w-12 h-12 text-gray-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">PG Not Found</h2>
+          <p className="text-gray-400 mb-6">
+            The property you're looking for doesn't exist.
+          </p>
+          <button
+            onClick={() => navigate("/listings")}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Browse All PGs
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const images = room.images?.length > 0 ? room.images : ["/placeholder.svg"];
 
   const changeImage = (newIndex) => {
     setFade(false);
@@ -49,7 +92,9 @@ const ImageGallery = () => {
           <span className="text-sm">Back</span>
         </button>
 
-        <h1 className="text-lg font-semibold truncate">{pg.name}</h1>
+        <h1 className="text-lg font-semibold truncate">
+          {room.pg?.name || "PG Gallery"}
+        </h1>
 
         <div className="w-10" />
       </div>
@@ -66,42 +111,53 @@ const ImageGallery = () => {
           />
 
           {/* Left arrow */}
-          <button
-            onClick={prevImage}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 p-3 rounded-full backdrop-blur-sm transition"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
+          {images.length > 1 && (
+            <button
+              onClick={prevImage}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 p-3 rounded-full backdrop-blur-sm transition"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+          )}
 
           {/* Right arrow */}
-          <button
-            onClick={nextImage}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 p-3 rounded-full backdrop-blur-sm transition"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
+          {images.length > 1 && (
+            <button
+              onClick={nextImage}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 p-3 rounded-full backdrop-blur-sm transition"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          )}
         </div>
 
         {/* Thumbnails */}
-        <div className="flex gap-3 mt-6 overflow-x-auto px-4 pb-6">
-          {images.map((img, index) => (
-            <button
-              key={index}
-              onClick={() => changeImage(index)}
-              className={`border-2 rounded-lg overflow-hidden transition-all 
-                ${
-                  currentIndex === index
-                    ? "border-blue-500 scale-105"
-                    : "border-transparent hover:scale-105"
-                }`}
-            >
-              <img
-                src={img}
-                alt={`Thumb ${index + 1}`}
-                className="w-20 h-20 object-cover hover:opacity-90 transition"
-              />
-            </button>
-          ))}
+        {images.length > 1 && (
+          <div className="flex gap-3 mt-6 overflow-x-auto px-4 pb-6">
+            {images.map((img, index) => (
+              <button
+                key={index}
+                onClick={() => changeImage(index)}
+                className={`border-2 rounded-lg overflow-hidden transition-all 
+                  ${
+                    currentIndex === index
+                      ? "border-blue-500 scale-105"
+                      : "border-transparent hover:scale-105"
+                  }`}
+              >
+                <img
+                  src={img}
+                  alt={`Thumb ${index + 1}`}
+                  className="w-20 h-20 object-cover hover:opacity-90 transition"
+                />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Image counter */}
+        <div className="text-gray-400 text-sm">
+          {currentIndex + 1} / {images.length}
         </div>
       </div>
     </div>

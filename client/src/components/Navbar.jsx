@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Menu, X, Home, Search, Building, Compass, Info } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { useClerk, useUser, UserButton } from "@clerk/clerk-react";
+import { Menu, X, Home, Search, Info } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useClerk, UserButton } from "@clerk/clerk-react";
 import { BsBookmarkCheckFill } from "react-icons/bs";
+import { useAppContext } from "../context/AppContext";
 
 const BookIcon = () => <BsBookmarkCheckFill />;
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
   const { openSignIn } = useClerk();
-  const { user } = useUser();
+  const { user, navigate, isOwner, setShowPgReg } = useAppContext();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -19,7 +19,6 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", path: "/", icon: Home },
     { name: "Browse PG", path: "/browsepg", icon: Search },
-    { name: "PG Owners", path: "/owner", icon: Building },
     { name: "About", path: "/about", icon: Info },
   ];
 
@@ -53,8 +52,19 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* CTA Button - Desktop */}
-          <div className="hidden md:block">
+          {/* CTA Section - Desktop */}
+          <div className="hidden md:flex items-center gap-3">
+            {user && (
+              <button
+                className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer text-black transition-all`}
+                onClick={() =>
+                  isOwner ? navigate("/owner") : setShowPgReg(true)
+                }
+              >
+                {isOwner ? "Dashboard" : "List Your PG"}
+              </button>
+            )}
+
             {user ? (
               <UserButton>
                 <UserButton.MenuItems>
@@ -75,11 +85,10 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
-
-          <div className="md:hidden flex center items-center">
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
             {user && (
-              <div className="ml-2">
+              <div className="mr-2">
                 <UserButton>
                   <UserButton.MenuItems>
                     <UserButton.Action
@@ -91,6 +100,7 @@ const Navbar = () => {
                 </UserButton>
               </div>
             )}
+
             <button
               onClick={toggleMenu}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-blue-50"
@@ -123,17 +133,30 @@ const Navbar = () => {
             );
           })}
 
-          {/* Mobile CTA Button */}
-          <div className="pt-2">
-            {!user && (
-              <button
-                onClick={openSignIn}
-                className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 hover:cursor-pointer"
-              >
-                Login
-              </button>
-            )}
-          </div>
+          {/* Mobile  Dashboard Button */}
+          {user && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                isOwner ? navigate("/owner") : setShowPgReg(true);
+                setIsOpen(false);
+              }}
+              className="w-full border px-4 py-2 rounded-full text-sm font-light text-black"
+            >
+              {isOwner ? "Dashboard" : "List Your PG"}
+            </button>
+          )}
+
+          {/* Mobile Login */}
+          {!user && (
+            <button
+              onClick={openSignIn}
+              className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium"
+            >
+              Login
+            </button>
+          )}
         </div>
       </div>
     </nav>

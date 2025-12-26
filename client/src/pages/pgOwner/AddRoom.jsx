@@ -1,17 +1,126 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
+import { useAppContext } from "../../context/AppContext";
+import { toast } from "react-hot-toast";
 
 export default function AddRoom() {
+  const { axios, getToken, fetchPgs } = useAppContext();
+  const [loading, setLoading] = useState(false);
+
+  const [inputs, setInputs] = useState({
+    roomType: "",
+    pricePerBed: "",
+    totalBeds: "",
+    availableBeds: "",
+    gender: "",
+    amenities: {
+      "Free WiFi": false,
+      "Free Breakfast": false,
+      "Room Service": false,
+      Laundry: false,
+      AC: false,
+      Food: false,
+    },
+  });
+
+  const [images, setImages] = useState({ 1: null, 2: null, 3: null, 4: null });
   const [previewImages, setPreviewImages] = useState([]);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setPreviewImages((prev) => [...prev, ...imageUrls]);
+    const newImages = {};
+    const previews = [];
+
+    files.slice(0, 4).forEach((file, index) => {
+      newImages[index + 1] = file;
+      previews.push(URL.createObjectURL(file));
+    });
+
+    setImages((prev) => ({ ...prev, ...newImages }));
+    setPreviewImages(previews);
   };
 
   const removeImage = (index) => {
     setPreviewImages((prev) => prev.filter((_, i) => i !== index));
+    setImages((prev) => ({ ...prev, [index + 1]: null }));
+  };
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    if (
+      !inputs.roomType ||
+      !inputs.pricePerBed ||
+      !inputs.totalBeds ||
+      !inputs.availableBeds ||
+      !inputs.gender
+    ) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (parseInt(inputs.availableBeds) > parseInt(inputs.totalBeds)) {
+      toast.error("Available beds cannot exceed total beds");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("roomType", inputs.roomType);
+      formData.append("pricePerBed", inputs.pricePerBed);
+      formData.append("totalBeds", inputs.totalBeds);
+      formData.append("availableBeds", inputs.availableBeds);
+      formData.append("gender", inputs.gender);
+
+      const amenitiesArray = Object.keys(inputs.amenities).filter(
+        (key) => inputs.amenities[key]
+      );
+      formData.append("amenities", JSON.stringify(amenitiesArray));
+
+      Object.values(images).forEach((img) => {
+        if (img) formData.append("images", img);
+      });
+
+      const token = await getToken();
+
+      const { data } = await axios.post("/api/rooms", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (data.success) {
+        toast.success("Room added successfully");
+        fetchPgs();
+
+        setInputs({
+          roomType: "",
+          pricePerBed: "",
+          totalBeds: "",
+          availableBeds: "",
+          gender: "",
+          amenities: {
+            "Free WiFi": false,
+            "Free Breakfast": false,
+            "Room Service": false,
+            Laundry: false,
+            AC: false,
+            Food: false,
+          },
+        });
+        setImages({ 1: null, 2: null, 3: null, 4: null });
+        setPreviewImages([]);
+      } else {
+        toast.error(data.message || "Something went wrong");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to add room");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -21,116 +130,153 @@ export default function AddRoom() {
       </h1>
 
       <div className="bg-white shadow-md rounded-xl p-6">
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Room Name */}
-          <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">
-              Room Name
-            </label>
-            <input
-              type="text"
-              placeholder="Enter room title"
-              className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-            />
-          </div>
-
+        <form
+          onSubmit={onSubmitHandler}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
           {/* Room Type */}
-          <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">
-              Room Type
+          <div>
+            <label className="text-sm font-medium text-gray-700">
+              Room Type <span className="text-red-500">*</span>
             </label>
-            <select className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+            <select
+              value={inputs.roomType}
+              onChange={(e) =>
+                setInputs({ ...inputs, roomType: e.target.value })
+              }
+              className="border rounded-lg px-3 py-2 w-full mt-1"
+            >
               <option value="">Select type</option>
-              <option value="Single">Single Bed</option>
-              <option value="Double">Double Bed</option>
-              <option value="Triple">Triple Sharing</option>
+              <option value="single">Single Bed</option>
+              <option value="double">Double Bed</option>
+              <option value="triple">Triple Sharing</option>
             </select>
           </div>
 
-          {/* Price */}
-          <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">
-              Price (per month)
+          {/* Gender Preference */}
+          <div>
+            <label className="text-sm font-medium text-gray-700">
+              Gender Preference <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={inputs.gender}
+              onChange={(e) => setInputs({ ...inputs, gender: e.target.value })}
+              className="border rounded-lg px-3 py-2 w-full mt-1"
+            >
+              <option value="">Select gender</option>
+              <option value="Boys">Boys</option>
+              <option value="Girls">Girls</option>
+              <option value="Mixed">Mixed</option>
+            </select>
+          </div>
+
+          {/* Price per Bed */}
+          <div>
+            <label className="text-sm font-medium text-gray-700">
+              Price per Bed (₹/month) <span className="text-red-500">*</span>
             </label>
             <input
               type="number"
+              value={inputs.pricePerBed}
+              onChange={(e) =>
+                setInputs({ ...inputs, pricePerBed: e.target.value })
+              }
               placeholder="Enter price"
-              className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="border rounded-lg px-3 py-2 w-full mt-1"
             />
           </div>
 
-          {/* Capacity */}
-          <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">
-              Capacity
+          {/* Total Beds */}
+          <div>
+            <label className="text-sm font-medium text-gray-700">
+              Total Beds <span className="text-red-500">*</span>
             </label>
             <input
               type="number"
-              placeholder="Number of persons allowed"
-              className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+              min="1"
+              value={inputs.totalBeds}
+              onChange={(e) =>
+                setInputs({ ...inputs, totalBeds: e.target.value })
+              }
+              placeholder="e.g., 4"
+              className="border rounded-lg px-3 py-2 w-full mt-1"
+            />
+          </div>
+
+          {/* Available Beds */}
+          <div>
+            <label className="text-sm font-medium text-gray-700">
+              Available Beds <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={inputs.availableBeds}
+              onChange={(e) =>
+                setInputs({ ...inputs, availableBeds: e.target.value })
+              }
+              placeholder="e.g., 2"
+              className="border rounded-lg px-3 py-2 w-full mt-1"
             />
           </div>
 
           {/* Amenities */}
-          <div className="col-span-1 md:col-span-2">
+          <div className="md:col-span-2">
             <label className="text-sm font-medium text-gray-700">
               Amenities
             </label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2 text-gray-700">
-              {[
-                "Wi-Fi",
-                "Air Conditioning",
-                "Attached Bathroom",
-                "Kitchen",
-                "Parking",
-                "Laundry",
-                "Power Backup",
-                "CCTV",
-              ].map((item) => (
-                <label key={item} className="flex items-center gap-2">
-                  <input type="checkbox" className="accent-blue-600" />
-                  {item}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
+              {Object.keys(inputs.amenities).map((item) => (
+                <label
+                  key={item}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={inputs.amenities[item]}
+                    onChange={() =>
+                      setInputs({
+                        ...inputs,
+                        amenities: {
+                          ...inputs.amenities,
+                          [item]: !inputs.amenities[item],
+                        },
+                      })
+                    }
+                    className="w-4 h-4 accent-blue-600"
+                  />
+                  <span className="text-sm">{item}</span>
                 </label>
               ))}
             </div>
           </div>
 
-          {/* Image Upload */}
-          <div className="col-span-1 md:col-span-2">
-            <label className="text-sm font-medium text-gray-700 mb-2 block">
-              Upload Room Images
+          {/* Images */}
+          <div className="md:col-span-2">
+            <label className="text-sm font-medium text-gray-700 block mb-2">
+              Room Images (up to 4)
             </label>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            />
 
-            {/* Highlighted Upload Box */}
-            <div className="border-2 border-dashed border-blue-500 rounded-xl p-6 cursor-pointer hover:bg-blue-50 transition">
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleImageChange}
-                className="w-full cursor-pointer"
-              />
-            </div>
-
-            {/* Image Previews */}
             {previewImages.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 {previewImages.map((src, index) => (
-                  <div
-                    key={index}
-                    className="relative group rounded-lg shadow-md"
-                  >
+                  <div key={index} className="relative">
                     <img
                       src={src}
-                      alt="Room Preview"
+                      alt={`Preview ${index + 1}`}
                       className="w-full h-32 object-cover rounded-lg"
                     />
-
-                    {/* Delete Button */}
                     <button
-                      onClick={() => removeImage(index)}
                       type="button"
-                      className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs opacity-0 group-hover:opacity-100 transition"
+                      onClick={() => removeImage(index)}
+                      className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full hover:bg-red-700"
                     >
                       <X size={14} />
                     </button>
@@ -140,13 +286,13 @@ export default function AddRoom() {
             )}
           </div>
 
-          {/* Submit Button */}
-          <div className="col-span-1 md:col-span-2 flex justify-end">
+          <div className="md:col-span-2 text-right">
             <button
               type="submit"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+              disabled={loading}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
             >
-              Add Room
+              {loading ? "Adding..." : "Add Room"}
             </button>
           </div>
         </form>

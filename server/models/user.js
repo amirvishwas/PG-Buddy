@@ -4,33 +4,32 @@ const userSchema = new mongoose.Schema(
   {
     _id: {
       type: String,
-      required: true,
     },
-    username: {
+    clerkId: {
       type: String,
-      required: true,
+      sparse: true,
     },
     email: {
       type: String,
       required: true,
     },
-    image: {
-      type: String,
-      default: "",
-    },
+    username: String,
+    image: String,
     role: {
       type: String,
       enum: ["user", "owner"],
       default: "user",
     },
-    recentSearchedCities: {
+    searchedCities: {
       type: [String],
       default: [],
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    _id: false,
+  }
 );
 
 const User = mongoose.model("User", userSchema);
-
 export default User;
