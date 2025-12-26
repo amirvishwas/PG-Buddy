@@ -15,11 +15,6 @@ import bookingRouter from "./routes/bookingRoutes.js";
 
 const app = express();
 
-// Create uploads folder if not exists
-if (!fs.existsSync("uploads")) {
-  fs.mkdirSync("uploads");
-}
-
 // CORS
 app.use(
   cors({
@@ -36,7 +31,7 @@ app.use(
   })
 );
 
-// Webhook (RAW BODY FIRST)
+// Webhook (
 app.post(
   "/api/clerk/webhook",
   express.raw({ type: "application/json" }),
@@ -46,11 +41,10 @@ app.post(
 // Normal JSON routes
 app.use(express.json());
 
-// DB & Services
+// DB & cloud
 connectDB();
 connectToCloudinary();
 
-// Test Route
 app.get("/", (req, res) => {
   res.send("Hello from PG Buddy Server 🚀");
 });
