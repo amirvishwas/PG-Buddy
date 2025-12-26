@@ -23,15 +23,16 @@ export const createRoom = async (req, res) => {
     }
 
     // Upload images to Cloudinary
-    let images = [];
+    if (req.files?.length) {
+      const uploads = req.files.map((file) =>
+        cloudinary.uploader.upload(
+          `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
+          { folder: "pg_rooms" }
+        )
+      );
 
-    if (req.files && req.files.length > 0) {
-      const uploadImages = req.files.map(async (file) => {
-        const response = await cloudinary.uploader.upload(file.path);
-        return response.secure_url;
-      });
-
-      images = await Promise.all(uploadImages);
+      const results = await Promise.all(uploads);
+      images = results.map((r) => r.secure_url);
     }
 
     // Create Room
