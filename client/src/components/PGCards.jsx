@@ -160,7 +160,8 @@ const PropertyCard = ({
           <div className="bg-black/80 backdrop-blur-sm text-white rounded-lg px-3 py-1.5 text-sm font-bold">
             <div className="flex items-center gap-1">
               <FaRupeeSign className="w-3 h-3" />
-              {property.price}
+              {property.pricePerBed}
+              <span className="text-xs font-medium ml-1">/month</span>
             </div>
           </div>
         </div>

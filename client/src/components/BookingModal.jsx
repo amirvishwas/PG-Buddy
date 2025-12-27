@@ -152,6 +152,24 @@ const BookingModal = ({ room, onClose }) => {
   // Get minimum date (today)
   const today = new Date().toISOString().split("T")[0];
 
+  // Calculate total price (same logic as backend)
+  const calculateTotalPrice = () => {
+    const { checkInDate, checkOutDate, guests } = formData;
+    if (!checkInDate || !checkOutDate || !room.pricePerBed) return null;
+
+    const start = new Date(checkInDate);
+    const end = new Date(checkOutDate);
+
+    if (end <= start) return null;
+
+    const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    const months = Math.max(1, Math.ceil(days / 30));
+
+    return Number(room.pricePerBed) * Number(guests) * months;
+  };
+
+  const totalPrice = calculateTotalPrice();
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -170,14 +188,26 @@ const BookingModal = ({ room, onClose }) => {
           </div>
 
           {/* Price Summary */}
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
+          <div className="bg-blue-50 rounded-lg p-4 mb-6 space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Price per bed</span>
-              <span className="text-xl font-bold text-blue-600">
+              <span className="font-medium text-gray-900">
                 {currency}
                 {room.pricePerBed?.toLocaleString()}/month
               </span>
             </div>
+            {totalPrice !== null && (
+              <div className="flex justify-between items-center pt-2 border-t border-blue-200">
+                <span className="text-gray-700 font-medium">
+                  Total ({formData.guests} guest{formData.guests > 1 ? "s" : ""}
+                  )
+                </span>
+                <span className="text-xl font-bold text-blue-600">
+                  {currency}
+                  {totalPrice.toLocaleString()}
+                </span>
+              </div>
+            )}
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">

@@ -27,11 +27,21 @@ const calcNights = (checkInDate, checkOutDate) => {
   return Number.isFinite(nights) ? nights : 0;
 };
 
-const calcTotalPrice = ({ pricePerBed, checkInDate, checkOutDate }) => {
-  const nights = calcNights(checkInDate, checkOutDate);
-  const nightly = Number(pricePerBed || 0);
-  if (nights <= 0 || nightly <= 0) return 0;
-  return nightly * nights;
+const calculateTotalPrice = ({
+  pricePerBed,
+  checkInDate,
+  checkOutDate,
+  guests,
+}) => {
+  const start = new Date(checkInDate);
+  const end = new Date(checkOutDate);
+
+  if (end <= start) return 0;
+
+  const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+  const months = Math.max(1, Math.ceil(days / 30));
+
+  return Number(pricePerBed) * Number(guests) * months;
 };
 
 const isRoomAvailable = async ({ room, checkInDate, checkOutDate }) => {
@@ -102,57 +112,61 @@ export const createBooking = async (req, res) => {
       return res.json({ success: false, message: "Missing required fields" });
     }
 
-    if (calcNights(checkInDate, checkOutDate) <= 0) {
+    if (new Date(checkOutDate) <= new Date(checkInDate)) {
       return res.json({
         success: false,
         message: "Check-out date must be after check-in date",
       });
     }
 
-    const { dbUser, clerkId } = await getOrCreateMongoUser(req);
+    const { dbUser } = await getOrCreateMongoUser(req);
 
-    const bookingUserId = getIdForSchemaPath(Booking, "user", {
-      objectId: dbUser._id,
-      stringId: clerkId,
-    });
-
-    const available = await isRoomAvailable({
+    // Check availability
+    const isAvailable = await Booking.exists({
       room,
-      checkInDate,
-      checkOutDate,
+      status: { $ne: "cancelled" },
+      checkInDate: { $lt: new Date(checkOutDate) },
+      checkOutDate: { $gt: new Date(checkInDate) },
     });
-    if (!available) {
-      return res.json({ success: false, message: "Room is not available" });
+
+    if (isAvailable) {
+      return res.json({ success: false, message: "Room not available" });
     }
 
     const roomData = await Room.findById(room).populate("pg");
-    if (!roomData?.pg) {
+    if (!roomData || !roomData.pg) {
       return res.json({ success: false, message: "Room not found" });
     }
 
-    const totalPrice = calcTotalPrice({
+    const totalPrice = calculateTotalPrice({
       pricePerBed: roomData.pricePerBed,
       checkInDate,
       checkOutDate,
+      guests,
     });
 
-    await Booking.create({
-      user: bookingUserId,
-      room,
+    const booking = await Booking.create({
+      user: dbUser._id,
+      room: roomData._id,
       pg: roomData.pg._id,
-      guests: Number(guests),
+      guests,
       checkInDate,
       checkOutDate,
       totalPrice,
       status: "pending",
+      isPaid: false,
     });
 
-    return res.json({ success: true, message: "Booking created successfully" });
+    return res.json({
+      success: true,
+      message: "Booking created successfully",
+      booking,
+    });
   } catch (error) {
     console.error(error);
     return res.json({
       success: false,
-      message: error?.message || "Failed to create booking",
+      message: "Failed to create booking",
     });
   }
 };
