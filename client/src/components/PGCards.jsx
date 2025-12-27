@@ -52,7 +52,7 @@ const PGCards = ({ properties }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
       {properties.map((property, index) => (
         <PropertyCard
           key={`${property.id || index}-${property.name}`}
@@ -85,30 +85,22 @@ const PropertyCard = ({
   return (
     <Link
       to={`/pg/${property.id || index}`}
-      className="group block bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1"
+      className="
+        group block bg-white rounded-xl sm:rounded-2xl
+        border border-gray-200
+        shadow-sm hover:shadow-lg
+        transition-all duration-300
+        sm:hover:-translate-y-1
+      "
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container */}
-      <div className="relative overflow-hidden rounded-t-2xl bg-gray-100">
+      {/* Image */}
+      <div className="relative overflow-hidden rounded-t-xl sm:rounded-t-2xl bg-gray-100">
         {!imageError ? (
           <>
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-                <svg
-                  className="w-12 h-12 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1}
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
+              <div className="absolute inset-0 bg-gray-200 animate-pulse" />
             )}
             <img
               src={
@@ -117,7 +109,7 @@ const PropertyCard = ({
                   : property.image
               }
               alt={property.name}
-              className={`w-full h-52 sm:h-48 lg:h-52 object-cover transition-transform duration-500 ${
+              className={`w-full h-44 sm:h-48 object-cover transition-transform duration-500 ${
                 isHovered ? "scale-110" : "scale-100"
               } ${imageLoaded ? "opacity-100" : "opacity-0"}`}
               onError={onImageError}
@@ -125,67 +117,42 @@ const PropertyCard = ({
             />
           </>
         ) : (
-          <div className="w-full h-52 sm:h-48 lg:h-52 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-            <div className="text-center">
-              <svg
-                className="w-16 h-16 text-gray-400 mx-auto mb-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1}
-                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                />
-              </svg>
-              <p className="text-sm text-gray-500">Property Image</p>
-            </div>
+          <div className="h-44 sm:h-48 flex items-center justify-center text-gray-400">
+            No Image
           </div>
         )}
 
-        {/* Verified Badge */}
+        {/* Verified */}
         {property.verified && (
-          <div className="absolute top-4 left-4">
-            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-sm text-emerald-600 rounded-full px-3 py-1.5 text-xs font-semibold shadow-lg border border-emerald-100">
-              <FaCheckCircle className="text-emerald-500 w-3 h-3" />
-              Verified
-            </div>
-          </div>
+          <span className="absolute top-3 left-3 flex items-center gap-1 bg-white/90 text-emerald-600 px-2.5 py-1 rounded-full text-xs font-semibold border border-emerald-200">
+            <FaCheckCircle className="w-3 h-3" />
+            Verified
+          </span>
         )}
 
-        {/* Price Badge */}
-        <div className="absolute top-4 right-4">
-          <div className="bg-black/80 backdrop-blur-sm text-white rounded-lg px-3 py-1.5 text-sm font-bold">
-            <div className="flex items-center gap-1">
-              <FaRupeeSign className="w-3 h-3" />
-              {property.pricePerBed}
-              <span className="text-xs font-medium ml-1">/month</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        {/* Price */}
+        <span className="absolute top-3 right-3 bg-black/80 text-white px-3 py-1 rounded-md text-sm font-bold flex items-center gap-1">
+          <FaRupeeSign className="w-3 h-3" />
+          {property.pricePerBed}
+          <span className="text-xs font-medium">/mo</span>
+        </span>
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        {/* Header */}
-        <div className="mb-4">
-          <h3 className="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-1">
-            {property.name}
-          </h3>
-          <div className="flex items-center gap-1.5 mt-2 text-gray-600">
-            <FaMapMarkerAlt className="text-blue-500 w-4 h-4 flex-shrink-0" />
-            <p className="text-sm line-clamp-1">{property.location}</p>
-          </div>
+      <div className="p-4 sm:p-6">
+        <h3 className="font-bold text-base sm:text-lg text-gray-900 line-clamp-1 group-hover:text-blue-600">
+          {property.name}
+        </h3>
+
+        <div className="flex items-center gap-1.5 mt-2 text-gray-600">
+          <FaMapMarkerAlt className="text-blue-500 w-4 h-4" />
+          <p className="text-xs sm:text-sm line-clamp-1">{property.location}</p>
         </div>
 
-        {/* Gender Badge */}
-        <div className="mb-4">
+        {/* Gender */}
+        <div className="mt-3">
           <span
-            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getGenderColor(
+            className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getGenderColor(
               property.gender
             )}`}
           >
@@ -194,25 +161,26 @@ const PropertyCard = ({
         </div>
 
         {/* Amenities */}
-        <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-gray-800">Amenities</h4>
-          {property.amenities && property.amenities.length > 0 ? (
-            <div className="space-y-2">
-              <div className="flex flex-wrap gap-2">
-                {property.amenities.map((amenity, amenityIndex) => (
-                  <div
-                    key={amenityIndex}
-                    className="flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-medium"
-                  >
-                    {getAmenityIcon(amenity)}
-                    <span>{amenity}</span>
-                  </div>
-                ))}
-              </div>
+        <div className="mt-4">
+          <h4 className="text-xs sm:text-sm font-semibold text-gray-800 mb-2">
+            Amenities
+          </h4>
+
+          {property.amenities?.length ? (
+            <div className="flex flex-wrap gap-2">
+              {property.amenities.slice(0, 3).map((amenity, i) => (
+                <span
+                  key={i}
+                  className="flex items-center gap-1 bg-blue-50 text-blue-700 border border-blue-100 px-2.5 py-1 rounded-md text-xs"
+                >
+                  {getAmenityIcon(amenity)}
+                  {amenity}
+                </span>
+              ))}
               {property.amenities.length > 3 && (
-                <p className="text-xs text-gray-500 font-medium">
-                  +{property.amenities.length - 3} more amenities
-                </p>
+                <span className="text-xs text-gray-500 font-medium">
+                  +{property.amenities.length - 3} more
+                </span>
               )}
             </div>
           ) : (
@@ -221,27 +189,13 @@ const PropertyCard = ({
         </div>
       </div>
 
-      {/* Hover Effect Footer */}
-      <div className="px-6 pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        <div className="border-t border-gray-100 pt-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-500 font-medium">
-              View Details
-            </span>
-            <svg
-              className="w-4 h-4 text-blue-500 transform group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </div>
+      {/* Footer CTA */}
+      <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+        <div className="border-t pt-3 flex items-center justify-between">
+          <span className="text-xs font-medium text-gray-500">
+            View Details
+          </span>
+          <span className="text-blue-500 text-sm font-semibold">→</span>
         </div>
       </div>
     </Link>

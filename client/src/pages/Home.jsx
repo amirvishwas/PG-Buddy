@@ -24,16 +24,16 @@ const Home = () => {
   return (
     <>
       {/* Hero Section */}
-      <div className="h-[calc(100vh-64px)] flex flex-col items-center px-4 font-[Poppins]">
-        <div className="flex flex-col items-center max-w-7xl justify-center text-center flex-grow">
-          <h1 className="text-4xl md:text-7xl font-extrabold mb-4 text-gray-900 leading-tight uppercase tracking-wide">
+      <div className="min-h-[calc(100vh-64px)] flex flex-col items-center px-3 sm:px-4 font-[Poppins] py-8 sm:py-0">
+        <div className="flex flex-col items-center max-w-7xl justify-center text-center flex-grow w-full">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold mb-3 sm:mb-4 text-gray-900 leading-tight uppercase tracking-wide px-2">
             FIND YOUR NEXT HOME <br />
             <span className="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
               AWAY FROM HOME
             </span>
           </h1>
 
-          <p className="mb-6 text-lg md:text-xl text-gray-700 max-w-2xl">
+          <p className="mb-4 sm:mb-6 text-sm sm:text-lg md:text-xl text-gray-700 max-w-2xl px-2">
             PGBuddy helps you find{" "}
             <span className="font-semibold text-blue-600">PGs, Hostels </span>
             and even{" "}
@@ -42,27 +42,27 @@ const Home = () => {
           </p>
 
           {/* Search Box */}
-          <div className="max-w-xl w-full mx-auto mb-8">
-            <div className="flex items-center border-2 border-gray-300 focus-within:border-blue-500 rounded-2xl px-4 py-3 bg-white shadow-md transition">
-              <MdLocationOn className="text-blue-600 text-2xl mr-2" />
+          <div className="max-w-xl w-full mx-auto mb-6 sm:mb-8 px-2">
+            <div className="flex items-center border-2 border-gray-300 focus-within:border-blue-500 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2 sm:py-3 bg-white shadow-md transition">
+              <MdLocationOn className="text-blue-600 text-xl sm:text-2xl mr-2 flex-shrink-0" />
               <input
                 type="text"
                 placeholder="Search by city or PG name..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={handleKeyPress}
-                className="flex-1 outline-none text-gray-800 placeholder-gray-500"
+                className="flex-1 outline-none text-gray-800 placeholder-gray-500 text-sm sm:text-base min-w-0"
               />
               <button
                 onClick={handleSearch}
-                className="bg-blue-600 text-white px-5 py-2 rounded-xl hover:scale-105 transform transition"
+                className="bg-blue-600 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl hover:scale-105 transform transition text-sm sm:text-base flex-shrink-0"
               >
                 Search
               </button>
             </div>
 
             {/* Suggested Cities */}
-            <div className="flex gap-3 mt-4 justify-center flex-wrap">
+            <div className="flex gap-2 sm:gap-3 mt-3 sm:mt-4 justify-center flex-wrap">
               {[
                 {
                   name: "Delhi",
@@ -89,16 +89,13 @@ const Home = () => {
                       `/listings?search=${encodeURIComponent(city.name)}`
                     );
                   }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border text-sm bg-white shadow-sm hover:shadow-md hover:bg-blue-50 transition-all duration-200"
+                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border text-xs sm:text-sm bg-white shadow-sm hover:shadow-md hover:bg-blue-50 transition-all duration-200"
                 >
-                  {/* City Icon */}
                   <img
                     src={city.img}
                     alt={city.name}
-                    className="w-5 h-5 object-contain"
+                    className="w-4 h-4 sm:w-5 sm:h-5 object-contain"
                   />
-
-                  {/* City Name */}
                   <span className="font-medium text-gray-800">{city.name}</span>
                 </button>
               ))}
@@ -107,7 +104,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="mt-8 px-4">
+      <div className="mt-4 sm:mt-8 px-3 sm:px-4">
         <FeaturedPGs />
       </div>
 

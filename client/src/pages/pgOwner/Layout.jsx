@@ -17,10 +17,10 @@ const Layout = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex h-full">
+    <div className="flex flex-col min-h-screen">
+      <div className="flex flex-1">
         <Sidebar />
-        <div className="flex-1 p-4 pt-10 md:px-10 h-full">
+        <div className="flex-1 p-3 pt-16 md:pt-6 md:p-4 lg:px-10 w-full overflow-x-hidden">
           <Outlet />
         </div>
       </div>

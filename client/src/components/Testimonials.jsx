@@ -1,24 +1,39 @@
 import React from "react";
 
 const TestimonialCard = ({ stars, text, name, handle, avatar, verified }) => (
-  <div className="bg-gray-50 rounded-2xl p-8">
-    <div className="flex gap-1 mb-4">
+  <div className="bg-gray-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 transition">
+    {/* Stars */}
+    <div className="flex gap-1 mb-3 sm:mb-4">
       {[...Array(stars)].map((_, i) => (
         <svg
           key={i}
-          className="w-5 h-5 text-yellow-400 fill-current"
+          className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current"
           viewBox="0 0 20 20"
         >
           <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
         </svg>
       ))}
     </div>
-    <p className="text-gray-900 text-lg mb-6">{text}</p>
+
+    {/* Text */}
+    <p className="text-gray-900 text-sm sm:text-base md:text-lg mb-4 sm:mb-6 leading-relaxed">
+      {text}
+    </p>
+
+    {/* User */}
     <div className="flex items-center gap-3">
-      <img src={avatar} alt={name} className="w-12 h-12 rounded-full" />
+      <img
+        src={avatar}
+        alt={name}
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
+      />
+
       <div>
         <div className="flex items-center gap-1">
-          <span className="font-semibold text-gray-900">{name}</span>
+          <span className="font-semibold text-gray-900 text-sm sm:text-base">
+            {name}
+          </span>
+
           {verified && (
             <svg
               className="w-4 h-4 text-blue-500 fill-current"
@@ -28,9 +43,10 @@ const TestimonialCard = ({ stars, text, name, handle, avatar, verified }) => (
             </svg>
           )}
         </div>
+
         <a
           href={`https://twitter.com/${handle.replace("@", "")}`}
-          className="text-gray-500 text-sm hover:text-gray-700"
+          className="text-gray-500 text-xs sm:text-sm hover:text-gray-700"
         >
           {handle}
         </a>
@@ -61,7 +77,7 @@ export default function WallOfLove() {
     },
     {
       stars: 5,
-      text: "Our design team loves using Designify. It’s boosted our productivity and helped us maintain top-notch quality in every project.",
+      text: "Our design team loves using Designify. It’s boosted our productivity and helped us maintain top-notch quality.",
       name: "Kabir Nair",
       handle: "@kabirnair",
       avatar:
@@ -70,7 +86,7 @@ export default function WallOfLove() {
     },
     {
       stars: 5,
-      text: "Designify has made our creative process so much faster. The templates and tools are exactly what we needed.",
+      text: "Designify has made our creative process so much faster. The templates are exactly what we needed.",
       name: "Isha Patel",
       handle: "@isha_patel",
       avatar:
@@ -79,7 +95,7 @@ export default function WallOfLove() {
     },
     {
       stars: 5,
-      text: "Designify is perfect for startups like ours. It helps us maintain a professional design standard without any hassle.",
+      text: "Designify is perfect for startups like ours. Professional quality without any hassle.",
       name: "Rohan Gupta",
       handle: "@rohangupta",
       avatar:
@@ -88,7 +104,7 @@ export default function WallOfLove() {
     },
     {
       stars: 5,
-      text: "We’ve saved hours of work since switching to Designify. The interface is clean, intuitive, and very easy to use.",
+      text: "We’ve saved hours of work since switching to Designify. Clean and intuitive interface.",
       name: "Ananya Iyer",
       handle: "@ananya_iyer",
       avatar:
@@ -98,23 +114,25 @@ export default function WallOfLove() {
   ];
 
   return (
-    <div className="min-h-screen  py-16 px-4">
+    <section className="py-12 sm:py-16 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
+        {/* Header */}
+        <div className="text-center mb-12 sm:mb-16">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4">
             Wall of love
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-sm sm:text-base md:text-xl text-gray-600">
             Hear first-hand from our incredible community of customers.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {testimonials.map((testimonial, index) => (
             <TestimonialCard key={index} {...testimonial} />
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

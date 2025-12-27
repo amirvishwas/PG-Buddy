@@ -97,13 +97,13 @@ export default function ListRoom() {
   }
 
   return (
-    <div className="p-6 font-[Poppins]">
+    <div className="p-4 sm:p-6 font-[Poppins]">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">All Rooms</h2>
 
       <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
-        {/* Table header */}
+        {/* Table Header (Desktop only) */}
         <div className="hidden md:block border-b bg-gray-50">
-          <div className="grid grid-cols-12 gap-4 px-6 py-3 text-sm text-gray-600 items-center">
+          <div className="grid grid-cols-12 gap-9 px-6 py-3 text-sm text-gray-600 items-center">
             <div className="col-span-3 font-medium">Name</div>
             <div className="col-span-6 font-medium">Facility</div>
             <div className="col-span-2 text-right font-medium">Price / bed</div>
@@ -112,10 +112,6 @@ export default function ListRoom() {
         </div>
 
         <div className="max-h-64 overflow-y-auto">
-          <div className="md:hidden px-4 py-2 text-sm text-gray-600 border-b bg-gray-50">
-            Name
-          </div>
-
           {rooms.length === 0 ? (
             <div className="py-8 text-center text-gray-500">
               No rooms available.
@@ -125,32 +121,43 @@ export default function ListRoom() {
               {rooms.map((room) => (
                 <div
                   key={room._id}
-                  className="grid grid-cols-12 gap-4 px-6 py-4 items-center hover:bg-gray-50"
+                  className="
+                               px-4 py-4
+      md:grid md:grid-cols-12 md:gap-9 md:px-6
+    hover:bg-gray-50
+  "
                 >
                   {/* Name */}
-                  <div className="col-span-12 md:col-span-3">
+                  <div className="md:col-span-3">
                     <div className="text-sm font-medium text-gray-800">
                       {roomTypeLabel(room.roomType)}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-500 mt-0.5">
                       Beds: {room.availableBeds}/{room.totalBeds}
                     </div>
                   </div>
 
                   {/* Facility */}
-                  <div className="col-span-12 md:col-span-6 text-sm text-gray-600">
+                  <div className="mt-2 md:mt-0 md:col-span-6 text-sm text-gray-600">
+                    <span className="md:hidden font-medium text-gray-700">
+                      Facilities:{" "}
+                    </span>
                     {room.amenities?.length ? room.amenities.join(", ") : "—"}
                   </div>
 
                   {/* Price */}
-                  <div className="col-span-8 md:col-span-2 text-right">
-                    <div className="text-sm font-medium text-gray-800">
+                  <div className="mt-2 mr-8 md:mt-0 md:col-span-2 md:text-right">
+                    <span className="md:hidden font-medium text-gray-700">
+                      Price:{" "}
+                    </span>
+                    <span className="text-sm font-medium text-gray-800">
                       ₹{room.pricePerBed}
-                    </div>
+                    </span>
                   </div>
 
                   {/* Actions */}
-                  <div className="col-span-4 md:col-span-1 flex items-center justify-end gap-2">
+                  <div className="mt-2 md:mt-0 md:col-span-1 flex items-center justify-between md:justify-end gap-3">
+                    {/* Toggle */}
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
@@ -169,19 +176,21 @@ export default function ListRoom() {
                       />
                     </label>
 
+                    {/* Edit */}
                     <button
                       type="button"
                       title="Edit"
-                      className="p-1 rounded hover:bg-gray-100"
+                      className="p-1.5 rounded hover:bg-gray-100"
                       onClick={() => alert("Edit action - implement as needed")}
                     >
                       <Edit3 size={16} />
                     </button>
 
+                    {/* Delete */}
                     <button
                       type="button"
                       title="Delete"
-                      className="p-1 rounded hover:bg-red-50 text-red-600 disabled:opacity-60"
+                      className="p-1.5 rounded hover:bg-red-50 text-red-600 disabled:opacity-60"
                       onClick={() => removeRoom(room._id)}
                       disabled={deletingId === room._id}
                     >
