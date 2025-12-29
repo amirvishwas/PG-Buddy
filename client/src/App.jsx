@@ -10,7 +10,6 @@ import Layout from "./pages/pgOwner/Layout";
 import Dashboard from "./pages/pgOwner/Dashboard";
 import AddRoom from "./pages/pgOwner/AddRoom";
 import ListRoom from "./pages/pgOwner/ListRoom";
-import "./App.css";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext.jsx";
 import About from "./pages/About.jsx";
