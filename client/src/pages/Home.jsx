@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdLocationOn } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import HowItWorks from "../components/howItWorks";
-import Testimonials from "../components/Testimonials";
+import WallOfLove from "../components/WallOfLove";
 import Footer from "../components/Footer";
 import FeaturedPGs from "../components/FeaturedPGs";
 import ServicesSection from "../components/ServicesSection";
@@ -110,7 +110,7 @@ const Home = () => {
 
       <HowItWorks />
       <ServicesSection />
-      <Testimonials />
+      <WallOfLove />
       <Footer />
     </>
   );
