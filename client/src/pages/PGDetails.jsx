@@ -355,14 +355,14 @@ const PGDetails = () => {
                     type="button"
                     onClick={() => setIsBookingModalOpen(true)}
                     disabled={!room.isAvailable || room.availableBeds === 0}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {room.isAvailable && room.availableBeds > 0
                       ? "Book Now"
                       : "Not Available"}
                   </button>
 
-                  <button className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 px-4 rounded-xl transition-colors">
+                  <button className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-50 cursor-pointer font-semibold py-3 px-4 rounded-xl transition-colors">
                     <Phone className="w-4 h-4 inline mr-2" />
                     Contact Owner
                   </button>

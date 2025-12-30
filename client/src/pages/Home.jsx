@@ -55,7 +55,7 @@ const Home = () => {
               />
               <button
                 onClick={handleSearch}
-                className="bg-blue-600 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl hover:scale-105 transform transition text-sm sm:text-base flex-shrink-0"
+                className="bg-blue-600 hover:cursor-pointer text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl hover:scale-105 transform transition text-sm sm:text-base flex-shrink-0"
               >
                 Search
               </button>

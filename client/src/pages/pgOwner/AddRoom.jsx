@@ -105,7 +105,7 @@ export default function AddRoom() {
           amenities: {
             "Free WiFi": false,
             "Free Breakfast": false,
-            "Room Service": false,
+            "Room Cleaning Service": false,
             Laundry: false,
             AC: false,
             Food: false,
@@ -290,7 +290,7 @@ export default function AddRoom() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+              className="bg-blue-600 hover:cursor-pointer text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
             >
               {loading ? "Adding..." : "Add Room"}
             </button>

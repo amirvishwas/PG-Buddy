@@ -264,7 +264,7 @@ const BookingModal = ({ room, onClose }) => {
                   value={formData.checkInDate}
                   onChange={handleChange}
                   min={today}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border hover:cursor-pointer border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
@@ -278,7 +278,7 @@ const BookingModal = ({ room, onClose }) => {
                   value={formData.checkOutDate}
                   onChange={handleChange}
                   min={formData.checkInDate || today}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border hover:cursor-pointer border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
@@ -313,10 +313,10 @@ const BookingModal = ({ room, onClose }) => {
                   onClick={() =>
                     setFormData({ ...formData, paymentMethod: "Pay At PG" })
                   }
-                  className={`p-3 rounded-lg border-2 transition-all ${
+                  className={`p-3 rounded-lg hover:cursor-pointer border-2 transition-all ${
                     formData.paymentMethod === "Pay At PG"
                       ? "border-blue-600 bg-blue-50 text-blue-700"
-                      : "border-gray-200 hover:border-gray-300"
+                      : "border-gray-200 hover:border-gray-300 "
                   }`}
                 >
                   <div className="font-medium">Pay At PG</div>
@@ -329,7 +329,7 @@ const BookingModal = ({ room, onClose }) => {
                   onClick={() =>
                     setFormData({ ...formData, paymentMethod: "Online" })
                   }
-                  className={`p-3 rounded-lg border-2 transition-all ${
+                  className={`p-3 rounded-lg border-2 hover:cursor-pointer transition-all ${
                     formData.paymentMethod === "Online"
                       ? "border-blue-600 bg-blue-50 text-blue-700"
                       : "border-gray-200 hover:border-gray-300"
@@ -346,7 +346,7 @@ const BookingModal = ({ room, onClose }) => {
             {/* Availability Status */}
             {isAvailable !== null && (
               <div
-                className={`flex items-center gap-2 p-3 rounded-lg ${
+                className={`flex items-center  gap-2 p-3 rounded-lg ${
                   isAvailable
                     ? "bg-green-50 text-green-700"
                     : "bg-red-50 text-red-700"
@@ -375,7 +375,7 @@ const BookingModal = ({ room, onClose }) => {
                   !formData.checkInDate ||
                   !formData.checkOutDate
                 }
-                className="flex-1 border-2 border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 border-2  border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {checkingAvailability ? (
                   <span className="flex items-center justify-center gap-2">
@@ -392,14 +392,14 @@ const BookingModal = ({ room, onClose }) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading || isAvailable === false}
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 hover:cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">

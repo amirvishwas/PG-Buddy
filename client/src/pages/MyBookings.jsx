@@ -334,7 +334,7 @@ const MyBookings = () => {
                         <div className="flex gap-3">
                           <button
                             onClick={() => navigate(`/pg/${booking.room?._id}`)}
-                            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors font-medium"
                           >
                             View PG
                           </button>
@@ -342,7 +342,7 @@ const MyBookings = () => {
                             <button
                               onClick={() => handleCancelBooking(booking._id)}
                               disabled={cancellingId === booking._id}
-                              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               {cancellingId === booking._id ? (
                                 <span className="flex items-center gap-2">
