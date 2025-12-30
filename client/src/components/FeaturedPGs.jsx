@@ -78,8 +78,9 @@ const PGCard = ({ room }) => {
 
 const FeaturedPGs = () => {
   const { pgs, loadingPgs, navigate } = useAppContext();
-  const featured = pgs.slice(0, 4);
-
+  const featured = pgs
+    .filter((room) => room.isAvailable !== false && room.availableBeds > 0)
+    .slice(0, 4);
   const handleViewAll = () => {
     navigate("/listings");
   };

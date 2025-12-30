@@ -156,6 +156,14 @@ export const createBooking = async (req, res) => {
       status: "pending",
       isPaid: false,
     });
+    roomData.availableBeds = Math.max(
+      0,
+      roomData.availableBeds - Number(guests)
+    );
+    if (roomData.availableBeds === 0) {
+      roomData.isAvailable = false;
+    }
+    await roomData.save();
 
     return res.json({
       success: true,
@@ -239,13 +247,22 @@ export const getOwnerBookings = async (req, res) => {
 export const deleteBooking = async (req, res) => {
   try {
     const { id } = req.params;
-
     const userId = req.user._id;
 
     // Verify booking belongs to user
     const booking = await Booking.findOne({ _id: id, user: userId });
     if (!booking) {
       return res.json({ success: false, message: "Booking not found" });
+    }
+    // Restore room availability
+    const roomData = await Room.findById(booking.room);
+    if (roomData) {
+      roomData.availableBeds = Math.min(
+        roomData.totalBeds,
+        roomData.availableBeds + booking.guests
+      );
+      roomData.isAvailable = true;
+      await roomData.save();
     }
 
     await Booking.findByIdAndDelete(id);

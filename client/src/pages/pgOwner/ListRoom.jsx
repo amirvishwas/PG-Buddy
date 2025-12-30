@@ -100,7 +100,7 @@ export default function ListRoom() {
     <div className="p-4 sm:p-6 font-[Poppins]">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">All Rooms</h2>
 
-      <div className="bg-white rounded-xl h-auto shadow-sm border overflow-hidden">
+      <div className="bg-white rounded-xl  shadow-sm border overflow-hidden">
         {/* Table Header (Desktop only) */}
         <div className="hidden md:block border-b bg-gray-50">
           <div className="grid grid-cols-12 gap-9 px-6 py-3 text-sm text-gray-600 items-center">
@@ -121,7 +121,8 @@ export default function ListRoom() {
               {rooms.map((room) => (
                 <div
                   key={room._id}
-                  className=" px-4 py-4 md:grid md:grid-cols-12 md:gap-9 md:px-6 hover:bg-gray-50">
+                  className=" px-4 py-4 md:grid md:grid-cols-12 md:gap-9 md:px-6 hover:bg-gray-50"
+                >
                   {/* Name */}
                   <div className="md:col-span-3">
                     <div className="text-sm font-medium text-gray-800">

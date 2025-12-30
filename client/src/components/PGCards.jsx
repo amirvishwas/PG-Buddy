@@ -7,6 +7,8 @@ import {
   FaUtensils,
   FaSnowflake,
   FaTshirt,
+  FaBed,
+  FaTimesCircle,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -55,7 +57,7 @@ const PGCards = ({ properties }) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
       {properties.map((property, index) => (
         <PropertyCard
-          key={`${property.id || index}-${property.name}`}
+          key={`${property.id || property._id || index}-${property.name}`}
           property={property}
           index={index}
           imageError={imageErrors[index]}
@@ -82,16 +84,21 @@ const PropertyCard = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
+  // Check if room is available
+  const isAvailable =
+    property.isAvailable !== false && property.availableBeds > 0;
+
   return (
     <Link
-      to={`/pg/${property.id || index}`}
-      className="
+      to={`/pg/${property._id || property.id || index}`}
+      className={`
         group block bg-white rounded-xl sm:rounded-2xl
         border border-gray-200
         shadow-sm hover:shadow-lg
         transition-all duration-300
         sm:hover:-translate-y-1
-      "
+        ${!isAvailable ? "opacity-75" : ""}
+      `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -122,13 +129,26 @@ const PropertyCard = ({
           </div>
         )}
 
-        {/* Verified */}
-        {property.verified && (
-          <span className="absolute top-3 left-3 flex items-center gap-1 bg-white/90 text-emerald-600 px-2.5 py-1 rounded-full text-xs font-semibold border border-emerald-200">
-            <FaCheckCircle className="w-3 h-3" />
-            Verified
-          </span>
-        )}
+        {/* Availability Badge */}
+        <span
+          className={`absolute top-3 left-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border ${
+            isAvailable
+              ? "bg-white/90 text-emerald-600 border-emerald-200"
+              : "bg-red-100/90 text-red-600 border-red-200"
+          }`}
+        >
+          {isAvailable ? (
+            <>
+              <FaCheckCircle className="w-3 h-3" />
+              Available
+            </>
+          ) : (
+            <>
+              <FaTimesCircle className="w-3 h-3" />
+              Sold Out
+            </>
+          )}
+        </span>
 
         {/* Price */}
         <span className="absolute top-3 right-3 bg-black/80 text-white px-3 py-1 rounded-md text-sm font-bold flex items-center gap-1">
@@ -141,22 +161,28 @@ const PropertyCard = ({
       {/* Content */}
       <div className="p-4 sm:p-6">
         <h3 className="font-bold text-base sm:text-lg text-gray-900 line-clamp-1 group-hover:text-blue-600">
-          {property.name}
+          {property.name || property.pg?.name}
         </h3>
 
         <div className="flex items-center gap-1.5 mt-2 text-gray-600">
           <FaMapMarkerAlt className="text-blue-500 w-4 h-4" />
-          <p className="text-xs sm:text-sm line-clamp-1">{property.location}</p>
+          <p className="text-xs sm:text-sm line-clamp-1">
+            {property.location || property.pg?.city || property.pg?.address}
+          </p>
         </div>
 
-        {/* Gender */}
-        <div className="mt-3">
+        {/* Gender & Beds */}
+        <div className="mt-3 flex items-center gap-2 flex-wrap">
           <span
             className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getGenderColor(
-              property.gender
+              property.gender || "mixed"
             )}`}
           >
-            {property.gender}
+            {property.gender || "Mixed"}
+          </span>
+          <span className="flex items-center gap-1 text-xs text-gray-600">
+            <FaBed className="w-3 h-3" />
+            {property.availableBeds}/{property.totalBeds} beds
           </span>
         </div>
 
@@ -193,7 +219,7 @@ const PropertyCard = ({
       <div className="px-4 sm:px-6 pb-4 sm:pb-6">
         <div className="border-t pt-3 flex items-center justify-between">
           <span className="text-xs font-medium text-gray-500">
-            View Details
+            {isAvailable ? "View Details" : "View Anyway"}
           </span>
           <span className="text-blue-500 text-sm font-semibold">→</span>
         </div>
