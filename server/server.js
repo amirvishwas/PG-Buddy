@@ -15,7 +15,6 @@ import bookingRouter from "./routes/bookingRoutes.js";
 
 const app = express();
 
-// CORS
 app.use(
   cors({
     origin: [
@@ -35,17 +34,15 @@ app.use(
   })
 );
 
-// Webhook (
+// Webhook
 app.post(
   "/api/clerk/webhook",
   express.raw({ type: "application/json" }),
   clerkWebhooks
 );
 
-// Normal JSON routes
 app.use(express.json());
 
-// DB & cloud
 connectDB();
 connectToCloudinary();
 
@@ -59,8 +56,7 @@ app.use("/api/pg", pgRouter);
 app.use("/api/rooms", roomRouter);
 app.use("/api/bookings", bookingRouter);
 
-// Server Start
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 export default app;
