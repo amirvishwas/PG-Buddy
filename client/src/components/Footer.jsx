@@ -42,12 +42,12 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
           <p className="flex items-center gap-2 text-sm">
-            <Mail size={16} /> support@pgbuddy.com
+            <Mail size={16} /> calvintakasi@outlook.com
           </p>
           <p className="flex items-center gap-2 text-sm mt-2">
-            <Phone size={16} /> +91 98765 43210
+            <Phone size={16} /> +91
           </p>
-          <p className="text-sm mt-2">New Delhi, India</p>
+          <p className="text-sm mt-2">Ambala, India</p>
         </div>
 
         <div>
