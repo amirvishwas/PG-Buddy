@@ -90,7 +90,7 @@ const FeaturedPGs = () => {
       <section className="py-12 px-4 font-[Poppins]">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary to-teal-500 bg-clip-text text-transparent">
-            Best Seller
+            Featured PGs
           </h2>
           <p className="text-muted-foreground mt-2 text-sm md:text-base">
             Loading...

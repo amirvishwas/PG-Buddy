@@ -27,11 +27,6 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="/login" className="hover:text-white">
-                Login
-              </a>
-            </li>
-            <li>
               <a href="/signup" className="hover:text-white">
                 Signup
               </a>
