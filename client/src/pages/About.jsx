@@ -165,10 +165,10 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 mb-4">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 ">
+        <div className="max-w-5xl mx-auto ">
+          <div className="text-center mb-12 sm:mb-16 ">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 mb-4 ">
               <Search className="w-4 h-4 text-blue-600" />
               <span className="text-sm font-medium text-blue-700">
                 Simple Process
