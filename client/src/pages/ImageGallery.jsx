@@ -5,12 +5,10 @@ const ImageGallery = ({ images = [], initialIndex = 0, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [fade, setFade] = useState(true);
 
-  // Sync internal state if initialIndex changes (optional, but good for stability)
   useEffect(() => {
     setCurrentIndex(initialIndex);
   }, [initialIndex]);
 
-  // Handle Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") onClose();
@@ -19,7 +17,7 @@ const ImageGallery = ({ images = [], initialIndex = 0, onClose }) => {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex]); // Re-bind when index changes to ensure fresh state
+  }, [currentIndex]);
 
   const changeImage = (newIndex) => {
     setFade(false);
@@ -43,7 +41,6 @@ const ImageGallery = ({ images = [], initialIndex = 0, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col animate-in fade-in duration-200">
-      {/* Top Bar */}
       <div className="flex items-center justify-between p-4 absolute top-0 left-0 right-0 z-50">
         <button
           onClick={onClose}
@@ -65,9 +62,7 @@ const ImageGallery = ({ images = [], initialIndex = 0, onClose }) => {
         </button>
       </div>
 
-      {/* Main Image Container */}
       <div className="flex-1 flex items-center justify-center p-4 relative w-full h-full">
-        {/* Previous Button */}
         {images.length > 1 && (
           <button
             onClick={prevImage}
@@ -77,7 +72,6 @@ const ImageGallery = ({ images = [], initialIndex = 0, onClose }) => {
           </button>
         )}
 
-        {/* Image */}
         <div className="relative w-full h-full flex items-center justify-center">
           <img
             key={currentIndex}
@@ -88,7 +82,6 @@ const ImageGallery = ({ images = [], initialIndex = 0, onClose }) => {
           />
         </div>
 
-        {/* Next Button */}
         {images.length > 1 && (
           <button
             onClick={nextImage}
@@ -99,10 +92,9 @@ const ImageGallery = ({ images = [], initialIndex = 0, onClose }) => {
         )}
       </div>
 
-      {/* Bottom Thumbnails Strip */}
       {images.length > 1 && (
-        <div className="h-24 bg-black/80 w-full flex items-center justify-center p-4 overflow-x-auto border-t border-white/10">
-          <div className="flex gap-3">
+        <div className="h-24 bg-black/80 w-full flex items-center justify-center p-4 border-t border-white/10">
+          <div className="flex gap-3 overflow-x-auto max-w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
             {images.map((img, index) => (
               <button
                 key={index}

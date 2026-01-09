@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Trash2, Edit3, Loader2 } from "lucide-react";
+import {
+  Trash2,
+  Edit3,
+  Loader2,
+  Bed,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Check,
+  X,
+} from "lucide-react";
 import { useAppContext } from "../../context/AppContext";
 import { toast } from "react-hot-toast";
 
@@ -90,113 +100,211 @@ export default function ListRoom() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center">
-        <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+      <div className="p-6 h-96 flex flex-col items-center justify-center font-[Poppins]">
+        <Loader2 className="w-10 h-10 animate-spin text-blue-600 mb-3" />
+        <p className="text-gray-500 font-medium">Loading inventory...</p>
       </div>
     );
   }
 
   return (
-    <div className="p-4 sm:p-6 font-[Poppins]">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">All Rooms</h2>
+    <div className="p-6 md:p-8 font-[Poppins] bg-gray-50/50 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Room Inventory</h1>
+            <p className="text-gray-500 text-sm mt-1">
+              Manage pricing, availability, and details
+            </p>
+          </div>
 
-      <div className="bg-white rounded-xl  shadow-sm border overflow-hidden">
-        {/* Table Header (Desktop only) */}
-        <div className="hidden md:block border-b bg-gray-50">
-          <div className="grid grid-cols-12 gap-9 px-6 py-3 text-sm text-gray-600 items-center">
-            <div className="col-span-3 font-medium">Name</div>
-            <div className="col-span-6 font-medium">Facility</div>
-            <div className="col-span-2 text-right font-medium">Price / bed</div>
-            <div className="col-span-1 text-center font-medium">Actions</div>
+          {/* Visual-only Controls */}
+          <div className="flex items-center gap-3">
+            <div className="relative hidden md:block">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search rooms..."
+                className="pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 w-64 shadow-sm"
+                disabled
+              />
+            </div>
+            <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+              <Filter className="w-4 h-4" /> Filter
+            </button>
           </div>
         </div>
 
-        <div className="max-h-64 overflow-y-auto">
-          {rooms.length === 0 ? (
-            <div className="py-8 text-center text-gray-500">
-              No rooms available.
-            </div>
-          ) : (
-            <div className="divide-y">
-              {rooms.map((room) => (
-                <div
-                  key={room._id}
-                  className=" px-4 py-4 md:grid md:grid-cols-12 md:gap-9 md:px-6 hover:bg-gray-50"
-                >
-                  {/* Name */}
-                  <div className="md:col-span-3">
-                    <div className="text-sm font-medium text-gray-800">
-                      {roomTypeLabel(room.roomType)}
-                    </div>
-                    <div className="text-xs text-gray-500 mt-0.5">
-                      Beds: {room.availableBeds}/{room.totalBeds}
-                    </div>
-                  </div>
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+          {/* Table Header */}
+          <div className="hidden md:grid grid-cols-12 gap-6 px-8 py-5 bg-gray-50/50 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <div className="col-span-4">Room Details</div>
+            <div className="col-span-4">Amenities & Facilities</div>
+            <div className="col-span-2 text-right">Pricing</div>
+            <div className="col-span-2 text-center">Status & Actions</div>
+          </div>
 
-                  {/* Facility */}
-                  <div className="mt-2 md:mt-0 md:col-span-6 text-sm text-gray-600">
-                    <span className="md:hidden font-medium text-gray-700">
-                      Facilities:{" "}
-                    </span>
-                    {room.amenities?.length ? room.amenities.join(", ") : "—"}
-                  </div>
-
-                  {/* Price */}
-                  <div className="mt-2 mr-8 md:mt-0 md:col-span-2 md:text-right">
-                    <span className="md:hidden font-medium text-gray-700">
-                      Price:{" "}
-                    </span>
-                    <span className="text-sm font-medium text-gray-800">
-                      ₹{room.pricePerBed}
-                    </span>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="mt-2 md:mt-0 md:col-span-1 flex items-center justify-between md:justify-end gap-3">
-                    {/* Toggle */}
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={!!room.isAvailable}
-                        onChange={() => toggleActive(room._id)}
-                        disabled={togglingId === room._id}
-                        aria-label={`Toggle ${roomTypeLabel(room.roomType)}`}
-                      />
-                      <div className="w-10 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-300 transition-colors" />
-                      <div
-                        className={
-                          "absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transform transition-transform " +
-                          (room.isAvailable ? "translate-x-4" : "translate-x-0")
-                        }
-                      />
-                    </label>
-
-                    {/* Edit */}
-                    <button
-                      type="button"
-                      title="Edit"
-                      className="p-1.5 rounded hover:bg-gray-100"
-                      onClick={() => alert("Edit action - implement as needed")}
-                    >
-                      <Edit3 size={16} />
-                    </button>
-
-                    {/* Delete */}
-                    <button
-                      type="button"
-                      title="Delete"
-                      className="p-1.5 rounded hover:bg-red-50 text-red-600 disabled:opacity-60"
-                      onClick={() => removeRoom(room._id)}
-                      disabled={deletingId === room._id}
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
+          <div className="max-h-[70vh] overflow-y-auto scrollbar-hide">
+            {rooms.length === 0 ? (
+              <div className="py-20 flex flex-col items-center justify-center text-center">
+                <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                  <Bed className="w-10 h-10 text-gray-300" />
                 </div>
-              ))}
-            </div>
-          )}
+                <h3 className="text-lg font-semibold text-gray-900">
+                  No rooms listed yet
+                </h3>
+                <p className="text-gray-500 max-w-xs mt-1">
+                  Start by adding a new room to your property inventory.
+                </p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {rooms.map((room) => (
+                  <div
+                    key={room._id}
+                    className="p-6 md:px-8 md:py-6 md:grid md:grid-cols-12 md:gap-6 hover:bg-gray-50/50 transition-colors group items-center"
+                  >
+                    {/* Name & Capacity */}
+                    <div className="md:col-span-4 mb-4 md:mb-0">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                            room.isAvailable
+                              ? "bg-blue-50 text-blue-600"
+                              : "bg-gray-100 text-gray-400"
+                          }`}
+                        >
+                          <Bed className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-bold text-gray-900">
+                            {roomTypeLabel(room.roomType)}
+                          </h3>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
+                              Total: {room.totalBeds}
+                            </span>
+                            <span
+                              className={`text-xs font-medium px-2 py-0.5 rounded-md ${
+                                room.availableBeds > 0
+                                  ? "bg-emerald-50 text-emerald-700"
+                                  : "bg-red-50 text-red-700"
+                              }`}
+                            >
+                              Free: {room.availableBeds}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Facilities */}
+                    <div className="md:col-span-4 mb-4 md:mb-0">
+                      <div className="flex flex-wrap gap-2">
+                        {room.amenities?.length ? (
+                          room.amenities.slice(0, 3).map((amenity, idx) => (
+                            <span
+                              key={idx}
+                              className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-gray-50 text-gray-600 border border-gray-100"
+                            >
+                              {amenity}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-sm text-gray-400 italic">
+                            No amenities listed
+                          </span>
+                        )}
+                        {room.amenities?.length > 3 && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium text-gray-400">
+                            +{room.amenities.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Price */}
+                    <div className="md:col-span-2 mb-4 md:mb-0 flex items-center justify-between md:justify-end md:text-right">
+                      <span className="md:hidden text-sm font-medium text-gray-500">
+                        Price:
+                      </span>
+                      <div>
+                        <span className="block text-lg font-bold text-gray-900">
+                          ₹{room.pricePerBed}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          per bed/mo
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="md:col-span-2 flex items-center justify-between md:justify-center gap-4 border-t md:border-none pt-4 md:pt-0 mt-2 md:mt-0">
+                      {/* Availability Toggle */}
+                      <label
+                        className="relative inline-flex items-center cursor-pointer group/toggle"
+                        title={
+                          room.isAvailable
+                            ? "Mark as Unavailable"
+                            : "Mark as Available"
+                        }
+                      >
+                        <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          checked={!!room.isAvailable}
+                          onChange={() => toggleActive(room._id)}
+                          disabled={togglingId === room._id}
+                        />
+                        <div
+                          className={`w-11 h-6 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-100 transition-all ${
+                            room.isAvailable ? "bg-blue-600" : "bg-gray-200"
+                          }`}
+                        />
+                        <div
+                          className={`absolute top-1 left-1 bg-white border-gray-300 border rounded-full h-4 w-4 transition-all shadow-sm flex items-center justify-center ${
+                            room.isAvailable
+                              ? "translate-x-5 border-white"
+                              : "translate-x-0"
+                          }`}
+                        >
+                          {togglingId === room._id && (
+                            <Loader2 className="w-2.5 h-2.5 animate-spin text-blue-600" />
+                          )}
+                        </div>
+                      </label>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          className="p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                          onClick={() => alert("Edit action placeholder")}
+                          title="Edit Room"
+                        >
+                          <Edit3 size={18} />
+                        </button>
+
+                        <button
+                          type="button"
+                          className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                          onClick={() => removeRoom(room._id)}
+                          disabled={deletingId === room._id}
+                          title="Delete Room"
+                        >
+                          {deletingId === room._id ? (
+                            <Loader2 size={18} className="animate-spin" />
+                          ) : (
+                            <Trash2 size={18} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
