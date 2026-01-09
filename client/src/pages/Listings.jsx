@@ -1,6 +1,19 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import {
+  MapPin,
+  Bed,
+  Users,
+  ArrowRight,
+  Filter,
+  X,
+  Home,
+  ChevronRight,
+  Check,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react";
 
 const Listings = () => {
   const location = useLocation();
@@ -79,62 +92,99 @@ const Listings = () => {
     navigate(`/pg/${roomId}`);
   };
 
+  const getGenderBadge = (gender) => {
+    switch (gender?.toLowerCase()) {
+      case "boys":
+        return {
+          bg: "bg-blue-50",
+          text: "text-blue-600",
+          border: "border-blue-200",
+        };
+      case "girls":
+        return {
+          bg: "bg-pink-50",
+          text: "text-pink-600",
+          border: "border-pink-200",
+        };
+      default:
+        return {
+          bg: "bg-purple-50",
+          text: "text-purple-600",
+          border: "border-purple-200",
+        };
+    }
+  };
+
   if (loadingPgs) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-500">Loading...</div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          <p className="text-gray-500 font-medium">Finding the best stays...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen font-[Poppins]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Breadcrumb Navigation */}
-        <div className="flex items-center text-gray-600 text-md mb-6">
-          <button
-            onClick={() => navigate("/")}
-            className="text-blue-600 hover:text-blue-700 font-medium"
-          >
-            Home
-          </button>
-          <span className="mx-2">{">"}</span>
-          <span className="text-gray-800 capitalize">
-            {searchQuery ? searchQuery : "All Locations"}
-          </span>
-        </div>
+    <div className="min-h-screen bg-gray-50 font-[Poppins] relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute inset-x-0 top-0 h-[600px] rounded-b-[40px] sm:rounded-b-[80px]"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(219, 234, 254, 0.6) 0%, rgba(204, 251, 241, 0.4) 50%, rgba(255, 255, 255, 0) 100%)",
+          }}
+        />
+        <div className="absolute top-20 left-10 w-32 h-32 sm:w-64 sm:h-64 bg-blue-200/30 rounded-full blur-3xl" />
+        <div className="absolute top-40 right-10 w-40 h-40 sm:w-72 sm:h-72 bg-teal-200/30 rounded-full blur-3xl" />
+      </div>
 
-        {/* Search Heading */}
-        {searchQuery && (
-          <h2 className="text-2xl font-semibold mb-4">
-            Search results for "
-            <span className="text-blue-600">{searchQuery}</span>"
-          </h2>
-        )}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <div className="flex flex-col gap-4 mb-8">
+          <div className="flex items-center text-sm text-gray-500 bg-white/60 backdrop-blur-md w-fit px-4 py-2 rounded-full border border-white/50 shadow-sm">
+            <button
+              onClick={() => navigate("/")}
+              className="flex items-center hover:text-blue-600 transition-colors"
+            >
+              <Home className="w-4 h-4 mr-1" />
+              Home
+            </button>
+            <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
+            <span className="text-gray-800 font-medium capitalize">
+              {searchQuery ? searchQuery : "All Locations"}
+            </span>
+          </div>
 
-        {/* Mobile Filter Toggle */}
-        <div className="lg:hidden mb-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              {searchQuery ? (
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Results for "
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
+                    {searchQuery}
+                  </span>
+                  "
+                </h1>
+              ) : (
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Find Your Perfect Stay
+                </h1>
+              )}
+              <p className="text-gray-600 mt-2 font-medium">
+                Showing {filteredRooms.length} properties available now
+              </p>
+            </div>
+
+            {/* Mobile Filter Button */}
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="relative inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              className="lg:hidden flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-medium rounded-xl shadow-lg shadow-blue-200 active:scale-95 transition-all"
             >
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 2v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                />
-              </svg>
+              <SlidersHorizontal className="w-5 h-5" />
               Filters
               {activeFiltersCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="bg-white text-blue-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {activeFiltersCount}
                 </span>
               )}
@@ -142,10 +192,10 @@ const Listings = () => {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Desktop Filters Sidebar */}
-          <div className="hidden lg:block w-80 flex-shrink-0">
-            <div className="sticky top-6">
+          <aside className="hidden lg:block w-80 flex-shrink-0">
+            <div className="sticky top-24">
               <FilterPanel
                 maxPrice={maxPrice}
                 setMaxPrice={setMaxPrice}
@@ -161,162 +211,196 @@ const Listings = () => {
                 currency={currency}
               />
             </div>
-          </div>
+          </aside>
 
           {/* Mobile Filters Overlay */}
           {showFilters && (
-            <div
-              className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50"
-              onClick={() => setShowFilters(false)}
-            >
+            <div className="fixed inset-0 z-50 lg:hidden">
               <div
-                className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-xl transform transition-transform"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="p-4 border-b">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-gray-900">
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+                onClick={() => setShowFilters(false)}
+              />
+              <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl transform transition-transform animate-in slide-in-from-right duration-300">
+                <div className="flex flex-col h-full">
+                  <div className="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                    <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                      <Filter className="w-5 h-5 text-blue-600" />
                       Filters
                     </h3>
                     <button
                       onClick={() => setShowFilters(false)}
-                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
+                      <X className="w-5 h-5" />
                     </button>
                   </div>
-                </div>
-                <div className="p-4 overflow-y-auto h-full pb-20">
-                  <FilterPanel
-                    maxPrice={maxPrice}
-                    setMaxPrice={setMaxPrice}
-                    selectedGenders={selectedGenders}
-                    selectedRoomTypes={selectedRoomTypes}
-                    selectedAmenities={selectedAmenities}
-                    handleGenderChange={handleGenderChange}
-                    handleRoomTypeChange={handleRoomTypeChange}
-                    handleAmenityChange={handleAmenityChange}
-                    clearFilters={clearFilters}
-                    activeFiltersCount={activeFiltersCount}
-                    filteredCount={filteredRooms.length}
-                    isMobile={true}
-                    onClose={() => setShowFilters(false)}
-                    currency={currency}
-                  />
+                  <div className="flex-1 overflow-y-auto p-5">
+                    <FilterPanel
+                      maxPrice={maxPrice}
+                      setMaxPrice={setMaxPrice}
+                      selectedGenders={selectedGenders}
+                      selectedRoomTypes={selectedRoomTypes}
+                      selectedAmenities={selectedAmenities}
+                      handleGenderChange={handleGenderChange}
+                      handleRoomTypeChange={handleRoomTypeChange}
+                      handleAmenityChange={handleAmenityChange}
+                      clearFilters={clearFilters}
+                      activeFiltersCount={activeFiltersCount}
+                      filteredCount={filteredRooms.length}
+                      isMobile={true}
+                      onClose={() => setShowFilters(false)}
+                      currency={currency}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Results */}
-          <div className="flex-1">
+          {/* Results Grid */}
+          <main className="flex-1">
             {filteredRooms.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredRooms.map((room) => (
-                  <div
-                    key={room._id}
-                    onClick={() => handleCardClick(room._id)}
-                    className="cursor-pointer bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
-                  >
-                    <div className="relative">
-                      <img
-                        src={room.images?.[0] || "/placeholder.svg"}
-                        alt={room.pg?.name || "Room"}
-                        className="h-48 w-full object-cover"
-                      />
-                      {room.gender && (
-                        <div className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
-                          {room.gender}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filteredRooms.map((room, index) => {
+                  const genderStyle = getGenderBadge(room.gender);
+                  const gradients = [
+                    "from-blue-500 to-cyan-400",
+                    "from-violet-500 to-purple-400",
+                    "from-rose-500 to-pink-400",
+                    "from-emerald-500 to-teal-400",
+                  ];
+                  const gradient = gradients[index % gradients.length];
+
+                  return (
+                    <div
+                      key={room._id}
+                      onClick={() => handleCardClick(room._id)}
+                      className="group cursor-pointer relative bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-2xl hover:border-transparent transform hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+                    >
+                      {/* Image Section */}
+                      <div className="relative h-56 overflow-hidden">
+                        <img
+                          src={room.images?.[0] || "/placeholder.svg"}
+                          alt={room.pg?.name || "Room"}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+
+                        {/* Top Badges */}
+                        <div className="absolute top-4 left-4 flex gap-2">
+                          {room.gender && (
+                            <div
+                              className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold shadow-sm backdrop-blur-md bg-white/90 ${genderStyle.text}`}
+                            >
+                              {room.gender}
+                            </div>
+                          )}
                         </div>
-                      )}
-                      <div className="absolute top-3 right-3 bg-white text-gray-800 text-xs font-semibold px-3 py-1 rounded-full shadow-md capitalize">
-                        {room.roomType}
+
+                        <div className="absolute top-4 right-4">
+                          <div className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white text-xs font-medium border border-white/20 capitalize">
+                            {room.roomType}
+                          </div>
+                        </div>
+
+                        {/* Price Tag Overlay */}
+                        <div className="absolute bottom-4 right-4">
+                          <div className="bg-white/95 backdrop-blur-md rounded-xl px-3 py-1.5 shadow-lg flex items-center gap-1">
+                            <span
+                              className={`text-sm font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}
+                            >
+                              {currency}
+                              {room.pricePerBed?.toLocaleString()}
+                            </span>
+                            <span className="text-[10px] text-gray-500 font-medium">
+                              /bed
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="p-5">
-                      <h3 className="text-lg font-semibold text-gray-800 truncate">
-                        {room.pg?.name || "PG Room"}
-                      </h3>
-                      <p className="text-gray-500 text-sm mt-1">
-                        {room.pg?.city || room.pg?.address || "Location"}
-                      </p>
+                      {/* Content Section */}
+                      <div className="p-5">
+                        <div className="mb-4">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1 truncate group-hover:text-blue-600 transition-colors">
+                            {room.pg?.name || "PG Room"}
+                          </h3>
+                          <div className="flex items-center text-gray-500 text-xs">
+                            <MapPin className="w-3 h-3 mr-1" />
+                            <p className="truncate">
+                              {room.pg?.city || room.pg?.address || "Location"}
+                            </p>
+                          </div>
+                        </div>
 
-                      {room.amenities && room.amenities.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          {room.amenities.slice(0, 3).map((a, i) => (
+                        {/* Amenities */}
+                        <div className="flex flex-wrap gap-2 mb-4 h-6 overflow-hidden">
+                          {room.amenities?.slice(0, 3).map((a, i) => (
                             <span
                               key={i}
-                              className="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-xs"
+                              className="px-2 py-0.5 bg-gray-50 text-gray-600 border border-gray-100 rounded-md text-[10px] font-medium uppercase tracking-wider"
                             >
                               {a}
                             </span>
                           ))}
-                          {room.amenities.length > 3 && (
-                            <span className="text-gray-400 text-xs">
-                              +{room.amenities.length - 3} more
+                          {room.amenities?.length > 3 && (
+                            <span className="text-[10px] text-gray-400 flex items-center">
+                              +{room.amenities.length - 3}
                             </span>
                           )}
                         </div>
-                      )}
 
-                      <div className="mt-4 flex items-center justify-between">
-                        <p className="text-blue-600 font-bold text-lg">
-                          {currency}
-                          {room.pricePerBed?.toLocaleString()}/bed
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {room.availableBeds}/{room.totalBeds} beds
-                        </p>
+                        <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <Users className="w-4 h-4 text-gray-400" />
+                            <span className="text-sm font-medium text-gray-700">
+                              <span className="text-emerald-600">
+                                {room.availableBeds}
+                              </span>
+                              <span className="text-gray-400">
+                                /{room.totalBeds} beds
+                              </span>
+                            </span>
+                          </div>
+
+                          <div
+                            className={`flex items-center gap-1 text-xs font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300`}
+                          >
+                            View Details{" "}
+                            <ArrowRight className="w-3 h-3 text-blue-500" />
+                          </div>
+                        </div>
                       </div>
+
+                      {/* Hover Line */}
+                      <div
+                        className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}
+                      />
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-8 h-8 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
+              <div className="flex flex-col items-center justify-center py-20 bg-white/50 backdrop-blur-sm rounded-3xl border border-dashed border-gray-200 text-center">
+                <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-6">
+                  <Search className="w-10 h-10 text-blue-400" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
                   No rooms found
                 </h3>
-                <p className="text-gray-500 mb-4">
-                  Try adjusting your filters or search keywords
+                <p className="text-gray-500 mb-8 max-w-sm mx-auto">
+                  We couldn't find any rooms matching your current filters. Try
+                  adjusting your preferences.
                 </p>
                 <button
                   onClick={clearFilters}
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                  className="px-8 py-3 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition-all shadow-lg shadow-gray-200"
                 >
-                  Clear filters
+                  Clear all filters
                 </button>
               </div>
             )}
-          </div>
+          </main>
         </div>
       </div>
     </div>
@@ -340,128 +424,183 @@ const FilterPanel = ({
   currency,
 }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
-        {activeFiltersCount > 0 && (
-          <button
-            onClick={clearFilters}
-            className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-          >
-            Clear all
-          </button>
-        )}
+    <div
+      className={`space-y-8 ${
+        !isMobile
+          ? "bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-xl shadow-blue-100/50 border border-white"
+          : ""
+      }`}
+    >
+      {/* Header for Desktop */}
+      {!isMobile && (
+        <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <Filter className="w-4 h-4 text-blue-600" />
+            Filters
+          </h3>
+          {activeFiltersCount > 0 && (
+            <button
+              onClick={clearFilters}
+              className="text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded-md transition-colors"
+            >
+              Reset
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Price Range */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h4 className="text-sm font-bold text-gray-900">Price Budget</h4>
+          <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
+            Up to {currency}
+            {maxPrice.toLocaleString()}
+          </span>
+        </div>
+        <div className="pt-2">
+          <input
+            type="range"
+            min="1000"
+            max="20000"
+            step="500"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(Number(e.target.value))}
+            className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+          />
+          <div className="flex justify-between mt-2 text-xs text-gray-400 font-medium">
+            <span>{currency}1k</span>
+            <span>{currency}20k</span>
+          </div>
+        </div>
       </div>
 
       {/* Gender Filter */}
       <div className="space-y-3">
-        <h4 className="font-medium text-gray-900">Gender Preference</h4>
-        <div className="space-y-2">
-          {["Boys", "Girls", "Mixed"].map((gender) => (
-            <label
-              key={gender}
-              className="flex items-center space-x-3 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-colors"
-            >
-              <input
-                type="checkbox"
-                checked={selectedGenders.includes(gender)}
-                onChange={() => handleGenderChange(gender)}
-                className="w-5 h-5 accent-blue-600"
-              />
-              <span className="text-gray-700 font-medium">{gender}</span>
-            </label>
-          ))}
+        <h4 className="text-sm font-bold text-gray-900">Gender</h4>
+        <div className="flex flex-col gap-2">
+          {["Boys", "Girls", "Mixed"].map((gender) => {
+            const isSelected = selectedGenders.includes(gender);
+            return (
+              <label
+                key={gender}
+                className={`relative flex items-center p-3 rounded-xl border cursor-pointer transition-all duration-200 ${
+                  isSelected
+                    ? "border-blue-500 bg-blue-50/50"
+                    : "border-gray-100 hover:border-blue-200 hover:bg-gray-50"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => handleGenderChange(gender)}
+                  className="hidden"
+                />
+                <div
+                  className={`w-5 h-5 rounded-md border flex items-center justify-center mr-3 transition-colors ${
+                    isSelected
+                      ? "bg-blue-600 border-blue-600"
+                      : "border-gray-300 bg-white"
+                  }`}
+                >
+                  {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
+                </div>
+                <span
+                  className={`text-sm font-medium ${
+                    isSelected ? "text-blue-700" : "text-gray-600"
+                  }`}
+                >
+                  {gender}
+                </span>
+              </label>
+            );
+          })}
         </div>
       </div>
 
-      {/* Room Type Filter */}
+      {/* Room Type */}
       <div className="space-y-3">
-        <h4 className="font-medium text-gray-900">Room Type</h4>
-        <div className="space-y-2">
+        <h4 className="text-sm font-bold text-gray-900">Room Type</h4>
+        <div className="flex flex-wrap gap-2">
           {[
-            { value: "single", label: "Single Bed" },
-            { value: "double", label: "Double Bed" },
-            { value: "triple", label: "Triple Sharing" },
-          ].map((type) => (
-            <label
-              key={type.value}
-              className="flex items-center space-x-3 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-colors"
-            >
-              <input
-                type="checkbox"
-                checked={selectedRoomTypes.includes(type.value)}
-                onChange={() => handleRoomTypeChange(type.value)}
-                className="w-5 h-5 accent-blue-600"
-              />
-              <span className="text-gray-700 font-medium">{type.label}</span>
-            </label>
-          ))}
+            { value: "single", label: "Single" },
+            { value: "double", label: "Double" },
+            { value: "triple", label: "Triple" },
+          ].map((type) => {
+            const isSelected = selectedRoomTypes.includes(type.value);
+            return (
+              <label
+                key={type.value}
+                className={`flex-1 min-w-[80px] text-center cursor-pointer py-2 px-3 rounded-xl text-sm font-medium border transition-all duration-200 ${
+                  isSelected
+                    ? "bg-gray-900 text-white border-gray-900 shadow-md"
+                    : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => handleRoomTypeChange(type.value)}
+                  className="hidden"
+                />
+                {type.label}
+              </label>
+            );
+          })}
         </div>
       </div>
 
-      {/* Amenities Filter */}
+      {/* Amenities */}
       <div className="space-y-3">
-        <h4 className="font-medium text-gray-900">Amenities</h4>
+        <h4 className="text-sm font-bold text-gray-900">Amenities</h4>
         <div className="grid grid-cols-2 gap-2">
-          {["Food", "Free WiFi", "Laundry", "AC"].map((amenity) => (
-            <label
-              key={amenity}
-              className="flex items-center space-x-2 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-colors"
-            >
-              <input
-                type="checkbox"
-                checked={selectedAmenities.includes(amenity)}
-                onChange={() => handleAmenityChange(amenity)}
-                className="w-5 h-5 accent-blue-600"
-              />
-              <span className="text-sm text-gray-700">{amenity}</span>
-            </label>
-          ))}
+          {["Food", "Free WiFi", "Laundry", "AC"].map((amenity) => {
+            const isSelected = selectedAmenities.includes(amenity);
+            return (
+              <label
+                key={amenity}
+                className={`flex items-center p-2 rounded-lg cursor-pointer transition-colors ${
+                  isSelected ? "bg-blue-50" : "hover:bg-gray-50"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => handleAmenityChange(amenity)}
+                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition-colors"
+                />
+                <span
+                  className={`ml-2 text-sm ${
+                    isSelected ? "text-blue-700 font-medium" : "text-gray-600"
+                  }`}
+                >
+                  {amenity}
+                </span>
+              </label>
+            );
+          })}
         </div>
       </div>
 
-      {/* Price Range Filter */}
-      <div className="space-y-3">
-        <h4 className="font-medium text-gray-900">Price Range</h4>
-        <input
-          type="range"
-          min="1000"
-          max="20000"
-          step="500"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(Number(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-        />
-        <div className="flex justify-between items-center">
-          <span className="text-sm font-medium text-gray-600">
-            {currency}1,000
-          </span>
-          <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-            Up to {currency}
-            {maxPrice.toLocaleString()}
-          </div>
-          <span className="text-sm font-medium text-gray-600">
-            {currency}20,000
-          </span>
-        </div>
-      </div>
-
-      {/* Results Summary */}
-      <div className="bg-gray-50 p-4 rounded-lg text-center">
-        <p className="text-sm text-gray-600">
-          <span className="font-medium text-gray-900">{filteredCount}</span>{" "}
-          rooms match your filters
-        </p>
-      </div>
-
-      {/* Mobile Apply */}
+      {/* Results Summary (Mobile Only) */}
       {isMobile && (
-        <button
-          onClick={onClose}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-        >
-          Show {filteredCount} rooms
-        </button>
+        <div className="pt-4 border-t border-gray-100">
+          <button
+            onClick={onClose}
+            className="w-full py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-blue-200 active:scale-95 transition-all"
+          >
+            Show {filteredCount} Properties
+          </button>
+        </div>
+      )}
+
+      {!isMobile && (
+        <div className="p-4 bg-gray-50 rounded-xl text-center border border-gray-100">
+          <p className="text-xs text-gray-500">
+            <span className="font-bold text-gray-900">{filteredCount}</span>{" "}
+            results match
+          </p>
+        </div>
       )}
     </div>
   );
