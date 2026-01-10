@@ -1,8 +1,8 @@
-const Rating = require("../models/ratingModel");
-const Booking = require("../models/bookingModel");
-const Room = require("../models/roomModel");
+import Rating from "../models/rating.js";
+import Booking from "../models/booking.js";
+import Room from "../models/room.js";
 
-exports.createRating = async (req, res) => {
+export const createRating = async (req, res) => {
   try {
     const { bookingId, roomId, rating, review } = req.body;
     const userId = req.user._id;
