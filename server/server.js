@@ -12,6 +12,7 @@ import userRouter from "./routes/userRoutes.js";
 import pgRouter from "./routes/pgRoutes.js";
 import roomRouter from "./routes/roomRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use("/api/user", userRouter);
 app.use("/api/pg", pgRouter);
 app.use("/api/rooms", roomRouter);
 app.use("/api/bookings", bookingRouter);
+app.use("/api/ratings", ratingRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
