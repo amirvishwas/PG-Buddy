@@ -40,7 +40,7 @@ const PrivacyPolicy = () => {
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2 animate-pulse delay-700" />
       </div>
 
-      <div className="pt-24 md:pt-28 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto relative z-10">
+      <div className="pt-4 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto relative z-10">
         <button
           onClick={() => navigate(-1)}
           className="mb-8 group flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-md border border-white/50 rounded-full shadow-sm hover:shadow-md transition-all text-gray-600 hover:text-sky-600"

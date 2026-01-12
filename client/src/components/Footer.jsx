@@ -82,7 +82,7 @@ const Footer = () => {
                 </div>
               </a>
 
-              <div className="flex items-start gap-3 text-sm text-gray-400 group p-2 -ml-2">
+              {/* <div className="flex items-start gap-3 text-sm text-gray-400 group p-2 -ml-2">
                 <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-violet-400 group-hover:bg-violet-500 group-hover:text-white transition-all">
                   <Phone size={16} />
                 </div>
@@ -91,10 +91,10 @@ const Footer = () => {
                     Phone
                   </span>
                   <span className="group-hover:text-white transition-colors">
-                    +91 98765 43210
+                    +91 
                   </span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
