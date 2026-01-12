@@ -13,6 +13,8 @@ import ListRoom from "./pages/pgOwner/ListRoom";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext.jsx";
 import About from "./pages/About.jsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
+import TermsOfService from "./pages/TermsOfService.jsx";
 
 function App() {
   const { showPgReg } = useAppContext();
@@ -32,6 +34,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/gallery/:id" element={<ImageGallery />} />
         <Route path="/my-bookings" element={<MyBookings />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
 
         <Route path="/owner" element={<Layout />}>
           <Route index element={<Dashboard />} />
