@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X } from "lucide-react";
+import { X, Building2, CheckCircle2, ShieldCheck, Star } from "lucide-react";
 import { useAppContext } from "../context/AppContext";
 import { toast } from "react-hot-toast";
 
@@ -50,7 +50,7 @@ const PgReg = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (data.success) {
@@ -68,106 +68,218 @@ const PgReg = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-      <form
-        onSubmit={onSubmitHandler}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 font-[Poppins]">
+      <div
+        className="flex flex-col md:flex-row bg-white rounded-3xl shadow-2xl max-w-5xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col md:flex-row bg-white rounded-xl max-w-4xl w-full mx-4 overflow-hidden"
       >
-        {/* Left Image - Using a gradient placeholder instead of broken image */}
-        <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-500 to-indigo-600 items-center justify-center">
-          <div className="text-center text-white p-8">
-            <h2 className="text-3xl font-bold mb-4">🏠 List Your PG</h2>
-            <p className="text-blue-100">
-              Join thousands of PG owners on PGBuddy
+        <div className="hidden md:flex md:w-5/12 bg-gradient-to-br from-blue-600 to-indigo-700 p-10 flex-col justify-between relative overflow-hidden text-white">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+
+          <div className="relative z-10">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center mb-6 border border-white/20">
+              <Building2 className="w-6 h-6 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold mb-4 leading-tight">
+              Grow Your Business with PGBuddy
+            </h2>
+            <p className="text-blue-100 text-lg opacity-90">
+              Join thousands of verified owners and connect with quality tenants
+              effortlessly.
             </p>
+          </div>
+
+          <div className="relative z-10 space-y-6 mt-12">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="p-1 rounded-full bg-blue-500/30 text-white">
+                  <CheckCircle2 size={18} />
+                </div>
+                <span className="font-medium text-blue-50">
+                  Instant Listing Activation
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="p-1 rounded-full bg-blue-500/30 text-white">
+                  <ShieldCheck size={18} />
+                </div>
+                <span className="font-medium text-blue-50">
+                  Verified Tenant Leads
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="p-1 rounded-full bg-blue-500/30 text-white">
+                  <Star size={18} />
+                </div>
+                <span className="font-medium text-blue-50">
+                  Boost Your Visibility
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-8 border-t border-white/10">
+              <div className="flex -space-x-3 mb-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="w-10 h-10 rounded-full border-2 border-indigo-600 bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600"
+                  >
+                    {i}
+                  </div>
+                ))}
+                <div className="w-10 h-10 rounded-full border-2 border-indigo-600 bg-white flex items-center justify-center text-xs font-bold text-indigo-600">
+                  +2k
+                </div>
+              </div>
+              <p className="text-sm text-blue-100">
+                Trusted by 2,000+ owners nationwide
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Right Form */}
-        <div className="relative flex flex-col items-center md:w-1/2 p-8 md:p-10">
+        <div className="relative flex flex-col md:w-7/12 p-8 md:p-12 overflow-y-auto max-h-[90vh] md:max-h-full">
           <button
             type="button"
             onClick={() => setShowPgReg(false)}
-            className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition"
+            className="absolute top-6 right-6 p-2 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all"
           >
-            <X className="w-5 h-5 text-gray-600" />
+            <X size={24} />
           </button>
 
-          <p className="text-2xl font-semibold mt-6">Register Your PG</p>
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-gray-900">
+              Register Your Property
+            </h3>
+            <p className="text-gray-500 mt-2">
+              Enter your PG details to get started. It only takes a minute.
+            </p>
+          </div>
 
-          <div className="w-full mt-6 space-y-5">
+          <form onSubmit={onSubmitHandler} className="space-y-6 flex-1">
             <div>
-              <label className="block text-gray-700 mb-1 font-medium">
-                PG Name
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Property Name <span className="text-red-500">*</span>
               </label>
               <input
                 id="name"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
                 type="text"
-                placeholder="Enter PG name"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                placeholder="e.g. Sunshine Residency"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-gray-400"
               />
             </div>
 
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">
-                Phone
-              </label>
-              <input
-                id="phone"
-                onChange={(e) => setPhone(e.target.value)}
-                value={phone}
-                type="text"
-                placeholder="Enter contact number"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-              />
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Contact Number <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="phone"
+                  onChange={(e) => setPhone(e.target.value)}
+                  value={phone}
+                  type="tel"
+                  placeholder="+91 98765 43210"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-gray-400"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  City <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <select
+                    id="city"
+                    onChange={(e) => setCity(e.target.value)}
+                    value={city}
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer text-gray-700"
+                  >
+                    <option value="">Select City</option>
+                    {cities.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg
+                      className="w-4 h-4 text-gray-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div>
-              <label className="block text-gray-700 mb-1 font-medium">
-                Address
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Full Address <span className="text-red-500">*</span>
               </label>
-              <input
+              <textarea
                 id="address"
                 onChange={(e) => setAddress(e.target.value)}
                 value={address}
-                type="text"
-                placeholder="Enter full address"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                rows="3"
+                placeholder="Enter complete street address, landmark, and pincode"
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-gray-400 resize-none"
               />
             </div>
 
-            <div>
-              <label className="block text-gray-700 mb-1 font-medium">
-                City
-              </label>
-              <select
-                id="city"
-                onChange={(e) => setCity(e.target.value)}
-                value={city}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+            <div className="pt-4">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-blue-200 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                <option value="">Select City</option>
-                {cities.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
+                {loading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Creating Profile...
+                  </span>
+                ) : (
+                  "Create Owner Profile"
+                )}
+              </button>
+              <p className="text-xs text-center text-gray-400 mt-4">
+                By registering, you agree to our Terms of Service & Privacy
+                Policy.
+              </p>
             </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full mt-4 bg-indigo-600 text-white font-medium py-2 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
-            >
-              {loading ? "Registering..." : "Register"}
-            </button>
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
