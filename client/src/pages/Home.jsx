@@ -7,6 +7,7 @@ import WallOfLove from "../components/WallOfLove";
 import Footer from "../components/Footer";
 import FeaturedPGs from "../components/FeaturedPGs";
 import ServicesSection from "../components/ServicesSection";
+import FAQSection from "../components/FAQSection";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -140,6 +141,8 @@ const Home = () => {
       <HowItWorks />
       <ServicesSection />
       <WallOfLove />
+      <FAQSection />
+
       <Footer />
     </>
   );
