@@ -284,7 +284,7 @@ const Navbar = () => {
                   }}
                   className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all"
                 >
-                  Login / Sign Up
+                  Login
                 </button>
               )}
             </div>
