@@ -41,14 +41,14 @@ const BookingModal = ({ room, onClose }) => {
       ...formData,
       [e.target.name]: e.target.value,
     });
-    // Reset availability when dates change
+
     if (e.target.name === "checkInDate" || e.target.name === "checkOutDate") {
       setIsAvailable(null);
     }
   };
 
   const checkAvailability = async () => {
-    const { checkInDate, checkOutDate } = formData;
+    const { checkInDate, checkOutDate, guests } = formData;
 
     if (!checkInDate || !checkOutDate) {
       toast.error("Please select check-in and check-out dates");
@@ -67,6 +67,7 @@ const BookingModal = ({ room, onClose }) => {
         room: room._id,
         checkInDate,
         checkOutDate,
+        guests: Number(guests) || 1,
       });
 
       if (data.success) {
@@ -75,14 +76,17 @@ const BookingModal = ({ room, onClose }) => {
           toast.success("Room is available for selected dates!");
         } else {
           setIsAvailable(false);
-          toast.error("Room is not available for selected dates");
+          toast.error(
+            data.message ||
+              `Room is not available. Only ${data.remainingBeds ?? 0} bed(s) left.`,
+          );
         }
       } else {
         toast.error(data.message || "Failed to check availability");
       }
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Failed to check availability"
+        error?.response?.data?.message || "Failed to check availability",
       );
     } finally {
       setCheckingAvailability(false);
@@ -104,7 +108,6 @@ const BookingModal = ({ room, onClose }) => {
       return;
     }
 
-    // If availability hasn't been checked, check it first
     if (isAvailable === null) {
       await checkAvailability();
       return;
@@ -119,7 +122,7 @@ const BookingModal = ({ room, onClose }) => {
 
     if (!isAvailable) {
       toast.error(
-        "Room is not available for selected dates. Please choose different dates."
+        "Room is not available for selected dates. Please choose different dates.",
       );
       return;
     }
@@ -140,12 +143,12 @@ const BookingModal = ({ room, onClose }) => {
           username,
           checkInDate,
           checkOutDate,
-          guests: parseInt(guests),
+          guests: parseInt(guests, 10),
           paymentMethod: formData.paymentMethod,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       if (data.success) {
@@ -163,10 +166,8 @@ const BookingModal = ({ room, onClose }) => {
     }
   };
 
-  // Get minimum date (today)
   const today = new Date().toISOString().split("T")[0];
 
-  // Calculate total price (same logic as backend)
   const calculateTotalPrice = () => {
     const { checkInDate, checkOutDate, guests } = formData;
     if (!checkInDate || !checkOutDate || !room.pricePerBed) return null;
@@ -184,17 +185,15 @@ const BookingModal = ({ room, onClose }) => {
 
   const totalPrice = calculateTotalPrice();
 
+  const maxGuests = Math.max(1, Number(room.totalBeds) || 1);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
-      {/* Modal Container */}
       <div className="relative bg-white w-full max-w-lg rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-        {/* Header */}
         <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white z-10 sticky top-0">
           <div>
             <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
@@ -214,10 +213,8 @@ const BookingModal = ({ room, onClose }) => {
           </button>
         </div>
 
-        {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6 scrollbar-hide">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Price Summary Card */}
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100 shadow-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-blue-200/20 rounded-full blur-2xl -mr-10 -mt-10" />
 
@@ -239,7 +236,8 @@ const BookingModal = ({ room, onClose }) => {
                       Total Amount
                     </span>
                     <span className="text-xs text-gray-500 font-medium">
-                      {formData.guests} Guest{formData.guests > 1 ? "s" : ""}
+                      {formData.guests} Guest
+                      {Number(formData.guests) > 1 ? "s" : ""}
                     </span>
                   </div>
                   <span className="text-2xl font-bold text-blue-700">
@@ -254,7 +252,6 @@ const BookingModal = ({ room, onClose }) => {
               )}
             </div>
 
-            {/* Personal Details */}
             <div className="space-y-4">
               <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide flex items-center gap-2">
                 <User className="w-4 h-4 text-blue-500" />
@@ -303,7 +300,6 @@ const BookingModal = ({ room, onClose }) => {
               </div>
             </div>
 
-            {/* Stay Details */}
             <div className="space-y-4">
               <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-blue-500" />
@@ -348,7 +344,7 @@ const BookingModal = ({ room, onClose }) => {
                   onChange={handleChange}
                   className="w-full pl-10 pr-4 py-3 bg-gray-50 border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none appearance-none cursor-pointer"
                 >
-                  {[...Array(room.availableBeds || 1)].map((_, i) => (
+                  {[...Array(maxGuests)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>
                       {i + 1} Guest{i > 0 ? "s" : ""}
                     </option>
@@ -358,7 +354,6 @@ const BookingModal = ({ room, onClose }) => {
               </div>
             </div>
 
-            {/* Availability Status */}
             {isAvailable !== null && (
               <div
                 className={`flex items-start gap-3 p-4 rounded-xl border ${
@@ -378,14 +373,13 @@ const BookingModal = ({ room, onClose }) => {
                   </p>
                   <p className="text-xs opacity-90 mt-0.5">
                     {isAvailable
-                      ? "This room is free for your selected dates."
-                      : "Please select different dates to proceed."}
+                      ? "Beds are available for your selected dates."
+                      : "Please select different dates or reduce guests."}
                   </p>
                 </div>
               </div>
             )}
 
-            {/* Payment Method */}
             <div className="space-y-4">
               <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide flex items-center gap-2">
                 <Wallet className="w-4 h-4 text-blue-500" />
@@ -450,7 +444,6 @@ const BookingModal = ({ room, onClose }) => {
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex gap-3 pt-2">
               <button
                 type="button"

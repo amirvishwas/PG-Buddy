@@ -366,7 +366,7 @@ const PGDetails = () => {
                   {room.gender && (
                     <span
                       className={`px-4 py-1.5 rounded-full text-sm font-semibold border ${getGenderColor(
-                        room.gender
+                        room.gender,
                       )} flex items-center gap-2`}
                     >
                       <Users className="w-3.5 h-3.5" />
@@ -561,7 +561,7 @@ const PGDetails = () => {
                   <button
                     type="button"
                     onClick={() => setIsBookingModalOpen(true)}
-                    disabled={!room.isAvailable || room.availableBeds === 0}
+                    disabled={!room.isAvailable}
                     className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-blue-200 hover:shadow-xl hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center justify-center gap-2"
                   >
                     {room.isAvailable && room.availableBeds > 0 ? (
@@ -605,7 +605,7 @@ const PGDetails = () => {
                           {Math.round(
                             ((room.totalBeds - room.availableBeds) /
                               room.totalBeds) *
-                              100
+                              100,
                           )}
                           %
                         </span>

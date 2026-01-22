@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 import Booking from "../models/booking.js";
 import Room from "../models/room.js";
 import PG from "../models/pg.js";
@@ -19,12 +20,10 @@ const getModelPathInstance = (model, pathName) => {
   return p?.instance || null;
 };
 
-const calcNights = (checkInDate, checkOutDate) => {
-  const checkIn = new Date(checkInDate);
-  const checkOut = new Date(checkOutDate);
-  const diffMs = checkOut.getTime() - checkIn.getTime();
-  const nights = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  return Number.isFinite(nights) ? nights : 0;
+const getIdForSchemaPath = (model, pathName, { objectId, stringId }) => {
+  const instance = getModelPathInstance(model, pathName);
+  if (instance === "ObjectId" || instance === "ObjectID") return objectId;
+  return stringId;
 };
 
 const calculateTotalPrice = ({
@@ -44,18 +43,59 @@ const calculateTotalPrice = ({
   return Number(pricePerBed) * Number(guests) * months;
 };
 
-const isRoomAvailable = async ({ room, checkInDate, checkOutDate }) => {
+const assertValidDateRange = (checkInDate, checkOutDate) => {
   const checkIn = new Date(checkInDate);
   const checkOut = new Date(checkOutDate);
 
-  const overlap = await Booking.exists({
-    room,
-    status: { $ne: "cancelled" },
-    checkInDate: { $lt: checkOut },
-    checkOutDate: { $gt: checkIn },
-  });
+  if (!checkInDate || !checkOutDate)
+    return { ok: false, message: "Missing dates" };
+  if (Number.isNaN(checkIn.getTime()) || Number.isNaN(checkOut.getTime())) {
+    return { ok: false, message: "Invalid date format" };
+  }
+  if (checkOut <= checkIn) {
+    return { ok: false, message: "Check-out date must be after check-in date" };
+  }
 
-  return !overlap;
+  return { ok: true, checkIn, checkOut };
+};
+
+const getRoomAvailabilityForRange = async ({
+  roomId,
+  checkInDate,
+  checkOutDate,
+}) => {
+  const range = assertValidDateRange(checkInDate, checkOutDate);
+  if (!range.ok) {
+    const err = new Error(range.message);
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const roomData = await Room.findById(roomId);
+  if (!roomData) {
+    const err = new Error("Room not found");
+    err.statusCode = 404;
+    throw err;
+  }
+
+  const totalBeds = Math.max(1, Number(roomData.totalBeds) || 1);
+
+  const overlapMatch = {
+    room: roomData._id,
+    status: { $ne: "cancelled" },
+    checkInDate: { $lt: range.checkOut },
+    checkOutDate: { $gt: range.checkIn },
+  };
+
+  const agg = await Booking.aggregate([
+    { $match: overlapMatch },
+    { $group: { _id: null, bookedBeds: { $sum: "$guests" } } },
+  ]);
+
+  const bookedBeds = agg?.[0]?.bookedBeds ? Number(agg[0].bookedBeds) : 0;
+  const remainingBeds = Math.max(0, totalBeds - bookedBeds);
+
+  return { roomData, totalBeds, bookedBeds, remainingBeds, range };
 };
 
 const getOrCreateMongoUser = async (req) => {
@@ -69,16 +109,10 @@ const getOrCreateMongoUser = async (req) => {
   const dbUser = await User.findOneAndUpdate(
     { clerkId },
     { $setOnInsert: { clerkId } },
-    { new: true, upsert: true, runValidators: true }
+    { new: true, upsert: true, runValidators: true },
   );
 
   return { dbUser, clerkId };
-};
-
-const getIdForSchemaPath = (model, pathName, { objectId, stringId }) => {
-  const instance = getModelPathInstance(model, pathName);
-  if (instance === "ObjectId" || instance === "ObjectID") return objectId;
-  return stringId;
 };
 
 /** ---------- controllers ---------- */
@@ -86,18 +120,28 @@ const getIdForSchemaPath = (model, pathName, { objectId, stringId }) => {
 // POST /api/bookings/check-availability
 export const checkAvailabilityAPI = async (req, res) => {
   try {
-    const { room, checkInDate, checkOutDate } = req.body;
+    const { room, checkInDate, checkOutDate, guests } = req.body;
 
     if (!room || !checkInDate || !checkOutDate) {
       return res.json({ success: false, message: "Missing required fields" });
     }
 
-    const available = await isRoomAvailable({
-      room,
+    const requestedBeds = Math.max(1, Number(guests) || 1);
+
+    const { remainingBeds } = await getRoomAvailabilityForRange({
+      roomId: room,
       checkInDate,
       checkOutDate,
     });
-    return res.json({ success: true, isAvailable: available });
+
+    const isAvailable = remainingBeds >= requestedBeds;
+
+    return res.json({
+      success: true,
+      isAvailable,
+      remainingBeds,
+      requestedBeds,
+    });
   } catch (error) {
     return res.json({ success: false, message: error.message });
   }
@@ -106,64 +150,76 @@ export const checkAvailabilityAPI = async (req, res) => {
 // POST /api/bookings/book
 export const createBooking = async (req, res) => {
   try {
-    const { room, checkInDate, checkOutDate, guests } = req.body;
+    const {
+      room,
+      checkInDate,
+      checkOutDate,
+      guests,
+      name,
+      email,
+      phone,
+      username,
+      paymentMethod,
+    } = req.body;
 
     if (!room || !checkInDate || !checkOutDate || !guests) {
       return res.json({ success: false, message: "Missing required fields" });
     }
 
-    if (new Date(checkOutDate) <= new Date(checkInDate)) {
-      return res.json({
-        success: false,
-        message: "Check-out date must be after check-in date",
-      });
+    const parsedGuests = Number(guests);
+    if (!Number.isFinite(parsedGuests) || parsedGuests < 1) {
+      return res.json({ success: false, message: "Invalid guests count" });
+    }
+
+    const range = assertValidDateRange(checkInDate, checkOutDate);
+    if (!range.ok) {
+      return res.json({ success: false, message: range.message });
     }
 
     const { dbUser } = await getOrCreateMongoUser(req);
-
-    // Check availability
-    const isAvailable = await Booking.exists({
-      room,
-      status: { $ne: "cancelled" },
-      checkInDate: { $lt: new Date(checkOutDate) },
-      checkOutDate: { $gt: new Date(checkInDate) },
-    });
-
-    if (isAvailable) {
-      return res.json({ success: false, message: "Room not available" });
-    }
 
     const roomData = await Room.findById(room).populate("pg");
     if (!roomData || !roomData.pg) {
       return res.json({ success: false, message: "Room not found" });
     }
 
+    const { remainingBeds } = await getRoomAvailabilityForRange({
+      roomId: roomData._id,
+      checkInDate,
+      checkOutDate,
+    });
+
+    if (remainingBeds < parsedGuests) {
+      return res.json({
+        success: false,
+        message: `Room not available. Only ${remainingBeds} bed(s) left for selected dates.`,
+      });
+    }
+
     const totalPrice = calculateTotalPrice({
       pricePerBed: roomData.pricePerBed,
       checkInDate,
       checkOutDate,
-      guests,
+      guests: parsedGuests,
     });
 
     const booking = await Booking.create({
       user: dbUser._id,
       room: roomData._id,
       pg: roomData.pg._id,
-      guests,
-      checkInDate,
-      checkOutDate,
+      guests: parsedGuests,
+      checkInDate: range.checkIn,
+      checkOutDate: range.checkOut,
       totalPrice,
       status: "pending",
+      paymentMethod: paymentMethod || "Pay At PG",
       isPaid: false,
+
+      name,
+      email,
+      phone,
+      username,
     });
-    roomData.availableBeds = Math.max(
-      0,
-      roomData.availableBeds - Number(guests)
-    );
-    if (roomData.availableBeds === 0) {
-      roomData.isAvailable = false;
-    }
-    await roomData.save();
 
     return res.json({
       success: true,
@@ -174,7 +230,7 @@ export const createBooking = async (req, res) => {
     console.error(error);
     return res.json({
       success: false,
-      message: "Failed to create booking",
+      message: error?.message || "Failed to create booking",
     });
   }
 };
@@ -231,7 +287,7 @@ export const getOwnerBookings = async (req, res) => {
     const totalBookings = bookings.length;
     const totalRevenue = bookings.reduce(
       (acc, booking) => acc + (Number(booking.totalPrice) || 0),
-      0
+      0,
     );
 
     return res.json({
@@ -249,23 +305,13 @@ export const deleteBooking = async (req, res) => {
     const { id } = req.params;
     const userId = req.user._id;
 
-    // Verify booking belongs to user
     const booking = await Booking.findOne({ _id: id, user: userId });
     if (!booking) {
       return res.json({ success: false, message: "Booking not found" });
     }
-    // Restore room availability
-    const roomData = await Room.findById(booking.room);
-    if (roomData) {
-      roomData.availableBeds = Math.min(
-        roomData.totalBeds,
-        roomData.availableBeds + booking.guests
-      );
-      roomData.isAvailable = true;
-      await roomData.save();
-    }
 
     await Booking.findByIdAndDelete(id);
+
     return res.json({ success: true, message: "Booking deleted successfully" });
   } catch (error) {
     console.error(error);
@@ -273,7 +319,7 @@ export const deleteBooking = async (req, res) => {
   }
 };
 
-//mark booking as paid
+// PUT /api/bookings/:id/mark-paid
 export const markBookingAsPaid = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
