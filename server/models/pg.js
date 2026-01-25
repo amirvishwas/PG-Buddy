@@ -34,8 +34,12 @@ const pgSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    location: {
+      lat: { type: Number, default: 28.6139 },
+      lng: { type: Number, default: 77.209 },
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const PG = mongoose.model("PG", pgSchema);

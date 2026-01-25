@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import BookingModal from "../components/BookingModal";
 import ImageGallery from "./ImageGallery";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import {
   MapPin,
   Bed,
@@ -30,6 +31,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
+const defaultCenter = { lat: 28.6139, lng: 77.209 };
+
 const PGDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -38,16 +41,19 @@ const PGDetails = () => {
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
   const [isFavorite, setIsFavorite] = useState(false);
-
   const [ratings, setRatings] = useState([]);
   const [ratingsLoading, setRatingsLoading] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
+
+  // Initialize Google Maps
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+  });
 
   useEffect(() => {
     if (!loadingPgs && pgs.length > 0) {
@@ -80,48 +86,6 @@ const PGDetails = () => {
       setRatingsLoading(false);
     }
   };
-
-  if (loading || loadingPgs) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Home className="w-6 h-6 text-blue-600" />
-            </div>
-          </div>
-          <p className="text-gray-500 font-medium animate-pulse">
-            Loading property details...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!room) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-3xl shadow-xl p-10 text-center max-w-md w-full border border-gray-100">
-          <div className="w-24 h-24 mx-auto mb-6 bg-gray-50 rounded-full flex items-center justify-center">
-            <Home className="w-10 h-10 text-gray-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            PG Not Found
-          </h2>
-          <p className="text-gray-500 mb-8">
-            The property you're looking for doesn't exist.
-          </p>
-          <button
-            onClick={() => navigate("/listings")}
-            className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-6 py-3.5 rounded-xl font-semibold shadow-lg shadow-blue-200 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
-          >
-            Browse All PGs
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   const getAmenityIcon = (amenity) => {
     const iconMap = {
@@ -194,6 +158,48 @@ const PGDetails = () => {
     );
   };
 
+  if (loading || loadingPgs) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Home className="w-6 h-6 text-blue-600" />
+            </div>
+          </div>
+          <p className="text-gray-500 font-medium animate-pulse">
+            Loading property details...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!room) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-3xl shadow-xl p-10 text-center max-w-md w-full border border-gray-100">
+          <div className="w-24 h-24 mx-auto mb-6 bg-gray-50 rounded-full flex items-center justify-center">
+            <Home className="w-10 h-10 text-gray-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            PG Not Found
+          </h2>
+          <p className="text-gray-500 mb-8">
+            The property you're looking for doesn't exist.
+          </p>
+          <button
+            onClick={() => navigate("/listings")}
+            className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-6 py-3.5 rounded-xl font-semibold shadow-lg shadow-blue-200 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+          >
+            Browse All PGs
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const images = room.images?.length > 0 ? room.images : ["/placeholder.svg"];
 
   const handleOpenGallery = (index = 0) => {
@@ -201,6 +207,10 @@ const PGDetails = () => {
     setIsGalleryOpen(true);
   };
 
+  const mapPosition =
+    room.pg?.location?.lat && room.pg?.location?.lng
+      ? { lat: Number(room.pg.location.lat), lng: Number(room.pg.location.lng) }
+      : defaultCenter;
   return (
     <div className="min-h-screen bg-gray-50/50 relative font-[Poppins]">
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-blue-50/50 to-transparent -z-10" />
@@ -258,7 +268,6 @@ const PGDetails = () => {
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
 
-                {/* Hover overlay hint */}
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
                   <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full p-4 transform scale-90 group-hover:scale-100 transition-transform duration-300">
                     <Maximize2 className="w-8 h-8 text-white" />
@@ -274,7 +283,6 @@ const PGDetails = () => {
                   </div>
                 )}
 
-                {/* Camera Icon */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -286,7 +294,6 @@ const PGDetails = () => {
                 </button>
               </div>
 
-              {/* Thumbnails */}
               {images.length > 1 && (
                 <div className="p-4 bg-white">
                   <div className="grid grid-cols-5 gap-3">
@@ -346,7 +353,6 @@ const PGDetails = () => {
                     </div>
                   </div>
 
-                  {/* Rating Badge */}
                   <div className="flex flex-col items-end gap-2">
                     <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 px-4 py-2 rounded-xl border border-yellow-100">
                       <Star className="w-5 h-5 text-orange-400 fill-current" />
@@ -450,8 +456,7 @@ const PGDetails = () => {
                 )}
               </div>
             </div>
-
-            {/* Location */}
+            {/* Neighborhood Section */}
             <div className="bg-white rounded-3xl shadow-xl shadow-blue-100/20 border border-gray-100 p-8">
               <div className="flex items-center gap-2 mb-6">
                 <MapPin className="w-5 h-5 text-blue-500" />
@@ -459,20 +464,63 @@ const PGDetails = () => {
                   Neighborhood
                 </h3>
               </div>
-              <div className="bg-gray-50 rounded-2xl p-6 flex items-start gap-4 border border-gray-200/60">
-                <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <MapPin className="w-6 h-6" />
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Text Info Card */}
+                <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200/60 flex flex-col justify-between">
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-lg mb-1">
+                      {room.pg?.name || "Property Location"}
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed mb-4 text-sm">
+                      {room.pg?.address || "Detailed address loading..."}
+                    </p>
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 uppercase tracking-wide mb-6">
+                      {room.pg?.city || "Location details"}
+                    </span>
+                  </div>
+
+                  {/* FIXED Directions Link */}
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${mapPosition.lat},${mapPosition.lng}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-fit inline-flex items-center gap-2 text-xs font-bold text-white bg-blue-600 px-5 py-3 rounded-xl hover:bg-blue-700 transition-all shadow-md active:scale-95 group"
+                  >
+                    <MapPin size={14} className="group-hover:animate-bounce" />
+                    Get Precise Directions
+                  </a>
                 </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 text-lg mb-1">
-                    {room.pg?.name}
-                  </h4>
-                  <p className="text-gray-600 leading-relaxed mb-3 text-sm">
-                    {room.pg?.address}
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 uppercase tracking-wide">
-                    {room.pg?.city}
-                  </span>
+
+                {/* Interactive Map Display */}
+                <div className="h-[250px] rounded-2xl overflow-hidden border border-gray-200 shadow-inner bg-gray-100 relative">
+                  {isLoaded ? (
+                    <GoogleMap
+                      mapContainerStyle={{ width: "100%", height: "100%" }}
+                      center={mapPosition}
+                      zoom={15}
+                      options={{
+                        disableDefaultUI: true,
+                        zoomControl: true,
+                        styles: [
+                          {
+                            featureType: "poi",
+                            elementType: "labels",
+                            stylers: [{ visibility: "off" }],
+                          },
+                        ],
+                      }}
+                    >
+                      <Marker position={mapPosition} />
+                    </GoogleMap>
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-2">
+                      <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                      <span className="text-xs font-medium text-gray-400">
+                        Loading Map...
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -533,11 +581,10 @@ const PGDetails = () => {
             </div>
           </div>
 
-          {/* Right Column  */}
+          {/* Right Column */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
               <div className="bg-white rounded-3xl shadow-2xl shadow-blue-100/50 border border-gray-100 p-6 overflow-hidden relative">
-                {/* Decorative Blob */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-bl-full -z-0 opacity-50" />
 
                 <div className="relative z-10 mb-8">
