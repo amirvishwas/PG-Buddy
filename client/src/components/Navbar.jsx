@@ -8,7 +8,6 @@ import {
   PlusCircle,
   LayoutDashboard,
   Building2,
-  Heart,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useClerk, UserButton } from "@clerk/clerk-react";
@@ -115,17 +114,6 @@ const Navbar = () => {
             {/* CTA Section - Desktop */}
             <div className="hidden md:flex items-center gap-3">
               {user && (
-                <Link
-                  to="/saved-pgs"
-                  className="p-2.5 rounded-full text-gray-500 hover:bg-red-50 hover:text-red-500 transition-all relative group"
-                  title="Saved PGs"
-                >
-                  <Heart size={20} className="group-hover:fill-current" />
-                  <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-                </Link>
-              )}
-
-              {user && (
                 <button
                   className={`
                     group flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300
@@ -178,16 +166,6 @@ const Navbar = () => {
             </div>
 
             <div className="md:hidden flex items-center gap-2">
-              {user && (
-                <Link
-                  to="/saved"
-                  className="p-2 rounded-full text-gray-600 hover:bg-red-50 hover:text-red-500 transition-colors relative"
-                >
-                  <Heart size={20} />
-                  <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-                </Link>
-              )}
-
               {user && (
                 <UserButton
                   appearance={{
