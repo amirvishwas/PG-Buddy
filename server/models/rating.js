@@ -12,7 +12,7 @@ const ratingSchema = new mongoose.Schema(
     rating: { type: Number, required: true, min: 1, max: 5 },
     review: { type: String, maxlength: 500 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 const Rating = mongoose.model("Rating", ratingSchema);
 export default Rating;

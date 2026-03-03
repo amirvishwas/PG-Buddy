@@ -19,7 +19,6 @@ const PGCard = ({ room, index }) => {
     navigate(`/pg/${room._id}`);
   };
 
-  // Get PG data from populated room
   const pg = room.pg || {};
   const pgName = pg.name || "PG Name";
   const pgLocation = pg.city || pg.location || "Location";
@@ -53,7 +52,6 @@ const PGCard = ({ room, index }) => {
       onClick={handleClick}
       className="group cursor-pointer relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 overflow-hidden"
     >
-      {/* Image Section */}
       <div className="relative h-52 sm:h-56 overflow-hidden">
         <img
           src={pgImage}
@@ -61,10 +59,8 @@ const PGCard = ({ room, index }) => {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
 
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
-        {/* Featured badge */}
         <div className="absolute top-4 left-4">
           <div
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r ${gradient} text-white text-xs font-semibold shadow-lg`}
@@ -74,7 +70,6 @@ const PGCard = ({ room, index }) => {
           </div>
         </div>
 
-        {/* Gender badge */}
         <div className="absolute top-4 right-4">
           <div
             className={`flex items-center gap-1 px-2.5 py-1 rounded-full ${genderStyle.bg} ${genderStyle.text} text-xs font-medium backdrop-blur-sm`}
@@ -84,7 +79,6 @@ const PGCard = ({ room, index }) => {
           </div>
         </div>
 
-        {/* Price tag */}
         <div className="absolute bottom-4 right-4">
           <div className="bg-white/95 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg">
             <div className="flex items-baseline gap-1">
@@ -99,7 +93,6 @@ const PGCard = ({ room, index }) => {
           </div>
         </div>
 
-        {/* Location on image */}
         <div className="absolute bottom-4 left-4">
           <div className="flex items-center gap-1.5 text-white text-sm">
             <MapPin className="w-4 h-4" />
@@ -108,13 +101,11 @@ const PGCard = ({ room, index }) => {
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="p-5">
         <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300 truncate">
           {pgName}
         </h3>
 
-        {/* Room info */}
         <div className="flex items-center gap-4 mb-4">
           <div className="flex items-center gap-1.5 text-sm text-gray-600">
             <Bed className="w-4 h-4 text-gray-400" />
@@ -129,7 +120,6 @@ const PGCard = ({ room, index }) => {
           </div>
         </div>
 
-        {/* Amenities */}
         {pgAmenities.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             {pgAmenities.slice(0, 3).map((a, i) => (
@@ -148,12 +138,17 @@ const PGCard = ({ room, index }) => {
           </div>
         )}
 
-        {/* Rating & CTA */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <span className="font-semibold text-gray-900">4.5</span>
-            <span className="text-gray-400 text-sm">(24)</span>
+            <span className="font-semibold text-gray-900">
+              {room.averageRating ? room.averageRating.toFixed(1) : "New"}
+            </span>
+            {room.totalRatings > 0 && (
+              <span className="text-gray-400 text-sm">
+                ({room.totalRatings})
+              </span>
+            )}
           </div>
           <div
             className={`flex items-center gap-1 text-sm font-medium bg-gradient-to-r ${gradient} bg-clip-text text-transparent group-hover:gap-2 transition-all duration-300`}
@@ -164,7 +159,6 @@ const PGCard = ({ room, index }) => {
         </div>
       </div>
 
-      {/* Bottom gradient line */}
       <div
         className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}
       />
@@ -174,9 +168,10 @@ const PGCard = ({ room, index }) => {
 
 const FeaturedPGs = () => {
   const { pgs, loadingPgs, navigate } = useAppContext();
-  // Filter to show only available rooms with beds, then take first 4
+
   const featured = pgs
     .filter((room) => room.isAvailable !== false && room.availableBeds > 0)
+    .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
     .slice(0, 4);
 
   const handleViewAll = () => {
@@ -205,7 +200,6 @@ const FeaturedPGs = () => {
             </p>
           </div>
 
-          {/* Loading skeleton */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
               <div
@@ -233,12 +227,10 @@ const FeaturedPGs = () => {
 
   return (
     <section className="py-16 sm:py-20 relative overflow-hidden">
-      {/* Background decorations */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-teal-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-teal-50 border border-blue-100 mb-6">
             <Sparkles className="w-4 h-4 text-blue-500" />
@@ -281,20 +273,17 @@ const FeaturedPGs = () => {
           </p>
         </div>
 
-        {/* Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {featured.map((room, index) => (
             <PGCard key={room._id} room={room} index={index} />
           ))}
         </div>
 
-        {/* View All Button */}
         <div className="mt-12 sm:mt-16 flex justify-center">
           <button
             onClick={handleViewAll}
             className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl hover:shadow-blue-200/50 transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
           >
-            {/* Shine effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
 
             <span className="relative">View All PGs</span>

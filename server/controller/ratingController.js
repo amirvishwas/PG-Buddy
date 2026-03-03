@@ -7,7 +7,6 @@ export const createRating = async (req, res) => {
   try {
     const { bookingId, roomId, rating, review } = req.body;
 
-    // 1. GET USER ID
     const clerkId = req.auth?.userId || req.user?.id || req.user?.clerkId;
 
     if (!clerkId) {
@@ -17,7 +16,6 @@ export const createRating = async (req, res) => {
       });
     }
 
-    // Find the user
     const user = await User.findOne({ clerkId });
 
     if (!user) {
@@ -29,7 +27,6 @@ export const createRating = async (req, res) => {
 
     const userId = user._id;
 
-    // 2. Validate if booking exists and belongs to user
     const booking = await Booking.findOne({
       _id: bookingId,
       user: userId,
@@ -43,7 +40,6 @@ export const createRating = async (req, res) => {
       });
     }
 
-    // 3. Check if already rated
     if (booking.isRated) {
       return res.status(400).json({
         success: false,
@@ -51,7 +47,6 @@ export const createRating = async (req, res) => {
       });
     }
 
-    // 4. Create Rating
     const newRating = await Rating.create({
       user: userId,
       booking: bookingId,
@@ -60,10 +55,20 @@ export const createRating = async (req, res) => {
       review,
     });
 
-    // 5. Update Booking status
     booking.isRated = true;
     booking.userRating = newRating._id;
     await booking.save();
+
+    // Update Room average rating
+    const ratings = await Rating.find({ room: roomId });
+    const totalRatings = ratings.length;
+    const averageRating =
+      ratings.reduce((acc, curr) => acc + curr.rating, 0) / totalRatings;
+
+    await Room.findByIdAndUpdate(roomId, {
+      averageRating,
+      totalRatings,
+    });
 
     res.status(201).json({
       success: true,

@@ -28,8 +28,8 @@ export const createRoom = async (req, res) => {
       const uploads = req.files.map((file) =>
         cloudinary.uploader.upload(
           `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,
-          { folder: "pg_rooms" }
-        )
+          { folder: "pg_rooms" },
+        ),
       );
 
       const results = await Promise.all(uploads);
@@ -86,7 +86,7 @@ export const getRooms = async (req, res) => {
     const rooms = await Room.find({ isAvailable: true })
       .populate({
         path: "pg",
-        select: "name city address",
+        select: "name city address location", // ✅ Location included here
         populate: {
           path: "owner",
           select: "image",
@@ -119,7 +119,7 @@ export const getOwnerRooms = async (req, res) => {
     }
 
     const rooms = await Room.find({ pg: pg._id })
-      .populate("pg", "name city address")
+      .populate("pg", "name city address location") // ✅ Added location here
       .sort({ createdAt: -1 });
 
     return res.status(200).json({
