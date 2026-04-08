@@ -1,139 +1,110 @@
 import React from "react";
-import { Search, Home, UserPlus, ArrowRight } from "lucide-react";
+import { Search, Home, UserPlus } from "lucide-react";
+
+const steps = [
+  {
+    number: "01",
+    icon: Search,
+    title: "Search your city",
+    description:
+      "Type a city, locality, or landmark. We'll show you verified rooms that actually match what you're looking for.",
+    accent: "bg-amber-50 border-amber-100 text-amber-700",
+    iconBg: "bg-amber-100 text-amber-700",
+  },
+  {
+    number: "02",
+    icon: Home,
+    title: "Browse honestly",
+    description:
+      "Real photos, real prices, real facilities. No inflated listings, no bait-and-switch. What you see is what you get.",
+    accent: "bg-slate-100 border-slate-200 text-slate-700",
+    iconBg: "bg-slate-200 text-slate-700",
+  },
+  {
+    number: "03",
+    icon: UserPlus,
+    title: "Connect & move in",
+    description:
+      "Reach the owner directly. No middlemen taking cuts, no awkward broker calls. Just you and your next home.",
+    accent: "bg-green-50 border-green-100 text-green-700",
+    iconBg: "bg-green-100 text-green-700",
+  },
+];
 
 const HowItWorks = () => {
-  const steps = [
-    {
-      icon: Search,
-      title: "Search for PGs",
-      description:
-        "Enter your location and browse through a variety of PGs and hostels that fit your budget and preferences.",
-      gradient: "from-blue-500 to-cyan-400",
-      bgGradient: "from-blue-50 to-cyan-50",
-      shadowColor: "shadow-blue-200/50",
-    },
-    {
-      icon: Home,
-      title: "View Details",
-      description:
-        "Check images, facilities, pricing, and detailed descriptions to find the perfect stay for you.",
-      gradient: "from-violet-500 to-purple-400",
-      bgGradient: "from-violet-50 to-purple-50",
-      shadowColor: "shadow-violet-200/50",
-    },
-    {
-      icon: UserPlus,
-      title: "Connect & Book",
-      description:
-        "Contact the PG owner directly and book your room easily without any hassle.",
-      gradient: "from-emerald-500 to-teal-400",
-      bgGradient: "from-emerald-50 to-teal-50",
-      shadowColor: "shadow-emerald-200/50",
-    },
-  ];
-
   return (
-    <section className="py-20 sm:py-28 relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-100/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-100/40 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 mb-6">
-            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            <span className="text-sm font-medium text-blue-700">
-              Simple Process
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
-            How It{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Works
-            </span>
+    <section className="py-20 sm:py-28 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mb-14">
+        <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-4">
+          The process
+        </p>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight max-w-sm">
+            Three steps,{" "}
+            <span className="text-slate-400">then you're home.</span>
           </h2>
-          <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
-            Find your perfect PG in just three simple steps
+          <p className="text-slate-500 text-base max-w-xs sm:text-right leading-relaxed">
+            We cut out everything that made finding a PG feel like a part-time
+            job.
           </p>
         </div>
+      </div>
 
-        {/* Steps */}
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 relative">
-          {/* Connecting line - hidden on mobile */}
-          <div className="hidden md:block absolute top-24 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-blue-200 via-purple-200 to-emerald-200" />
+      <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          return (
+            <div
+              key={index}
+              className="bg-white rounded-2xl border border-slate-200 p-7 hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
+            >
+              <span className="absolute top-5 right-6 text-5xl font-extrabold text-slate-100 group-hover:text-slate-200 transition-colors select-none">
+                {step.number}
+              </span>
 
-          {steps.map((step, index) => {
-            const IconComponent = step.icon;
-            return (
-              <div key={index} className="group relative">
-                <div
-                  className={`
-                  relative bg-white rounded-3xl p-8 sm:p-10
-                  border border-gray-100
-                  shadow-xl ${step.shadowColor}
-                  hover:shadow-2xl hover:-translate-y-2
-                  transition-all duration-500 ease-out
-                  overflow-hidden
-                `}
-                >
-                  {/* Background gradient on hover */}
-                  <div
-                    className={`
-                    absolute inset-0 bg-gradient-to-br ${step.bgGradient}
-                    opacity-0 group-hover:opacity-100 transition-opacity duration-500
-                  `}
-                  />
+              <div
+                className={`w-11 h-11 rounded-xl flex items-center justify-center mb-6 ${step.iconBg}`}
+              >
+                <Icon className="w-5 h-5" />
+              </div>
 
-                  {/* Step number */}
-                  <div className="absolute top-4 right-4 text-6xl font-bold text-gray-100 group-hover:text-white/20 transition-colors duration-500">
-                    0{index + 1}
-                  </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                {step.title}
+              </h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                {step.description}
+              </p>
 
-                  {/* Content */}
-                  <div className="relative z-10">
-                    {/* Icon */}
-                    <div
-                      className={`
-                      w-16 h-16 sm:w-20 sm:h-20 rounded-2xl
-                      bg-gradient-to-br ${step.gradient}
-                      flex items-center justify-center mb-6
-                      shadow-lg group-hover:scale-110 group-hover:rotate-3
-                      transition-all duration-500
-                    `}
-                    >
-                      <IconComponent className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-                    </div>
-
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 group-hover:text-gray-800">
-                      {step.title}
-                    </h3>
-
-                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-
-                  {/* Arrow indicator */}
-                  <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-                    <div
-                      className={`w-10 h-10 rounded-full bg-gradient-to-r ${step.gradient} flex items-center justify-center`}
-                    >
-                      <ArrowRight className="w-5 h-5 text-white" />
-                    </div>
+              {index < steps.length - 1 && (
+                <div className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 z-10">
+                  <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center">
+                    <span className="text-slate-400 text-xs">→</span>
                   </div>
                 </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
 
-                {/* Mobile connector */}
-                {index < steps.length - 1 && (
-                  <div className="md:hidden flex justify-center my-4">
-                    <div className="w-0.5 h-8 bg-gradient-to-b from-gray-200 to-gray-300 rounded-full" />
-                  </div>
-                )}
-              </div>
-            );
-          })}
+      <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 bg-slate-900 rounded-2xl">
+        <div className="flex -space-x-2">
+          {["P", "A", "S", "R"].map((initial, i) => (
+            <div
+              key={i}
+              className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-900 flex items-center justify-center text-xs text-slate-300 font-medium"
+            >
+              {initial}
+            </div>
+          ))}
         </div>
+        <p className="text-slate-300 text-sm flex-1">
+          <span className="text-white font-semibold">1,200+ people</span> found
+          their room this month — most within 3 days of searching.
+        </p>
+        <span className="text-amber-400 text-sm font-medium whitespace-nowrap">
+          You could be next →
+        </span>
       </div>
     </section>
   );

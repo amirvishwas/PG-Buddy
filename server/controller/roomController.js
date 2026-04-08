@@ -119,7 +119,7 @@ export const getOwnerRooms = async (req, res) => {
     }
 
     const rooms = await Room.find({ pg: pg._id })
-      .populate("pg", "name city address location") // ✅ Added location here
+      .populate("pg", "name city address location")
       .sort({ createdAt: -1 });
 
     return res.status(200).json({

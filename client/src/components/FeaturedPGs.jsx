@@ -1,15 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import {
-  MapPin,
-  Bed,
-  Users,
-  Star,
-  ArrowRight,
-  Sparkles,
-  TrendingUp,
-} from "lucide-react";
+import { MapPin, Bed, Users, Star, ArrowRight, TrendingUp } from "lucide-react";
 
 const PGCard = ({ room, index }) => {
   const navigate = useNavigate();
@@ -25,23 +17,17 @@ const PGCard = ({ room, index }) => {
   const pgAmenities = pg.amenities || [];
   const pgImage = room.images?.[0] || pg.images?.[0] || "/placeholder.svg";
 
-  const gradients = [
-    "from-blue-500 to-cyan-400",
-    "from-violet-500 to-purple-400",
-    "from-rose-500 to-pink-400",
-    "from-emerald-500 to-teal-400",
-  ];
-
-  const gradient = gradients[index % gradients.length];
-
   const getGenderBadge = (gender) => {
     switch (gender?.toLowerCase()) {
       case "boys":
-        return { bg: "bg-blue-100", text: "text-blue-700", icon: "👨" };
+        return { bg: "bg-blue-50 border-blue-100 text-blue-700", icon: "♂" };
       case "girls":
-        return { bg: "bg-pink-100", text: "text-pink-700", icon: "👩" };
+        return { bg: "bg-pink-50 border-pink-100 text-pink-700", icon: "♀" };
       default:
-        return { bg: "bg-purple-100", text: "text-purple-700", icon: "👥" };
+        return {
+          bg: "bg-slate-100 border-slate-200 text-slate-600",
+          icon: "⊕",
+        };
     }
   };
 
@@ -50,118 +36,103 @@ const PGCard = ({ room, index }) => {
   return (
     <div
       onClick={handleClick}
-      className="group cursor-pointer relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+      className="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
     >
-      <div className="relative h-52 sm:h-56 overflow-hidden">
+      <div className="relative h-48 overflow-hidden">
         <img
           src={pgImage}
           alt={pgName}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-        <div className="absolute top-4 left-4">
-          <div
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r ${gradient} text-white text-xs font-semibold shadow-lg`}
-          >
+        <div className="absolute top-3 left-3">
+          <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500 text-white text-xs font-semibold">
             <TrendingUp className="w-3 h-3" />
             Featured
           </div>
         </div>
 
-        <div className="absolute top-4 right-4">
+        <div className="absolute top-3 right-3">
           <div
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full ${genderStyle.bg} ${genderStyle.text} text-xs font-medium backdrop-blur-sm`}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-medium backdrop-blur-sm ${genderStyle.bg}`}
           >
-            <span>{genderStyle.icon}</span>
             {room.gender || "Any"}
           </div>
         </div>
 
-        <div className="absolute bottom-4 right-4">
-          <div className="bg-white/95 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg">
-            <div className="flex items-baseline gap-1">
-              <span
-                className={`text-lg font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}
-              >
+        <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+          <div className="flex items-center gap-1.5 text-white text-xs">
+            <MapPin className="w-3.5 h-3.5 shrink-0" />
+            <span className="font-medium truncate">{pgLocation}</span>
+          </div>
+          <div className="bg-white rounded-lg px-2.5 py-1.5 shrink-0">
+            <div className="flex items-baseline gap-0.5">
+              <span className="text-sm font-bold text-slate-900">
                 {currency}
                 {room.pricePerBed}
               </span>
-              <span className="text-gray-500 text-xs">/bed</span>
+              <span className="text-slate-400 text-xs">/bed</span>
             </div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-4 left-4">
-          <div className="flex items-center gap-1.5 text-white text-sm">
-            <MapPin className="w-4 h-4" />
-            <span className="font-medium">{pgLocation}</span>
           </div>
         </div>
       </div>
 
-      <div className="p-5">
-        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300 truncate">
+      <div className="p-4">
+        <h3 className="text-sm font-semibold text-slate-900 mb-2.5 group-hover:text-amber-600 transition-colors truncate">
           {pgName}
         </h3>
 
-        <div className="flex items-center gap-4 mb-4">
-          <div className="flex items-center gap-1.5 text-sm text-gray-600">
-            <Bed className="w-4 h-4 text-gray-400" />
+        <div className="flex items-center gap-4 mb-3">
+          <div className="flex items-center gap-1.5 text-xs text-slate-500">
+            <Bed className="w-3.5 h-3.5 text-slate-400" />
             <span className="capitalize">{room.roomType}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-sm">
-            <Users className="w-4 h-4 text-gray-400" />
-            <span className="text-emerald-600 font-medium">
+          <div className="flex items-center gap-1.5 text-xs">
+            <Users className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-green-600 font-medium">
               {room.availableBeds}
             </span>
-            <span className="text-gray-400">/ {room.totalBeds}</span>
+            <span className="text-slate-400">/ {room.totalBeds} beds</span>
           </div>
         </div>
 
         {pgAmenities.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-1.5 mb-3">
             {pgAmenities.slice(0, 3).map((a, i) => (
               <span
                 key={i}
-                className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200 transition-colors"
+                className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-xs"
               >
                 {a}
               </span>
             ))}
             {pgAmenities.length > 3 && (
-              <span className="px-2.5 py-1 bg-gray-50 text-gray-400 rounded-lg text-xs">
+              <span className="px-2 py-0.5 bg-slate-50 text-slate-400 rounded-md text-xs">
                 +{pgAmenities.length - 3}
               </span>
             )}
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+        <div className="flex items-center justify-between pt-3 border-t border-slate-100">
           <div className="flex items-center gap-1">
-            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <span className="font-semibold text-gray-900">
+            <Star className="w-3.5 h-3.5 text-amber-400 fill-current" />
+            <span className="text-xs font-semibold text-slate-900">
               {room.averageRating ? room.averageRating.toFixed(1) : "New"}
             </span>
             {room.totalRatings > 0 && (
-              <span className="text-gray-400 text-sm">
+              <span className="text-slate-400 text-xs">
                 ({room.totalRatings})
               </span>
             )}
           </div>
-          <div
-            className={`flex items-center gap-1 text-sm font-medium bg-gradient-to-r ${gradient} bg-clip-text text-transparent group-hover:gap-2 transition-all duration-300`}
-          >
-            View Details
-            <ArrowRight className="w-4 h-4 text-blue-500" />
+          <div className="flex items-center gap-1 text-xs font-medium text-slate-500 group-hover:text-slate-900 transition-colors">
+            View details
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </div>
         </div>
       </div>
-
-      <div
-        className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}
-      />
     </div>
   );
 };
@@ -180,44 +151,28 @@ const FeaturedPGs = () => {
 
   if (loadingPgs) {
     return (
-      <section className="py-16 sm:py-20 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-teal-50 border border-blue-100 mb-6">
-              <Sparkles className="w-4 h-4 text-blue-500" />
-              <span className="text-sm font-medium text-blue-700">
-                Top Picks
-              </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Best{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
-                Sellers
-              </span>
-            </h2>
-            <p className="text-gray-600 text-base sm:text-lg">
-              Loading amazing PGs for you...
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="bg-white rounded-3xl shadow-lg overflow-hidden animate-pulse"
-              >
-                <div className="h-52 bg-gray-200" />
-                <div className="p-5 space-y-3">
-                  <div className="h-5 bg-gray-200 rounded w-3/4" />
-                  <div className="h-4 bg-gray-200 rounded w-1/2" />
-                  <div className="flex gap-2">
-                    <div className="h-6 bg-gray-200 rounded-lg w-16" />
-                    <div className="h-6 bg-gray-200 rounded-lg w-16" />
-                  </div>
+      <section className="py-14 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <div className="h-4 w-24 bg-slate-200 rounded mb-4 animate-pulse" />
+          <div className="h-8 w-48 bg-slate-200 rounded animate-pulse" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl border border-slate-200 overflow-hidden animate-pulse"
+            >
+              <div className="h-48 bg-slate-100" />
+              <div className="p-4 space-y-3">
+                <div className="h-4 bg-slate-100 rounded w-3/4" />
+                <div className="h-3 bg-slate-100 rounded w-1/2" />
+                <div className="flex gap-2">
+                  <div className="h-5 bg-slate-100 rounded w-14" />
+                  <div className="h-5 bg-slate-100 rounded w-14" />
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
     );
@@ -226,70 +181,29 @@ const FeaturedPGs = () => {
   if (!pgs || pgs.length === 0) return null;
 
   return (
-    <section className="py-16 sm:py-20 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-teal-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-teal-50 border border-blue-100 mb-6">
-            <Sparkles className="w-4 h-4 text-blue-500" />
-            <span className="text-sm font-medium text-blue-700">Top Picks</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Best{" "}
-            <span className="relative">
-              <span className="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
-                Sellers
-              </span>
-              <svg
-                className="absolute -bottom-2 left-0 w-full"
-                viewBox="0 0 200 12"
-                fill="none"
-              >
-                <path
-                  d="M2 10C50 4 150 4 198 10"
-                  stroke="url(#bestSellerGradient)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-                <defs>
-                  <linearGradient
-                    id="bestSellerGradient"
-                    x1="0"
-                    y1="0"
-                    x2="200"
-                    y2="0"
-                  >
-                    <stop stopColor="#2563eb" />
-                    <stop offset="1" stopColor="#14b8a6" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
+    <section className="py-14 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mb-10">
+        <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-4">
+          Top picks
+        </p>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+            Rooms people <span className="text-slate-400">actually love.</span>
           </h2>
-          <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto mt-4">
-            Most popular and highly rated PGs & hostels this month
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {featured.map((room, index) => (
-            <PGCard key={room._id} room={room} index={index} />
-          ))}
-        </div>
-
-        <div className="mt-12 sm:mt-16 flex justify-center">
           <button
             onClick={handleViewAll}
-            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl hover:shadow-blue-200/50 transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+            className="flex items-center gap-2 text-sm font-medium text-slate-900 border border-slate-200 hover:border-slate-400 bg-white px-4 py-2 rounded-lg transition-all shrink-0 cursor-pointer"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-
-            <span className="relative">View All PGs</span>
-            <ArrowRight className="w-5 h-5 relative group-hover:translate-x-1 transition-transform duration-300" />
+            View all PGs
+            <ArrowRight className="w-4 h-4" />
           </button>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {featured.map((room, index) => (
+          <PGCard key={room._id} room={room} index={index} />
+        ))}
       </div>
     </section>
   );

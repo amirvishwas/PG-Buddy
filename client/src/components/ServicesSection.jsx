@@ -1,206 +1,116 @@
 import React from "react";
-import { MapPin, Calendar, Gift, Sparkles, Star } from "lucide-react";
+import { MapPin, Calendar, Gift } from "lucide-react";
+
+const services = [
+  {
+    icon: MapPin,
+    title: "Discover local stays",
+    description:
+      "Explore verified PGs in your preferred area. Browse through 100+ locations across multiple cities — all curated by hand.",
+    stat: "100+",
+    statLabel: "locations",
+    iconBg: "bg-amber-100 text-amber-700",
+    statBg: "bg-amber-50 border-amber-100 text-amber-700",
+  },
+  {
+    icon: Calendar,
+    title: "Instant booking",
+    description:
+      "Reserve your ideal PG directly through the platform. Check real-time availability and lock in your room before someone else does.",
+    stat: "24/7",
+    statLabel: "available",
+    iconBg: "bg-slate-100 text-slate-700",
+    statBg: "bg-slate-50 border-slate-200 text-slate-600",
+  },
+  {
+    icon: Gift,
+    title: "Premium value plans",
+    description:
+      "Access exclusive partnerships with top-rated PGs nationwide. We make sure you get the best amenities without overpaying.",
+    stat: "50%",
+    statLabel: "avg. savings",
+    iconBg: "bg-green-100 text-green-700",
+    statBg: "bg-green-50 border-green-100 text-green-700",
+  },
+];
 
 export default function ServicesSection() {
-  const services = [
-    {
-      icon: MapPin,
-      title: "Discover Local Stays",
-      description:
-        "Explore verified paying guest accommodations in your preferred area. Browse through 100+ locations across multiple cities.",
-      gradient: "from-rose-500 to-orange-400",
-      bgColor: "bg-rose-50",
-      iconBg: "bg-rose-100",
-      accentColor: "text-rose-500",
-      stat: "100+",
-      statLabel: "Locations",
-    },
-    {
-      icon: Calendar,
-      title: "Instant Booking",
-      description:
-        "Reserve your ideal PG instantly via our platform or mobile app. Check real-time availability and secure exclusive online offers.",
-      gradient: "from-blue-500 to-indigo-500",
-      bgColor: "bg-blue-50",
-      iconBg: "bg-blue-100",
-      accentColor: "text-blue-500",
-      stat: "24/7",
-      statLabel: "Available",
-    },
-    {
-      icon: Gift,
-      title: "Premium Value Plans",
-      description:
-        "Access exclusive partnerships with top-rated PGs nationwide. We guarantee our guests receive unbeatable value and premium amenities.",
-      gradient: "from-emerald-500 to-cyan-500",
-      bgColor: "bg-emerald-50",
-      iconBg: "bg-emerald-100",
-      accentColor: "text-emerald-500",
-      stat: "50%",
-      statLabel: "Savings",
-    },
-  ];
-
   return (
-    <section className="py-20 sm:py-28 relative overflow-hidden bg-gradient-to-b from-white via-gray-50/50 to-white">
-      {/* Floating decorations */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-rose-200 to-orange-200 rounded-full blur-2xl opacity-60 animate-pulse" />
-      <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-br from-blue-200 to-indigo-200 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-gradient-to-br from-emerald-200 to-cyan-200 rounded-full blur-2xl opacity-60" />
-
-      {/* Subtle pattern overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }}
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-100 mb-6">
-            <Sparkles className="w-4 h-4 text-cyan-500" />
-            <span className="text-sm font-medium text-cyan-700">
-              Our Services
-            </span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
-            What We{" "}
-            <span className="relative">
-              <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">
-                Offer
-              </span>
-              <svg
-                className="absolute -bottom-2 left-0 w-full"
-                viewBox="0 0 200 12"
-                fill="none"
-              >
-                <path
-                  d="M2 10C50 4 150 4 198 10"
-                  stroke="url(#gradient)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                />
-                <defs>
-                  <linearGradient id="gradient" x1="0" y1="0" x2="200" y2="0">
-                    <stop stopColor="#06b6d4" />
-                    <stop offset="1" stopColor="#2563eb" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
+    <section className="py-20 sm:py-28 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mb-14">
+        <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-4">
+          What we offer
+        </p>
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight max-w-sm">
+            Built around{" "}
+            <span className="text-slate-400">how you actually live.</span>
           </h2>
-          <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto mt-6">
-            Experience exceptional accommodation services tailored for modern
-            living
+          <p className="text-slate-500 text-base max-w-xs sm:text-right leading-relaxed">
+            Every feature exists to take something stressful off your plate.
           </p>
         </div>
+      </div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-          {services.map((service, index) => {
-            const IconComponent = service.icon;
-            return (
-              <div key={index} className="group relative">
-                {/* Main card */}
+      <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        {services.map((service, index) => {
+          const Icon = service.icon;
+          return (
+            <div
+              key={index}
+              className="bg-white rounded-2xl border border-slate-200 p-7 hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
+            >
+              <div className="flex items-start justify-between mb-6">
                 <div
-                  className={`
-                  relative bg-white rounded-3xl p-8 sm:p-10
-                  border border-gray-100
-                  shadow-lg hover:shadow-2xl
-                  transition-all duration-500 ease-out
-                  hover:-translate-y-3
-                  overflow-hidden
-                `}
+                  className={`w-11 h-11 rounded-xl flex items-center justify-center ${service.iconBg}`}
                 >
-                  {/* Decorative corner gradient */}
-                  <div
-                    className={`
-                    absolute -top-20 -right-20 w-40 h-40 rounded-full
-                    bg-gradient-to-br ${service.gradient} opacity-10
-                    group-hover:opacity-20 group-hover:scale-150
-                    transition-all duration-700
-                  `}
-                  />
-
-                  {/* Stat badge */}
-                  <div className="absolute top-6 right-6">
-                    <div
-                      className={`
-                      px-3 py-1.5 rounded-full ${service.bgColor}
-                      text-xs font-bold ${service.accentColor}
-                    `}
-                    >
-                      {service.stat} {service.statLabel}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    {/* Icon */}
-                    <div
-                      className={`
-                      w-16 h-16 sm:w-18 sm:h-18 rounded-2xl
-                      ${service.iconBg}
-                      flex items-center justify-center mb-6
-                      group-hover:scale-110 
-                      transition-transform duration-500
-                      relative
-                    `}
-                    >
-                      <div
-                        className={`
-                        absolute inset-0 rounded-2xl bg-gradient-to-br ${service.gradient}
-                        opacity-0 group-hover:opacity-100 transition-opacity duration-500
-                      `}
-                      />
-                      <IconComponent
-                        className={`
-                        w-8 h-8 sm:w-9 sm:h-9 ${service.accentColor}
-                        group-hover:text-white relative z-10
-                        transition-colors duration-500
-                      `}
-                        strokeWidth={1.5}
-                      />
-                    </div>
-
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-                      {service.title}
-                    </h3>
-
-                    <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-6">
-                      {service.description}
-                    </p>
-
-                    {/* Rating stars */}
-                    <div className="flex items-center gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-4 h-4 ${service.accentColor} fill-current`}
-                        />
-                      ))}
-                      <span className="text-sm text-gray-500 ml-2">
-                        Rated 5.0
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Bottom gradient line */}
-                  <div
-                    className={`
-                    absolute bottom-0 left-0 right-0 h-1
-                    bg-gradient-to-r ${service.gradient}
-                    transform scale-x-0 group-hover:scale-x-100
-                    transition-transform duration-500 origin-left
-                  `}
-                  />
+                  <Icon className="w-5 h-5" strokeWidth={1.8} />
                 </div>
+                <span
+                  className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${service.statBg}`}
+                >
+                  {service.stat} {service.statLabel}
+                </span>
               </div>
-            );
-          })}
-        </div>
+
+              <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                {service.title}
+              </h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                {service.description}
+              </p>
+
+              <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-1.5">
+                {[...Array(5)].map((_, i) => (
+                  <svg
+                    key={i}
+                    className="w-3.5 h-3.5 text-amber-400 fill-current"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+                <span className="text-xs text-slate-400 ml-1">Rated 5.0</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-10 grid sm:grid-cols-3 gap-4">
+        {[
+          { value: "4,200+", label: "Verified rooms" },
+          { value: "12+", label: "Cities covered" },
+          { value: "98%", label: "Happy tenants" },
+        ].map((stat) => (
+          <div
+            key={stat.label}
+            className="bg-slate-900 rounded-2xl px-6 py-5 flex items-center justify-between"
+          >
+            <span className="text-2xl font-bold text-white">{stat.value}</span>
+            <span className="text-sm text-slate-400">{stat.label}</span>
+          </div>
+        ))}
       </div>
     </section>
   );

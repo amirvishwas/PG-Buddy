@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import { MdLocationOn } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import HowItWorks from "../components/howItWorks";
 import WallOfLove from "../components/WallOfLove";
 import Footer from "../components/Footer";
 import FeaturedPGs from "../components/FeaturedPGs";
 import ServicesSection from "../components/ServicesSection";
 import FAQSection from "../components/FAQSection";
+
+const cities = [
+  { name: "Delhi", emoji: "🏛️" },
+  { name: "Bangalore", emoji: "🌿" },
+  { name: "Mumbai", emoji: "🌊" },
+  { name: "Chandigarh", emoji: "🌸" },
+];
+
+const trustPills = ["No brokerage", "Verified listings", "Move in this week"];
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -23,128 +32,155 @@ const Home = () => {
     if (e.key === "Enter") handleSearch();
   };
 
-  const cities = [
-    {
-      name: "Delhi",
-      img: "https://cdn-icons-png.flaticon.com/512/854/854878.png",
-    },
-    {
-      name: "Bangalore",
-      img: "https://cdn-icons-png.flaticon.com/512/3175/3175170.png",
-    },
-    {
-      name: "Mumbai",
-      img: "https://cdn-icons-png.flaticon.com/512/3175/3175180.png",
-    },
-    {
-      name: "Chandigarh",
-      img: "https://cdn-icons-png.flaticon.com/512/3175/3175164.png",
-    },
-  ];
-
   return (
-    <>
-      {/* Hero Section with Rounded Background */}
-      <div className="relative min-h-[calc(100vh-64px)] overflow-hidden">
-        {/* Rounded Gradient Background */}
-        <div
-          className="absolute inset-x-0 top-0 h-[85%] sm:h-[80%] rounded-b-[40px] sm:rounded-b-[80px] lg:rounded-b-[120px]"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(219, 234, 254, 0.6) 0%, rgba(204, 251, 241, 0.4) 50%, rgba(255, 255, 255, 0) 100%)",
-          }}
-        />
+    <div className="bg-[#fafaf8] min-h-screen">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 lg:pb-24">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-5">
+              PG Search
+            </p>
 
-        {/* Decorative blur circles */}
-        <div className="absolute top-20 left-10 w-32 h-32 sm:w-64 sm:h-64 bg-blue-200/30 rounded-full blur-3xl" />
-        <div className="absolute top-40 right-10 w-40 h-40 sm:w-72 sm:h-72 bg-teal-200/30 rounded-full blur-3xl" />
+            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-bold text-slate-900 leading-[1.1] tracking-tight mb-6">
+              Your next home{" "}
+              <em className="not-italic text-slate-400">shouldn't feel</em> like
+              a compromise.
+            </h1>
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-col items-center px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 lg:pt-28 pb-16">
-          {/* Welcome Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 mb-6 sm:mb-8">
-            <Sparkles className="w-4 h-4 text-blue-600" />
-            <span className="text-sm font-medium text-blue-700">
-              Welcome to PGBuddy
-            </span>
-          </div>
+            <p className="text-slate-500 text-lg leading-relaxed mb-8 max-w-md">
+              Curated PGs, honest photos, and zero broker drama. Because finding
+              a place to live should feel exciting — not exhausting.
+            </p>
 
-          {/* Main Heading */}
-          <h1 className="text-center font-[Poppins] mb-4 sm:mb-6">
-            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 leading-tight">
-              Find Your Next Home
-            </span>
-            <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mt-1 sm:mt-2 bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent leading-tight">
-              Away From Home
-            </span>
-          </h1>
+            <div className="flex flex-wrap gap-2 mb-10">
+              {trustPills.map((pill) => (
+                <span
+                  key={pill}
+                  className="text-sm px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200"
+                >
+                  ✓ {pill}
+                </span>
+              ))}
+            </div>
 
-          {/* Subtitle */}
-          <p className="text-center text-gray-600 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 px-4 font-[Poppins]">
-            PGBuddy helps you find{" "}
-            <span className="font-semibold text-blue-600">PGs, Hostels</span>{" "}
-            and even{" "}
-            <span className="font-semibold text-teal-600">roommates</span> who
-            match your vibe. ✨
-          </p>
-
-          {/* Search Box */}
-          <div className="w-full max-w-xl mx-auto px-4 mb-6">
-            <div className="flex items-center bg-white border-2 border-gray-200 focus-within:border-blue-500 rounded-2xl px-4 py-3 sm:py-4 shadow-lg shadow-gray-200/50 transition-all duration-300">
-              <MdLocationOn className="text-blue-600 text-xl sm:text-2xl mr-3 flex-shrink-0" />
+            <div className="bg-white rounded-2xl border border-slate-200 p-1.5 flex items-center gap-2 shadow-sm mb-6">
+              <MdLocationOn className="w-5 h-5 text-amber-500 ml-3 shrink-0" />
               <input
                 type="text"
-                placeholder="Search by city or PG name..."
+                placeholder="City, locality, or landmark…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={handleKeyPress}
-                className="flex-1 outline-none text-gray-800 placeholder-gray-400 text-sm sm:text-base bg-transparent min-w-0 font-[Poppins]"
+                className="flex-1 bg-transparent border-none outline-none text-slate-800 placeholder-slate-400 text-base py-2.5"
               />
               <button
                 onClick={handleSearch}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl hover:scale-105 transform transition-all duration-200 text-sm sm:text-base font-medium flex-shrink-0 cursor-pointer"
+                className="bg-slate-900 hover:bg-slate-700 active:scale-95 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 cursor-pointer"
               >
                 <Search className="w-4 h-4" />
-                <span className="hidden sm:inline">Search</span>
+                <span>Search</span>
               </button>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {cities.map((city) => (
+                <button
+                  key={city.name}
+                  onClick={() =>
+                    navigate(
+                      `/listings?search=${encodeURIComponent(city.name)}`,
+                    )
+                  }
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-400 rounded-lg transition-all cursor-pointer"
+                >
+                  <span>{city.emoji}</span>
+                  {city.name}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* City Buttons */}
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-4">
-            {cities.map((city) => (
-              <button
-                key={city.name}
-                onClick={() => {
-                  setSearch(city.name);
-                  navigate(`/listings?search=${encodeURIComponent(city.name)}`);
-                }}
-                className="flex items-center gap-2 px-4 py-2 sm:py-2.5 rounded-full bg-white border border-gray-200 text-sm font-medium text-gray-700 shadow-sm hover:shadow-md hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 cursor-pointer"
-              >
+          <div className="hidden lg:grid grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                 <img
-                  src={city.img}
-                  alt={city.name}
-                  className="w-5 h-5 object-contain"
+                  src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&q=80"
+                  alt="Cozy room"
+                  className="w-full h-40 object-cover"
                 />
-                <span>{city.name}</span>
-              </button>
-            ))}
+                <div className="p-4">
+                  <p className="text-sm font-semibold text-slate-800">
+                    Koramangala, Bangalore
+                  </p>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    ₹8,500 / month
+                  </p>
+                  <div className="mt-2 flex items-center gap-1">
+                    <span className="text-xs bg-green-50 text-green-700 border border-green-100 px-2 py-0.5 rounded-full">
+                      Available now
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 border border-amber-100 rounded-2xl p-4">
+                <p className="text-2xl font-bold text-slate-900">4,200+</p>
+                <p className="text-sm text-slate-500 mt-1">
+                  verified rooms across India
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4 mt-8">
+              <div className="bg-slate-900 rounded-2xl p-4 text-white">
+                <p className="text-sm font-medium mb-3">Recently moved in</p>
+                {["Priya, Delhi", "Arjun, Mumbai", "Sneha, Bangalore"].map(
+                  (name) => (
+                    <div
+                      key={name}
+                      className="flex items-center gap-2 py-2 border-b border-slate-700 last:border-0"
+                    >
+                      <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-xs">
+                        {name[0]}
+                      </div>
+                      <span className="text-xs text-slate-300">{name}</span>
+                    </div>
+                  ),
+                )}
+              </div>
+
+              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=400&q=80"
+                  alt="Modern room"
+                  className="w-full h-36 object-cover"
+                />
+                <div className="p-3">
+                  <p className="text-sm font-semibold text-slate-800">
+                    Hauz Khas, Delhi
+                  </p>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    ₹12,000 / month
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Featured PGs Section */}
-      <div className="px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4">
         <FeaturedPGs />
       </div>
 
-      <HowItWorks />
-      <ServicesSection />
-      <WallOfLove />
-      <FAQSection />
-
-      <Footer />
-    </>
+      <div className="bg-white pt-10">
+        <HowItWorks />
+        <ServicesSection />
+        <WallOfLove />
+        <FAQSection />
+        <Footer />
+      </div>
+    </div>
   );
 };
 

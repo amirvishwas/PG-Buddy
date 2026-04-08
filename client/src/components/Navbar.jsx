@@ -58,33 +58,31 @@ const Navbar = () => {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 w-full z-50 transition-all duration-300 font-[Poppins] ${
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled || isOpen
-            ? "bg-white/90 backdrop-blur-lg border-b border-gray-100 shadow-sm"
-            : "bg-white/50 backdrop-blur-sm border-b border-transparent"
+            ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm"
+            : "bg-[#fafaf8]/80 backdrop-blur-sm border-b border-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 md:h-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 md:h-18">
             <div className="flex-shrink-0 flex items-center">
               <Link
                 to="/"
-                className="flex items-center gap-2 group"
+                className="flex items-center gap-2.5 group"
                 onClick={() => setIsOpen(false)}
               >
-                <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-600 to-teal-500 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:shadow-blue-200 transition-all duration-300 transform group-hover:rotate-3">
-                  <Building2 size={20} className="md:w-6 md:h-6" />
+                <div className="w-8 h-8 md:w-9 md:h-9 bg-slate-900 rounded-xl flex items-center justify-center text-white group-hover:bg-slate-700 transition-colors duration-200">
+                  <Building2 size={18} className="md:w-5 md:h-5" />
                 </div>
-                <span className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
+                <span className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
                   PG
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
-                    Buddy
-                  </span>
+                  <span className="text-amber-500">Buddy</span>
                 </span>
               </Link>
             </div>
 
-            <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
+            <div className="hidden md:flex items-center space-x-1">
               {navItems.map((item) => {
                 const IconComponent = item.icon;
                 const isActive = location.pathname === item.path;
@@ -93,44 +91,43 @@ const Navbar = () => {
                     key={item.name}
                     to={item.path}
                     className={`
-                    relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 flex items-center gap-2
-                    ${
-                      isActive
-                        ? "text-blue-600 bg-blue-50"
-                        : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
-                    }
-                  `}
+                      relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2
+                      ${
+                        isActive
+                          ? "text-slate-900 bg-slate-100"
+                          : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                      }
+                    `}
                   >
-                    <IconComponent
-                      size={16}
-                      className={isActive ? "fill-current opacity-20" : ""}
-                    />
+                    <IconComponent size={15} />
                     {item.name}
+                    {isActive && (
+                      <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-amber-500" />
+                    )}
                   </Link>
                 );
               })}
             </div>
 
-            {/* CTA Section - Desktop */}
             <div className="hidden md:flex items-center gap-3">
               {user && (
                 <button
                   className={`
-                    group flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-300
+                    flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200
                     ${
                       isOwner
-                        ? "border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:shadow-md"
-                        : "border-gray-200 text-gray-700 hover:border-blue-400 hover:text-blue-600 bg-white"
+                        ? "border-amber-200 bg-amber-50 text-amber-800 hover:bg-amber-100"
+                        : "border-slate-200 text-slate-700 hover:border-slate-400 bg-white"
                     }
-                `}
+                  `}
                   onClick={() =>
                     isOwner ? navigate("/owner") : setShowPgReg(true)
                   }
                 >
                   {isOwner ? (
-                    <LayoutDashboard size={16} />
+                    <LayoutDashboard size={15} />
                   ) : (
-                    <PlusCircle size={16} />
+                    <PlusCircle size={15} />
                   )}
                   {isOwner ? "Dashboard" : "List Your PG"}
                 </button>
@@ -142,7 +139,7 @@ const Navbar = () => {
                     appearance={{
                       elements: {
                         avatarBox:
-                          "w-10 h-10 border-2 border-white shadow-sm ring-2 ring-gray-100 hover:ring-blue-100 transition-all",
+                          "w-9 h-9 border-2 border-white shadow-sm ring-2 ring-slate-100 hover:ring-amber-100 transition-all",
                       },
                     }}
                   >
@@ -158,7 +155,7 @@ const Navbar = () => {
               ) : (
                 <button
                   onClick={openSignIn}
-                  className="bg-gray-900 hover:bg-blue-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-gray-200 hover:shadow-blue-200 transition-all duration-300 transform hover:-translate-y-0.5"
+                  className="bg-slate-900 hover:bg-slate-700 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 active:scale-95"
                 >
                   Sign In
                 </button>
@@ -170,7 +167,7 @@ const Navbar = () => {
                 <UserButton
                   appearance={{
                     elements: {
-                      avatarBox: "w-8 h-8 border border-gray-200",
+                      avatarBox: "w-8 h-8 border border-slate-200",
                     },
                   }}
                 >
@@ -184,24 +181,22 @@ const Navbar = () => {
                 </UserButton>
               )}
 
-              {/* Hamburger Menu */}
               <button
                 onClick={toggleMenu}
-                className="p-2 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors focus:outline-none"
+                className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors focus:outline-none"
               >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
+                {isOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation Dropdown */}
         <div
           className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out ${
             isOpen ? "max-h-[450px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="px-4 pb-6 pt-2 space-y-2 bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-xl">
+          <div className="px-4 pb-6 pt-2 space-y-1 bg-white border-t border-slate-100 shadow-lg">
             {navItems.map((item) => {
               const IconComponent = item.icon;
               const isActive = location.pathname === item.path;
@@ -211,24 +206,24 @@ const Navbar = () => {
                   to={item.path}
                   onClick={() => setIsOpen(false)}
                   className={`
-                    flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-all
+                    flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
                     ${
                       isActive
-                        ? "bg-blue-50 text-blue-600"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-slate-100 text-slate-900"
+                        : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                     }
-                `}
+                  `}
                 >
                   <IconComponent
-                    size={20}
-                    className={isActive ? "text-blue-600" : "text-gray-400"}
+                    size={18}
+                    className={isActive ? "text-amber-500" : "text-slate-400"}
                   />
                   {item.name}
                 </Link>
               );
             })}
 
-            <div className="pt-4 mt-2 border-t border-gray-100 space-y-3">
+            <div className="pt-4 mt-2 border-t border-slate-100 space-y-2">
               {user && (
                 <button
                   type="button"
@@ -240,15 +235,15 @@ const Navbar = () => {
                   className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold transition-all
                     ${
                       isOwner
-                        ? "bg-indigo-50 text-indigo-600 border border-indigo-100"
-                        : "border border-gray-200 text-gray-700 hover:bg-gray-50"
+                        ? "bg-amber-50 text-amber-800 border border-amber-200"
+                        : "border border-slate-200 text-slate-700 hover:bg-slate-50"
                     }
-                `}
+                  `}
                 >
                   {isOwner ? (
-                    <LayoutDashboard size={18} />
+                    <LayoutDashboard size={17} />
                   ) : (
-                    <PlusCircle size={18} />
+                    <PlusCircle size={17} />
                   )}
                   {isOwner ? "Owner Dashboard" : "List Your Property"}
                 </button>
@@ -260,7 +255,7 @@ const Navbar = () => {
                     openSignIn();
                     setIsOpen(false);
                   }}
-                  className="w-full bg-gradient-to-r from-blue-600 to-teal-500 text-white px-4 py-3.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-100 active:scale-95 transition-all"
+                  className="w-full bg-slate-900 hover:bg-slate-700 text-white px-4 py-3 rounded-xl text-sm font-bold active:scale-95 transition-all"
                 >
                   Login
                 </button>
@@ -269,7 +264,7 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-      <div className="h-16 md:h-20" />
+      <div className="h-16 md:h-18" />
     </>
   );
 };
