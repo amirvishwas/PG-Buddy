@@ -58,7 +58,7 @@ const HowItWorks = () => {
               key={index}
               className="bg-white rounded-2xl border border-slate-200 p-7 hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
             >
-              <span className="absolute top-5 right-6 text-5xl font-extrabold text-slate-100 group-hover:text-slate-200 transition-colors select-none">
+              <span className="absolute top-5 right-6 text-5xl font-extrabold text-slate-200 group-hover:text-slate-300 transition-colors select-none">
                 {step.number}
               </span>
 

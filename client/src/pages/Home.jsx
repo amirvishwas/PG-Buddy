@@ -34,51 +34,51 @@ const Home = () => {
 
   return (
     <div className="bg-[#fafaf8] min-h-screen">
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 lg:pb-24">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6 sm:pt-10 lg:pt-14 lg:pb-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center pt-6">
           <div>
-            <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-5">
+            <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-4">
               PG Search
             </p>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-bold text-slate-900 leading-[1.1] tracking-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl lg:text-[52px] font-bold text-slate-900 leading-[1.1] tracking-tight mb-4 sm:mb-6">
               Your next home{" "}
               <em className="not-italic text-slate-400">shouldn't feel</em> like
               a compromise.
             </h1>
 
-            <p className="text-slate-500 text-lg leading-relaxed mb-8 max-w-md">
+            <p className="text-slate-500 text-base sm:text-lg leading-relaxed mb-6 max-w-md">
               Curated PGs, honest photos, and zero broker drama. Because finding
               a place to live should feel exciting — not exhausting.
             </p>
 
-            <div className="flex flex-wrap gap-2 mb-10">
+            <div className="flex flex-wrap gap-2 mb-6">
               {trustPills.map((pill) => (
                 <span
                   key={pill}
-                  className="text-sm px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200"
+                  className="text-xs sm:text-sm px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200"
                 >
                   ✓ {pill}
                 </span>
               ))}
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-200 p-1.5 flex items-center gap-2 shadow-sm mb-6">
-              <MdLocationOn className="w-5 h-5 text-amber-500 ml-3 shrink-0" />
+            <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 p-1.5 flex items-center gap-2 shadow-sm mb-4">
+              <MdLocationOn className="w-5 h-5 text-amber-500 ml-2 sm:ml-3 shrink-0" />
               <input
                 type="text"
                 placeholder="City, locality, or landmark…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={handleKeyPress}
-                className="flex-1 bg-transparent border-none outline-none text-slate-800 placeholder-slate-400 text-base py-2.5"
+                className="flex-1 bg-transparent border-none outline-none text-slate-800 placeholder-slate-400 text-sm sm:text-base py-2 sm:py-2.5 min-w-0"
               />
               <button
                 onClick={handleSearch}
-                className="bg-slate-900 hover:bg-slate-700 active:scale-95 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2 cursor-pointer"
+                className="bg-slate-900 hover:bg-slate-700 active:scale-95 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
               >
                 <Search className="w-4 h-4" />
-                <span>Search</span>
+                <span className="hidden xs:inline sm:inline">Search</span>
               </button>
             </div>
 
@@ -91,7 +91,7 @@ const Home = () => {
                       `/listings?search=${encodeURIComponent(city.name)}`,
                     )
                   }
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-400 rounded-lg transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-400 rounded-lg transition-all cursor-pointer"
                 >
                   <span>{city.emoji}</span>
                   {city.name}
@@ -115,7 +115,7 @@ const Home = () => {
                   <p className="text-xs text-slate-400 mt-0.5">
                     ₹8,500 / month
                   </p>
-                  <div className="mt-2 flex items-center gap-1">
+                  <div className="mt-2">
                     <span className="text-xs bg-green-50 text-green-700 border border-green-100 px-2 py-0.5 rounded-full">
                       Available now
                     </span>
@@ -169,11 +169,11 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4">
+      <div className="max-w-6xl mx-auto pt-22 px-4 sm:px-6 lg:px-8">
         <FeaturedPGs />
       </div>
 
-      <div className="bg-white pt-10">
+      <div className="bg-white pt-6 sm:pt-10">
         <HowItWorks />
         <ServicesSection />
         <WallOfLove />

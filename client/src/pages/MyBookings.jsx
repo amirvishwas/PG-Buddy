@@ -93,8 +93,8 @@ const MyBookings = () => {
       prev.map((b) =>
         b._id === ratingBooking?._id
           ? { ...b, isRated: true, userRating: rating }
-          : b
-      )
+          : b,
+      ),
     );
     setRatingBooking(null);
   };
@@ -352,7 +352,7 @@ const MyBookings = () => {
 
                             <span
                               className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ring-1 ${getStatusColor(
-                                booking.status
+                                booking.status,
                               )}`}
                             >
                               {getStatusIcon(booking.status)}

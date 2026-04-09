@@ -4,288 +4,258 @@ import {
   PhoneCall,
   MapPin,
   ShieldCheck,
-  Sparkles,
   Search,
   Home,
   Users,
-  ArrowRight,
+  Building2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 
+const features = [
+  {
+    icon: CheckCircle,
+    title: "Verified listings",
+    description: "Real photos and essential details you can trust",
+    bg: "bg-amber-100 text-amber-700",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Transparent platform",
+    description: "No hidden fees or surprise charges",
+    bg: "bg-slate-100 text-slate-700",
+  },
+  {
+    icon: MapPin,
+    title: "Location based",
+    description: "Find PGs near your college or workplace",
+    bg: "bg-green-100 text-green-700",
+  },
+  {
+    icon: PhoneCall,
+    title: "Direct contact",
+    description: "Connect with owners — no middleman",
+    bg: "bg-blue-100 text-blue-700",
+  },
+];
+
+const steps = [
+  {
+    number: "01",
+    title: "Discover",
+    description:
+      "Explore verified PGs with images, amenities, pricing, and owner info.",
+  },
+  {
+    number: "02",
+    title: "Compare",
+    description:
+      "Filter by price, location, and sharing type to find your perfect room.",
+  },
+  {
+    number: "03",
+    title: "Book",
+    description:
+      "Contact the owner directly or proceed with booking through your dashboard.",
+  },
+];
+
+const whyChoose = [
+  {
+    icon: ShieldCheck,
+    title: "Trusted platform",
+    description: "We ensure listings are real, updated, and easy to understand.",
+    bg: "bg-amber-100 text-amber-700",
+  },
+  {
+    icon: MapPin,
+    title: "Location advantage",
+    description: "PGs near colleges, metro stations, and office hotspots.",
+    bg: "bg-slate-100 text-slate-700",
+  },
+  {
+    icon: Users,
+    title: "Easy to use",
+    description: "Clean UI, fast booking, and simple owner management tools.",
+    bg: "bg-green-100 text-green-700",
+  },
+];
+
 export default function About() {
-  const features = [
-    {
-      icon: CheckCircle,
-      title: "Verified Listings",
-      description: "Real photos & essential details you can trust",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Transparent Platform",
-      description: "No hidden fees or surprise charges",
-    },
-    {
-      icon: MapPin,
-      title: "Location Based",
-      description: "Find PGs near your college or workplace",
-    },
-    {
-      icon: PhoneCall,
-      title: "Direct Contact",
-      description: "Connect with owners — no middleman",
-    },
-  ];
-
-  const steps = [
-    {
-      number: "01",
-      title: "Discover",
-      description:
-        "Explore verified PGs with images, amenities, pricing and owner info.",
-    },
-    {
-      number: "02",
-      title: "Compare",
-      description:
-        "Filter by price, location and sharing type to find your perfect room.",
-    },
-    {
-      number: "03",
-      title: "Book",
-      description:
-        "Contact the owner directly or proceed with booking through your dashboard.",
-    },
-  ];
-
-  const whyChoose = [
-    {
-      icon: ShieldCheck,
-      title: "Trusted Platform",
-      description:
-        "We ensure listings are real, updated and easy to understand.",
-    },
-    {
-      icon: MapPin,
-      title: "Location Advantage",
-      description: "PGs near colleges, metro stations and office hotspots.",
-    },
-    {
-      icon: Users,
-      title: "Easy to Use",
-      description: "Clean UI, fast booking, and simple owner management tools.",
-    },
-  ];
-
   return (
-    <div className="font-[Poppins]">
-      <div className="relative overflow-hidden">
-        <div
-          className="absolute inset-x-0 top-0 h-[90%] rounded-b-[40px] sm:rounded-b-[80px] lg:rounded-b-[120px]"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(219, 234, 254, 0.6) 0%, rgba(204, 251, 241, 0.4) 50%, rgba(255, 255, 255, 0) 100%)",
-          }}
-        />
-
-        <div className="absolute top-20 left-10 w-32 h-32 sm:w-64 sm:h-64 bg-blue-200/30 rounded-full blur-3xl" />
-        <div className="absolute top-40 right-10 w-40 h-40 sm:w-72 sm:h-72 bg-teal-200/30 rounded-full blur-3xl" />
-
-        <div className="relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-20 sm:pb-32">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 mb-6 sm:mb-8">
-              <Sparkles className="w-4 h-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-700">
-                About Us
-              </span>
-            </div>
-
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-              About{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
-                PG Buddy
-              </span>
+    <div className="bg-[#fafaf8] min-h-screen">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-14 sm:pb-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-4">
+              About us
+            </p>
+            <h1 className="text-3xl sm:text-4xl lg:text-[52px] font-bold text-slate-900 leading-[1.1] tracking-tight mb-5">
+              We built this so{" "}
+              <span className="text-slate-400">finding a PG stops being painful.</span>
             </h1>
-
-            <p className="text-gray-600 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+            <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-md">
               PG Buddy is a smart platform designed to simplify how students and
-              working professionals find and manage PG accommodations. Our goal
-              is to offer clear pricing, verified details, real photos, and a
-              seamless booking experience.
+              working professionals find and manage PG accommodations — with
+              clear pricing, verified details, and real photos.
             </p>
           </div>
 
-          {/* Features Grid */}
-          <div className="max-w-5xl mx-auto mt-12 sm:mt-16">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-gray-100 shadow-lg shadow-gray-200/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center mb-4">
-                    <feature.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-gray-600">{feature.description}</p>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {features.map((f, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${f.bg}`}>
+                  <f.icon className="w-5 h-5" />
                 </div>
-              ))}
-            </div>
+                <p className="text-sm font-semibold text-slate-900 mb-1">{f.title}</p>
+                <p className="text-xs text-slate-500 leading-relaxed">{f.description}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-blue-600 to-teal-500 rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-
-            <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 mb-6">
-                <Home className="w-4 h-4" />
-                <span className="text-sm font-medium">Our Mission</span>
+      <section className="bg-white py-14 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+            <div className="bg-slate-900 rounded-2xl p-8 sm:p-10 text-white">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                  <Building2 size={16} className="text-slate-900" />
+                </div>
+                <span className="text-sm font-semibold text-slate-300">Our mission</span>
               </div>
-
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">
-                Making PG search stress-free
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-5 leading-snug">
+                Making PG search{" "}
+                <span className="text-amber-400">stress-free.</span>
               </h2>
-
-              <p className="text-white/90 text-base sm:text-lg leading-relaxed">
+              <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
                 Finding the right PG shouldn't be stressful. PG Buddy was
                 created to make the entire process — from discovering rooms to
-                booking — more organized and trustworthy. Whether you're moving
+                booking — more organised and trustworthy. Whether you're moving
                 to a new city or switching accommodations, PG Buddy gives you
                 all the details you need in one place.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 ">
-        <div className="max-w-5xl mx-auto ">
-          <div className="text-center mb-12 sm:mb-16 ">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 mb-4 ">
-              <Search className="w-4 h-4 text-blue-600" />
-              <span className="text-sm font-medium text-blue-700">
-                Simple Process
-              </span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-              How PG Buddy Works
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {steps.map((step, index) => (
-              <div key={index} className="relative">
-                <div className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-lg h-full">
-                  <div className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent mb-4">
-                    {step.number}
+              <div className="mt-8 pt-6 border-t border-slate-800 grid grid-cols-3 gap-4">
+                {[
+                  { v: "4,200+", l: "Rooms" },
+                  { v: "12+", l: "Cities" },
+                  { v: "98%", l: "Satisfaction" },
+                ].map((s) => (
+                  <div key={s.l}>
+                    <p className="text-xl font-bold text-white">{s.v}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{s.l}</p>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600">{step.description}</p>
-                </div>
-
-                {index < steps.length - 1 && (
-                  <div className="hidden md:flex absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                    <ArrowRight className="w-8 h-8 text-blue-300" />
-                  </div>
-                )}
+                ))}
               </div>
-            ))}
+            </div>
+
+            <div>
+              <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-4">
+                How it works
+              </p>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight mb-8">
+                Three steps,{" "}
+                <span className="text-slate-400">then you're home.</span>
+              </h2>
+              <div className="flex flex-col gap-5">
+                {steps.map((step, i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
+                      <span className="text-sm font-bold text-slate-500">{step.number}</span>
+                    </div>
+                    <div className="pt-1.5">
+                      <p className="text-sm font-semibold text-slate-900 mb-1">{step.title}</p>
+                      <p className="text-sm text-slate-500 leading-relaxed">{step.description}</p>
+                    </div>
+                    {i < steps.length - 1 && (
+                      <div className="hidden" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 border border-teal-200 mb-4">
-              <Sparkles className="w-4 h-4 text-teal-600" />
-              <span className="text-sm font-medium text-teal-700">Why Us</span>
+      <section className="py-14 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 sm:mb-12">
+            <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-4">
+              Why us
+            </p>
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight max-w-sm">
+                Built for people,{" "}
+                <span className="text-slate-400">not platforms.</span>
+              </h2>
+              <p className="text-slate-500 text-sm max-w-xs sm:text-right leading-relaxed">
+                Every decision we make starts with what's best for the person looking for a room.
+              </p>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-              Why Choose PG Buddy?
-            </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {whyChoose.map((item, index) => (
+          <div className="grid sm:grid-cols-3 gap-4 sm:gap-5">
+            {whyChoose.map((item, i) => (
               <div
-                key={index}
-                className="group bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                key={i}
+                className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 hover:border-slate-300 hover:-translate-y-1 transition-all duration-200"
               >
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-100 to-teal-100 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                  <item.icon className="w-7 h-7 text-blue-600" />
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-5 ${item.bg}`}>
+                  <item.icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600">{item.description}</p>
+                <h3 className="text-base font-semibold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl">
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(219, 234, 254, 0.8) 0%, rgba(204, 251, 241, 0.8) 100%)",
-              }}
-            />
-
-            <div className="absolute top-0 right-0 w-40 h-40 bg-blue-300/30 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-teal-300/30 rounded-full blur-3xl" />
-
-            <div className="relative z-10 p-8 sm:p-12 md:p-16 text-center">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      <section className="bg-white py-14 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-slate-900 rounded-2xl p-8 sm:p-12 flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-16">
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-widest text-amber-500 font-semibold mb-4">
+                Get started
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white leading-snug mb-3">
                 Ready to find your perfect PG?
               </h2>
-              <p className="text-gray-600 text-base sm:text-lg mb-8 max-w-xl mx-auto">
-                Search verified rooms or list your own accommodation today.
+              <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-md">
+                Search verified rooms or list your own accommodation today. No brokerage, no stress.
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  to="/listings"
-                  className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium hover:scale-105 transform transition-all duration-200 shadow-lg shadow-blue-600/30"
+              <div className="mt-5 flex items-center gap-2 text-slate-400 text-sm">
+                <PhoneCall className="w-4 h-4 text-amber-500 shrink-0" />
+                Have questions?{" "}
+                <a
+                  href="mailto:calvintakasi@outlook.com"
+                  className="text-amber-400 font-medium hover:underline"
                 >
-                  <Search className="w-5 h-5" />
-                  Browse PGs
-                </Link>
-                <Link
-                  to="/owner"
-                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-6 py-3 rounded-xl font-medium border border-gray-200 hover:scale-105 transform transition-all duration-200 shadow-lg"
-                >
-                  <Home className="w-5 h-5" />
-                  List Your Room
-                </Link>
+                  Email us
+                </a>
               </div>
+            </div>
 
-              <div className="mt-8 flex items-center justify-center gap-2 text-gray-600">
-                <PhoneCall className="w-4 h-4 text-blue-600" />
-                <span className="text-sm">
-                  Have questions?{" "}
-                  <a
-                    href="mailto:calvintakasi@outlook.com"
-                    className="text-blue-600 font-medium hover:underline"
-                  >
-                    Contact Us
-                  </a>
-                </span>
-              </div>
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0">
+              <Link
+                to="/listings"
+                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 px-6 py-3 rounded-xl text-sm font-semibold transition-all active:scale-95"
+              >
+                <Search className="w-4 h-4" />
+                Browse PGs
+              </Link>
+              <Link
+                to="/owner"
+                className="inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-xl text-sm font-semibold border border-slate-700 transition-all active:scale-95"
+              >
+                <Home className="w-4 h-4" />
+                List your room
+              </Link>
             </div>
           </div>
         </div>

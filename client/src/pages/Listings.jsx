@@ -3,10 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import {
   MapPin,
-  Bed,
   Users,
   ArrowRight,
-  Filter,
   X,
   Home,
   ChevronRight,
@@ -14,6 +12,218 @@ import {
   Search,
   SlidersHorizontal,
 } from "lucide-react";
+
+const getGenderBadge = (gender) => {
+  switch (gender?.toLowerCase()) {
+    case "boys":
+      return "bg-blue-50 border-blue-100 text-blue-700";
+    case "girls":
+      return "bg-rose-50 border-rose-100 text-rose-700";
+    default:
+      return "bg-slate-100 border-slate-200 text-slate-600";
+  }
+};
+
+const FilterPanel = ({
+  maxPrice,
+  setMaxPrice,
+  selectedGenders,
+  selectedRoomTypes,
+  selectedAmenities,
+  handleGenderChange,
+  handleRoomTypeChange,
+  handleAmenityChange,
+  clearFilters,
+  activeFiltersCount,
+  filteredCount,
+  isMobile = false,
+  onClose,
+  currency,
+}) => {
+  return (
+    <div
+      className={`space-y-7 ${!isMobile ? "bg-white rounded-2xl border border-slate-200 p-6" : ""}`}
+    >
+      {!isMobile && (
+        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+          <p className="text-sm font-semibold text-slate-900">Filters</p>
+          {activeFiltersCount > 0 && (
+            <button
+              onClick={clearFilters}
+              className="text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors cursor-pointer"
+            >
+              Clear all
+            </button>
+          )}
+        </div>
+      )}
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">
+            Budget
+          </p>
+          <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">
+            Up to {currency}
+            {maxPrice.toLocaleString()}
+          </span>
+        </div>
+        <input
+          type="range"
+          min="1000"
+          max="20000"
+          step="500"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(Number(e.target.value))}
+          className="w-full h-1.5 bg-slate-100 rounded-full appearance-none cursor-pointer accent-slate-900"
+        />
+        <div className="flex justify-between text-xs text-slate-400">
+          <span>{currency}1k</span>
+          <span>{currency}20k</span>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">
+          Gender
+        </p>
+        <div className="flex flex-col gap-2">
+          {["Boys", "Girls", "Mixed"].map((gender) => {
+            const isSelected = selectedGenders.includes(gender);
+            return (
+              <label
+                key={gender}
+                className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                  isSelected
+                    ? "border-slate-900 bg-slate-50"
+                    : "border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => handleGenderChange(gender)}
+                  className="hidden"
+                />
+                <div
+                  className={`w-4 h-4 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
+                    isSelected
+                      ? "bg-slate-900 border-slate-900"
+                      : "border-slate-300"
+                  }`}
+                >
+                  {isSelected && <Check className="w-3 h-3 text-white" />}
+                </div>
+                <span
+                  className={`text-sm font-medium ${isSelected ? "text-slate-900" : "text-slate-600"}`}
+                >
+                  {gender}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">
+          Room type
+        </p>
+        <div className="flex gap-2">
+          {[
+            { value: "single", label: "Single" },
+            { value: "double", label: "Double" },
+            { value: "triple", label: "Triple" },
+          ].map((type) => {
+            const isSelected = selectedRoomTypes.includes(type.value);
+            return (
+              <label
+                key={type.value}
+                className={`flex-1 text-center cursor-pointer py-2 px-2 rounded-xl text-xs font-semibold border transition-all ${
+                  isSelected
+                    ? "bg-slate-900 text-white border-slate-900"
+                    : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => handleRoomTypeChange(type.value)}
+                  className="hidden"
+                />
+                {type.label}
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">
+          Amenities
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          {["Food", "Free WiFi", "Laundry", "AC"].map((amenity) => {
+            const isSelected = selectedAmenities.includes(amenity);
+            return (
+              <label
+                key={amenity}
+                className={`flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer transition-all ${
+                  isSelected
+                    ? "border-slate-900 bg-slate-50"
+                    : "border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => handleAmenityChange(amenity)}
+                  className="hidden"
+                />
+                <div
+                  className={`w-4 h-4 rounded-md border flex items-center justify-center shrink-0 transition-colors ${
+                    isSelected
+                      ? "bg-slate-900 border-slate-900"
+                      : "border-slate-300"
+                  }`}
+                >
+                  {isSelected && <Check className="w-3 h-3 text-white" />}
+                </div>
+                <span
+                  className={`text-xs font-medium ${isSelected ? "text-slate-900" : "text-slate-600"}`}
+                >
+                  {amenity}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      {!isMobile && (
+        <div className="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-center">
+          <p className="text-xs text-slate-500">
+            <span className="font-bold text-slate-900 text-sm">
+              {filteredCount}
+            </span>{" "}
+            rooms match
+          </p>
+        </div>
+      )}
+
+      {isMobile && (
+        <div className="pt-4 border-t border-slate-100">
+          <button
+            onClick={onClose}
+            className="w-full py-3.5 bg-slate-900 hover:bg-slate-700 text-white rounded-xl font-semibold text-sm active:scale-95 transition-all cursor-pointer"
+          >
+            Show {filteredCount} properties
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Listings = () => {
   const location = useLocation();
@@ -29,27 +239,24 @@ const Listings = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
 
-  const handleGenderChange = (gender) => {
+  const handleGenderChange = (gender) =>
     setSelectedGenders((prev) =>
       prev.includes(gender)
         ? prev.filter((g) => g !== gender)
-        : [...prev, gender]
+        : [...prev, gender],
     );
-  };
 
-  const handleRoomTypeChange = (type) => {
+  const handleRoomTypeChange = (type) =>
     setSelectedRoomTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
     );
-  };
 
-  const handleAmenityChange = (amenity) => {
+  const handleAmenityChange = (amenity) =>
     setSelectedAmenities((prev) =>
       prev.includes(amenity)
         ? prev.filter((a) => a !== amenity)
-        : [...prev, amenity]
+        : [...prev, amenity],
     );
-  };
 
   const clearFilters = () => {
     setMaxPrice(20000);
@@ -68,11 +275,9 @@ const Listings = () => {
     const amenitiesMatch =
       selectedAmenities.length === 0 ||
       selectedAmenities.every((a) => room.amenities?.includes(a));
-
     const nameMatch = room.pg?.name?.toLowerCase().includes(searchQuery);
     const cityMatch = room.pg?.city?.toLowerCase().includes(searchQuery);
     const searchMatch = searchQuery === "" || nameMatch || cityMatch;
-
     return (
       priceMatch &&
       genderMatch &&
@@ -88,113 +293,75 @@ const Listings = () => {
     selectedAmenities.length +
     (maxPrice !== 20000 ? 1 : 0);
 
-  const handleCardClick = (roomId) => {
-    navigate(`/pg/${roomId}`);
-  };
-
-  const getGenderBadge = (gender) => {
-    switch (gender?.toLowerCase()) {
-      case "boys":
-        return {
-          bg: "bg-blue-50",
-          text: "text-blue-600",
-          border: "border-blue-200",
-        };
-      case "girls":
-        return {
-          bg: "bg-pink-50",
-          text: "text-pink-600",
-          border: "border-pink-200",
-        };
-      default:
-        return {
-          bg: "bg-purple-50",
-          text: "text-purple-600",
-          border: "border-purple-200",
-        };
-    }
-  };
-
   if (loadingPgs) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-gray-500 font-medium">Finding the best stays...</p>
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-slate-500">Finding the best stays…</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 font-[Poppins] relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute inset-x-0 top-0 h-[600px] rounded-b-[40px] sm:rounded-b-[80px]"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(219, 234, 254, 0.6) 0%, rgba(204, 251, 241, 0.4) 50%, rgba(255, 255, 255, 0) 100%)",
-          }}
-        />
-        <div className="absolute top-20 left-10 w-32 h-32 sm:w-64 sm:h-64 bg-blue-200/30 rounded-full blur-3xl" />
-        <div className="absolute top-40 right-10 w-40 h-40 sm:w-72 sm:h-72 bg-teal-200/30 rounded-full blur-3xl" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-        <div className="flex flex-col gap-4 mb-8">
-          <div className="flex items-center text-sm text-gray-500 bg-white/60 backdrop-blur-md w-fit px-4 py-2 rounded-full border border-white/50 shadow-sm">
-            <button
-              onClick={() => navigate("/")}
-              className="flex items-center hover:text-blue-600 transition-colors"
-            >
-              <Home className="w-4 h-4 mr-1" />
-              Home
-            </button>
-            <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
-            <span className="text-gray-800 font-medium capitalize">
-              {searchQuery ? searchQuery : "All Locations"}
-            </span>
-          </div>
-
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              {searchQuery ? (
-                <h1 className="text-3xl font-bold text-gray-900">
-                  Results for "
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
-                    {searchQuery}
-                  </span>
-                  "
-                </h1>
-              ) : (
-                <h1 className="text-3xl font-bold text-gray-900">
-                  Find Your Perfect Stay
-                </h1>
-              )}
-              <p className="text-gray-600 mt-2 font-medium">
-                Showing {filteredRooms.length} properties available now
-              </p>
-            </div>
-
-            {/* Mobile Filter Button */}
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="lg:hidden flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-medium rounded-xl shadow-lg shadow-blue-200 active:scale-95 transition-all"
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-              Filters
-              {activeFiltersCount > 0 && (
-                <span className="bg-white text-blue-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </button>
-          </div>
+    <div className="min-h-screen bg-[#fafaf8]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-6">
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-1 hover:text-slate-700 transition-colors cursor-pointer"
+          >
+            <Home className="w-3.5 h-3.5" />
+            Home
+          </button>
+          <ChevronRight className="w-3.5 h-3.5" />
+          <span className="text-slate-700 font-medium capitalize">
+            {searchQuery ? searchQuery : "All listings"}
+          </span>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Desktop Filters Sidebar */}
-          <aside className="hidden lg:block w-80 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-2">
+              {searchQuery ? `Search results` : "All listings"}
+            </p>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
+              {searchQuery ? (
+                <>
+                  Results for{" "}
+                  <span className="text-slate-400">"{searchQuery}"</span>
+                </>
+              ) : (
+                <>
+                  Find your{" "}
+                  <span className="text-slate-400">perfect stay.</span>
+                </>
+              )}
+            </h1>
+            <p className="text-slate-500 text-sm mt-2">
+              {filteredRooms.length}{" "}
+              {filteredRooms.length === 1 ? "property" : "properties"} available
+              now
+            </p>
+          </div>
+
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="lg:hidden self-start flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 hover:border-slate-400 text-slate-700 text-sm font-medium rounded-xl transition-all cursor-pointer"
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            Filters
+            {activeFiltersCount > 0 && (
+              <span className="bg-slate-900 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {activeFiltersCount}
+              </span>
+            )}
+          </button>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          <aside className="hidden lg:block w-72 flex-shrink-0">
             <div className="sticky top-24">
               <FilterPanel
                 maxPrice={maxPrice}
@@ -213,25 +380,23 @@ const Listings = () => {
             </div>
           </aside>
 
-          {/* Mobile Filters Overlay */}
           {showFilters && (
             <div className="fixed inset-0 z-50 lg:hidden">
               <div
-                className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                 onClick={() => setShowFilters(false)}
               />
-              <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl transform transition-transform animate-in slide-in-from-right duration-300">
+              <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl">
                 <div className="flex flex-col h-full">
-                  <div className="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                    <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                      <Filter className="w-5 h-5 text-blue-600" />
+                  <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+                    <p className="text-sm font-semibold text-slate-900">
                       Filters
-                    </h3>
+                    </p>
                     <button
                       onClick={() => setShowFilters(false)}
-                      className="p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
+                      className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                     >
-                      <X className="w-5 h-5" />
+                      <X className="w-4 h-4 text-slate-500" />
                     </button>
                   </div>
                   <div className="flex-1 overflow-y-auto p-5">
@@ -257,144 +422,123 @@ const Listings = () => {
             </div>
           )}
 
-          {/* Results Grid */}
-          <main className="flex-1">
+          <main className="flex-1 min-w-0">
             {filteredRooms.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredRooms.map((room, index) => {
-                  const genderStyle = getGenderBadge(room.gender);
-                  const gradients = [
-                    "from-blue-500 to-cyan-400",
-                    "from-violet-500 to-purple-400",
-                    "from-rose-500 to-pink-400",
-                    "from-emerald-500 to-teal-400",
-                  ];
-                  const gradient = gradients[index % gradients.length];
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
+                {filteredRooms.map((room) => {
+                  const pgImage =
+                    room.images?.[0] ||
+                    room.pg?.images?.[0] ||
+                    "/placeholder.svg";
+                  const pgName = room.pg?.name || "PG Room";
+                  const pgLocation =
+                    room.pg?.city || room.pg?.address || "Location";
+                  const pgAmenities = room.amenities || [];
 
                   return (
                     <div
                       key={room._id}
-                      onClick={() => handleCardClick(room._id)}
-                      className="group cursor-pointer relative bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-2xl hover:border-transparent transform hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+                      onClick={() => navigate(`/pg/${room._id}`)}
+                      className="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-100 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
                     >
-                      {/* Image Section */}
-                      <div className="relative h-56 overflow-hidden">
+                      <div className="relative h-48 overflow-hidden bg-slate-100">
                         <img
-                          src={room.images?.[0] || "/placeholder.svg"}
-                          alt={room.pg?.name || "Room"}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          src={pgImage}
+                          alt={pgName}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
 
-                        {/* Top Badges */}
-                        <div className="absolute top-4 left-4 flex gap-2">
+                        <div className="absolute top-3 left-3 flex items-center gap-2">
                           {room.gender && (
-                            <div
-                              className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold shadow-sm backdrop-blur-md bg-white/90 ${genderStyle.text}`}
+                            <span
+                              className={`px-2.5 py-1 rounded-lg border text-xs font-medium backdrop-blur-sm ${getGenderBadge(room.gender)}`}
                             >
                               {room.gender}
-                            </div>
+                            </span>
                           )}
-                        </div>
-
-                        <div className="absolute top-4 right-4">
-                          <div className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white text-xs font-medium border border-white/20 capitalize">
+                          <span className="px-2.5 py-1 rounded-lg bg-white/90 text-slate-700 text-xs font-medium capitalize">
                             {room.roomType}
-                          </div>
+                          </span>
                         </div>
 
-                        {/* Price Tag Overlay */}
-                        <div className="absolute bottom-4 right-4">
-                          <div className="bg-white/95 backdrop-blur-md rounded-xl px-3 py-1.5 shadow-lg flex items-center gap-1">
-                            <span
-                              className={`text-sm font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}
-                            >
+                        <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                          <div className="flex items-center gap-1 text-white text-xs">
+                            <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                            <span className="font-medium truncate drop-shadow">
+                              {pgLocation}
+                            </span>
+                          </div>
+                          <div className="bg-white rounded-xl px-3 py-1.5 shadow-md shrink-0">
+                            <span className="text-sm font-bold text-slate-900">
                               {currency}
                               {room.pricePerBed?.toLocaleString()}
                             </span>
-                            <span className="text-[10px] text-gray-500 font-medium">
-                              /bed
-                            </span>
+                            <span className="text-slate-400 text-xs">/bed</span>
                           </div>
                         </div>
                       </div>
 
-                      {/* Content Section */}
-                      <div className="p-5">
-                        <div className="mb-4">
-                          <h3 className="text-lg font-bold text-gray-900 mb-1 truncate group-hover:text-blue-600 transition-colors">
-                            {room.pg?.name || "PG Room"}
-                          </h3>
-                          <div className="flex items-center text-gray-500 text-xs">
-                            <MapPin className="w-3 h-3 mr-1" />
-                            <p className="truncate">
-                              {room.pg?.city || room.pg?.address || "Location"}
-                            </p>
+                      <div className="p-4 flex flex-col flex-1">
+                        <h3 className="text-sm font-semibold text-slate-900 group-hover:text-amber-600 transition-colors mb-2.5 truncate">
+                          {pgName}
+                        </h3>
+
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="flex items-center gap-1 text-xs">
+                            <Users className="w-3.5 h-3.5 text-slate-400" />
+                            <span className="text-green-600 font-semibold">
+                              {room.availableBeds}
+                            </span>
+                            <span className="text-slate-400">
+                              / {room.totalBeds} beds
+                            </span>
                           </div>
                         </div>
 
-                        {/* Amenities */}
-                        <div className="flex flex-wrap gap-2 mb-4 h-6 overflow-hidden">
-                          {room.amenities?.slice(0, 3).map((a, i) => (
-                            <span
-                              key={i}
-                              className="px-2 py-0.5 bg-gray-50 text-gray-600 border border-gray-100 rounded-md text-[10px] font-medium uppercase tracking-wider"
-                            >
-                              {a}
-                            </span>
-                          ))}
-                          {room.amenities?.length > 3 && (
-                            <span className="text-[10px] text-gray-400 flex items-center">
-                              +{room.amenities.length - 3}
-                            </span>
-                          )}
-                        </div>
-
-                        <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                          <div className="flex items-center gap-1.5">
-                            <Users className="w-4 h-4 text-gray-400" />
-                            <span className="text-sm font-medium text-gray-700">
-                              <span className="text-emerald-600">
-                                {room.availableBeds}
+                        {pgAmenities.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 mb-3">
+                            {pgAmenities.slice(0, 3).map((a, i) => (
+                              <span
+                                key={i}
+                                className="px-2 py-0.5 bg-slate-50 border border-slate-100 text-slate-500 rounded-md text-xs"
+                              >
+                                {a}
                               </span>
-                              <span className="text-gray-400">
-                                /{room.totalBeds} beds
+                            ))}
+                            {pgAmenities.length > 3 && (
+                              <span className="px-2 py-0.5 bg-slate-50 border border-slate-100 text-slate-400 rounded-md text-xs">
+                                +{pgAmenities.length - 3}
                               </span>
-                            </span>
+                            )}
                           </div>
+                        )}
 
-                          <div
-                            className={`flex items-center gap-1 text-xs font-bold bg-gradient-to-r ${gradient} bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300`}
-                          >
-                            View Details{" "}
-                            <ArrowRight className="w-3 h-3 text-blue-500" />
+                        <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-end">
+                          <div className="flex items-center gap-1 text-xs font-semibold text-slate-500 group-hover:text-amber-600 transition-colors">
+                            View details
+                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                           </div>
                         </div>
                       </div>
-
-                      {/* Hover Line */}
-                      <div
-                        className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}
-                      />
                     </div>
                   );
                 })}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-20 bg-white/50 backdrop-blur-sm rounded-3xl border border-dashed border-gray-200 text-center">
-                <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-6">
-                  <Search className="w-10 h-10 text-blue-400" />
+              <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-dashed border-slate-200 text-center px-6">
+                <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center mb-5">
+                  <Search className="w-6 h-6 text-slate-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">
                   No rooms found
                 </h3>
-                <p className="text-gray-500 mb-8 max-w-sm mx-auto">
-                  We couldn't find any rooms matching your current filters. Try
-                  adjusting your preferences.
+                <p className="text-slate-500 text-sm mb-6 max-w-xs">
+                  Try adjusting your filters or searching a different location.
                 </p>
                 <button
                   onClick={clearFilters}
-                  className="px-8 py-3 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition-all shadow-lg shadow-gray-200"
+                  className="px-6 py-2.5 bg-slate-900 hover:bg-slate-700 text-white text-sm font-medium rounded-xl transition-all active:scale-95 cursor-pointer"
                 >
                   Clear all filters
                 </button>
@@ -403,205 +547,6 @@ const Listings = () => {
           </main>
         </div>
       </div>
-    </div>
-  );
-};
-
-const FilterPanel = ({
-  maxPrice,
-  setMaxPrice,
-  selectedGenders,
-  selectedRoomTypes,
-  selectedAmenities,
-  handleGenderChange,
-  handleRoomTypeChange,
-  handleAmenityChange,
-  clearFilters,
-  activeFiltersCount,
-  filteredCount,
-  isMobile = false,
-  onClose,
-  currency,
-}) => {
-  return (
-    <div
-      className={`space-y-8 ${
-        !isMobile
-          ? "bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-xl shadow-blue-100/50 border border-white"
-          : ""
-      }`}
-    >
-      {/* Header for Desktop */}
-      {!isMobile && (
-        <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <Filter className="w-4 h-4 text-blue-600" />
-            Filters
-          </h3>
-          {activeFiltersCount > 0 && (
-            <button
-              onClick={clearFilters}
-              className="text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 px-2 py-1 rounded-md transition-colors"
-            >
-              Reset
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* Price Range */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h4 className="text-sm font-bold text-gray-900">Price Budget</h4>
-          <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
-            Up to {currency}
-            {maxPrice.toLocaleString()}
-          </span>
-        </div>
-        <div className="pt-2">
-          <input
-            type="range"
-            min="1000"
-            max="20000"
-            step="500"
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
-          />
-          <div className="flex justify-between mt-2 text-xs text-gray-400 font-medium">
-            <span>{currency}1k</span>
-            <span>{currency}20k</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Gender Filter */}
-      <div className="space-y-3">
-        <h4 className="text-sm font-bold text-gray-900">Gender</h4>
-        <div className="flex flex-col gap-2">
-          {["Boys", "Girls", "Mixed"].map((gender) => {
-            const isSelected = selectedGenders.includes(gender);
-            return (
-              <label
-                key={gender}
-                className={`relative flex items-center p-3 rounded-xl border cursor-pointer transition-all duration-200 ${
-                  isSelected
-                    ? "border-blue-500 bg-blue-50/50"
-                    : "border-gray-100 hover:border-blue-200 hover:bg-gray-50"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => handleGenderChange(gender)}
-                  className="hidden"
-                />
-                <div
-                  className={`w-5 h-5 rounded-md border flex items-center justify-center mr-3 transition-colors ${
-                    isSelected
-                      ? "bg-blue-600 border-blue-600"
-                      : "border-gray-300 bg-white"
-                  }`}
-                >
-                  {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
-                </div>
-                <span
-                  className={`text-sm font-medium ${
-                    isSelected ? "text-blue-700" : "text-gray-600"
-                  }`}
-                >
-                  {gender}
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Room Type */}
-      <div className="space-y-3">
-        <h4 className="text-sm font-bold text-gray-900">Room Type</h4>
-        <div className="flex flex-wrap gap-2">
-          {[
-            { value: "single", label: "Single" },
-            { value: "double", label: "Double" },
-            { value: "triple", label: "Triple" },
-          ].map((type) => {
-            const isSelected = selectedRoomTypes.includes(type.value);
-            return (
-              <label
-                key={type.value}
-                className={`flex-1 min-w-[80px] text-center cursor-pointer py-2 px-3 rounded-xl text-sm font-medium border transition-all duration-200 ${
-                  isSelected
-                    ? "bg-gray-900 text-white border-gray-900 shadow-md"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => handleRoomTypeChange(type.value)}
-                  className="hidden"
-                />
-                {type.label}
-              </label>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Amenities */}
-      <div className="space-y-3">
-        <h4 className="text-sm font-bold text-gray-900">Amenities</h4>
-        <div className="grid grid-cols-2 gap-2">
-          {["Food", "Free WiFi", "Laundry", "AC"].map((amenity) => {
-            const isSelected = selectedAmenities.includes(amenity);
-            return (
-              <label
-                key={amenity}
-                className={`flex items-center p-2 rounded-lg cursor-pointer transition-colors ${
-                  isSelected ? "bg-blue-50" : "hover:bg-gray-50"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => handleAmenityChange(amenity)}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition-colors"
-                />
-                <span
-                  className={`ml-2 text-sm ${
-                    isSelected ? "text-blue-700 font-medium" : "text-gray-600"
-                  }`}
-                >
-                  {amenity}
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Results Summary (Mobile Only) */}
-      {isMobile && (
-        <div className="pt-4 border-t border-gray-100">
-          <button
-            onClick={onClose}
-            className="w-full py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-blue-200 active:scale-95 transition-all"
-          >
-            Show {filteredCount} Properties
-          </button>
-        </div>
-      )}
-
-      {!isMobile && (
-        <div className="p-4 bg-gray-50 rounded-xl text-center border border-gray-100">
-          <p className="text-xs text-gray-500">
-            <span className="font-bold text-gray-900">{filteredCount}</span>{" "}
-            results match
-          </p>
-        </div>
-      )}
     </div>
   );
 };
