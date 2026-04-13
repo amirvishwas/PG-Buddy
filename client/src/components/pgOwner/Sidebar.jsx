@@ -20,60 +20,55 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
       <button
         onClick={toggleSidebar}
-        className="md:hidden fixed top-4 left-4 z-50 p-2.5 bg-white text-gray-700 rounded-xl shadow-lg border border-gray-100 hover:bg-gray-50 transition-all active:scale-95"
+        className="md:hidden fixed top-4 left-4 z-50 p-2.5 bg-white text-slate-700 rounded-xl shadow-sm border border-slate-200 hover:bg-slate-50 transition-all active:scale-95"
         aria-label="Toggle menu"
       >
         {isOpen ? <MdClose size={24} /> : <MdMenu size={24} />}
       </button>
 
-      {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity"
+          className="md:hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 transition-opacity"
           onClick={closeSidebar}
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`
           fixed md:static inset-y-0 left-0 z-40
-          w-72 min-h-screen bg-white border-r border-gray-100 shadow-xl md:shadow-none
-          transform transition-transform duration-300 cubic-bezier(0.4, 0, 0.2, 1)
+          w-72 min-h-screen bg-white border-r border-slate-200 shadow-2xl md:shadow-none
+          transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0 md:block
         `}
       >
         <div className="flex flex-col h-full">
-          {/* Logo Section */}
-          <div className="h-20 flex items-center px-8 border-b border-gray-50">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
-                <Building2 size={24} />
+          <div className="h-24 flex items-center px-8 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-sm">
+                <Building2 size={22} />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 tracking-tight">
+                <p className="text-[10px] text-amber-600 font-bold tracking-widest uppercase mb-0.5">
+                  Property
+                </p>
+                <h1 className="text-xl font-bold text-slate-900 tracking-tight leading-none">
                   OwnerPanel
                 </h1>
-                <p className="text-[10px] text-gray-400 font-medium tracking-wider uppercase">
-                  Management
-                </p>
               </div>
             </div>
           </div>
 
-          {/* Navigation */}
-          <div className="flex-1 overflow-y-auto py-6 px-4">
-            <div className="mb-4 px-4">
-              <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+          <div className="flex-1 overflow-y-auto py-8 px-5">
+            <div className="mb-4 px-3">
+              <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Main Menu
               </h2>
             </div>
             <nav>
-              <ul className="space-y-2">
+              <ul className="space-y-1.5">
                 {items.map((item) => {
                   const active = location.pathname === item.path;
                   return (
@@ -82,11 +77,11 @@ export default function Sidebar() {
                         to={item.path}
                         onClick={closeSidebar}
                         className={`
-                          relative group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200
+                          relative group flex items-center gap-3.5 px-4 py-3.5 rounded-xl transition-all duration-200
                           ${
                             active
-                              ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
-                              : "text-gray-600 hover:bg-blue-50 hover:text-blue-700"
+                              ? "bg-slate-900 text-white shadow-md shadow-slate-900/10"
+                              : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                           }
                         `}
                       >
@@ -94,13 +89,17 @@ export default function Sidebar() {
                           className={`text-xl transition-colors ${
                             active
                               ? "text-white"
-                              : "text-gray-400 group-hover:text-blue-600"
+                              : "text-slate-400 group-hover:text-slate-600"
                           }`}
                         />
-                        <span className="font-medium text-sm">{item.name}</span>
+                        <span
+                          className={`font-medium text-sm ${active ? "font-semibold" : ""}`}
+                        >
+                          {item.name}
+                        </span>
 
                         {active && (
-                          <div className="absolute right-3 w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                          <div className="absolute right-4 w-1.5 h-1.5 rounded-full bg-amber-500" />
                         )}
                       </Link>
                     </li>
@@ -108,6 +107,20 @@ export default function Sidebar() {
                 })}
               </ul>
             </nav>
+          </div>
+
+          <div className="p-5 border-t border-slate-100">
+            <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs font-semibold text-slate-900">
+                  System Online
+                </span>
+              </div>
+              <p className="text-xs text-slate-500">
+                All services running smoothly.
+              </p>
+            </div>
           </div>
         </div>
       </aside>

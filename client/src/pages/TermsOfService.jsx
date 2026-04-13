@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
-  FileText,
   CheckCircle,
   AlertTriangle,
   CreditCard,
@@ -11,14 +10,14 @@ import {
 } from "lucide-react";
 
 const Section = ({ icon: Icon, title, children }) => (
-  <div className="group bg-white/50 hover:bg-white backdrop-blur-sm p-6 rounded-2xl border border-white/50 shadow-sm hover:shadow-md transition-all duration-300 mb-6">
-    <div className="flex items-start gap-4">
-      <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform duration-300 shrink-0">
-        <Icon size={24} />
+  <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 transition-all duration-300 mb-6">
+    <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-5">
+      <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0">
+        <Icon size={24} strokeWidth={1.5} />
       </div>
       <div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-        <div className="text-gray-600 leading-relaxed space-y-2 text-sm md:text-base">
+        <h3 className="text-lg font-bold text-slate-900 mb-2">{title}</h3>
+        <div className="text-slate-600 leading-relaxed space-y-2 text-sm sm:text-base">
           {children}
         </div>
       </div>
@@ -34,46 +33,38 @@ const TermsOfService = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 relative font-[Poppins] overflow-hidden">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-400/20 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2 animate-pulse" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 animate-pulse delay-700" />
-      </div>
-
-      <div className="pt-4 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto relative z-10">
+    <div className="min-h-screen bg-[#fafaf8]">
+      <div className="pt-6 md:pt-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pb-20">
         <button
           onClick={() => navigate(-1)}
-          className="mb-8 group flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-md border border-white/50 rounded-full shadow-sm hover:shadow-md transition-all text-gray-600 hover:text-emerald-600"
+          className="mb-10 group inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-slate-300 hover:bg-slate-50 transition-all text-slate-600 hover:text-slate-900 cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          <span className="font-medium">Back</span>
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          <span className="text-sm font-semibold">Back</span>
         </button>
 
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center p-3 bg-emerald-50 rounded-2xl mb-6 shadow-inner">
-            <FileText className="w-8 h-8 text-emerald-600" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
-            Terms of{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">
-              Service
-            </span>
+          <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-3">
+            Legal Information
+          </p>
+          <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-bold text-slate-900 mb-5 tracking-tight leading-tight">
+            Terms of Service
           </h1>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Please read these terms carefully. By using PGBuddy, you agree to be
             bound by these conditions ensuring a safe community for everyone.
           </p>
-          <p className="text-sm font-semibold text-emerald-600 mt-4 uppercase tracking-wider bg-emerald-50 inline-block px-3 py-1 rounded-full">
+          <p className="text-xs font-medium text-slate-400 mt-6 inline-block bg-white border border-slate-200 px-3 py-1.5 rounded-lg">
             Last Updated: January 11, 2026
           </p>
         </div>
 
-        <div className="grid gap-2 mb-20">
+        <div className="grid gap-2 mb-16">
           <Section icon={CheckCircle} title="Acceptance of Terms">
             <p>
               By accessing or using PGBuddy, you agree to comply with and be
               bound by these Terms of Service. If you do not agree to these
-              terms, you may not use our services. we have the right to modify
+              terms, you may not use our services. We have the right to modify
               these terms at any time, and your continued use of the platform
               constitutes acceptance of those changes.
             </p>
@@ -84,7 +75,7 @@ const TermsOfService = () => {
               Users are responsible for maintaining the confidentiality of their
               account. You agree to:
             </p>
-            <ul className="list-disc ml-5 marker:text-emerald-500">
+            <ul className="list-disc ml-5 mt-2 space-y-1 marker:text-slate-400">
               <li>Provide accurate, current, and complete information.</li>
               <li>
                 Not engage in fraudulent activity, harassment, or impersonation.
@@ -94,15 +85,18 @@ const TermsOfService = () => {
 
           <Section icon={CreditCard} title="Bookings & Payments">
             <p>PGBuddy acts as a bridge between PG owners and tenants.</p>
-            <ul className="list-disc ml-5 marker:text-emerald-500">
+            <ul className="list-disc ml-5 mt-2 space-y-1 marker:text-slate-400">
               <li>
-                <strong>Fees:</strong> We may charge a service fee for platform
-                usage, which will be disclosed before booking.
+                <strong className="text-slate-800 font-semibold">Fees:</strong>{" "}
+                We may charge a service fee for platform usage, which will be
+                disclosed before booking.
               </li>
               <li>
-                <strong>Payments:</strong> Online payments are processed
-                securely. "Pay at Property" agreements are solely between the
-                user and owner.
+                <strong className="text-slate-800 font-semibold">
+                  Payments:
+                </strong>{" "}
+                Online payments are processed securely. "Pay at Property"
+                agreements are solely between the user and owner.
               </li>
             </ul>
           </Section>
@@ -126,7 +120,7 @@ const TermsOfService = () => {
             </p>
           </Section>
 
-          <div className="mt-8 text-center text-gray-500 text-sm">
+          <div className="mt-8 text-center text-slate-500 text-sm font-medium">
             <p>
               By continuing to use our services, you acknowledge that you have
               read and understood these terms.

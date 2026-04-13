@@ -11,14 +11,14 @@ import {
 } from "lucide-react";
 
 const Section = ({ icon: Icon, title, children }) => (
-  <div className="group bg-white/50 hover:bg-white backdrop-blur-sm p-6 rounded-2xl border border-white/50 shadow-sm hover:shadow-md transition-all duration-300 mb-6">
-    <div className="flex items-start gap-4">
-      <div className="w-12 h-12 rounded-2xl bg-sky-100 flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform duration-300 shrink-0">
-        <Icon size={24} />
+  <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 transition-all duration-300 mb-6">
+    <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-5">
+      <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-700 shrink-0">
+        <Icon size={24} strokeWidth={1.5} />
       </div>
       <div>
-        <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-        <div className="text-gray-600 leading-relaxed space-y-2 text-sm md:text-base">
+        <h3 className="text-lg font-bold text-slate-900 mb-2">{title}</h3>
+        <div className="text-slate-600 leading-relaxed space-y-2 text-sm sm:text-base">
           {children}
         </div>
       </div>
@@ -34,60 +34,57 @@ const PrivacyPolicy = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 relative font-[Poppins] overflow-hidden">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-sky-400/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 animate-pulse" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2 animate-pulse delay-700" />
-      </div>
-
-      <div className="pt-4 md:pt-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto relative z-10">
+    <div className="min-h-screen bg-[#fafaf8]">
+      <div className="pt-6 md:pt-10 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto pb-20">
         <button
           onClick={() => navigate(-1)}
-          className="mb-8 group flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-md border border-white/50 rounded-full shadow-sm hover:shadow-md transition-all text-gray-600 hover:text-sky-600"
+          className="mb-10 group inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-slate-300 hover:bg-slate-50 transition-all text-slate-600 hover:text-slate-900 cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          <span className="font-medium">Back</span>
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          <span className="text-sm font-semibold">Back</span>
         </button>
 
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center p-3 bg-sky-50 rounded-2xl mb-6 shadow-inner">
-            <Shield className="w-8 h-8 text-sky-600" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
-            Privacy{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-blue-600">
-              Policy
-            </span>
+          <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-3">
+            Legal Information
+          </p>
+          <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-bold text-slate-900 mb-5 tracking-tight leading-tight">
+            Privacy Policy
           </h1>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
             Your trust is our priority. We are committed to protecting your
             personal data and ensuring transparency in how we handle it.
           </p>
-          <p className="text-sm font-semibold text-sky-600 mt-4 uppercase tracking-wider bg-sky-50 inline-block px-3 py-1 rounded-full">
+          <p className="text-xs font-medium text-slate-400 mt-6 inline-block bg-white border border-slate-200 px-3 py-1.5 rounded-lg">
             Last Updated: January 11, 2026
           </p>
         </div>
 
-        {/* Content Grid */}
-        <div className="grid gap-2 mb-20">
+        <div className="grid gap-2 mb-16">
           <Section icon={Eye} title="Information We Collect">
             <p>
               We collect information you provide directly to us when you create
               an account, list a property, book a room, or communicate with us.
               This includes:
             </p>
-            <ul className="list-disc ml-5 marker:text-sky-500">
+            <ul className="list-disc ml-5 mt-2 space-y-1 marker:text-slate-400">
               <li>
-                <strong>Identity Data:</strong> Name, username, or similar
-                identifier.
+                <strong className="text-slate-800 font-semibold">
+                  Identity Data:
+                </strong>{" "}
+                Name, username, or similar identifier.
               </li>
               <li>
-                <strong>Contact Data:</strong> Billing address, email address,
-                and telephone numbers.
+                <strong className="text-slate-800 font-semibold">
+                  Contact Data:
+                </strong>{" "}
+                Billing address, email address, and telephone numbers.
               </li>
               <li>
-                <strong>Transaction Data:</strong> Details about payments to and
-                from you.
+                <strong className="text-slate-800 font-semibold">
+                  Transaction Data:
+                </strong>{" "}
+                Details about payments to and from you.
               </li>
             </ul>
           </Section>
@@ -97,7 +94,7 @@ const PrivacyPolicy = () => {
               We use your data to provide a seamless booking experience and
               ensure platform safety:
             </p>
-            <ul className="list-disc ml-5 marker:text-sky-500">
+            <ul className="list-disc ml-5 mt-2 space-y-1 marker:text-slate-400">
               <li>To register you as a new customer.</li>
               <li>
                 To process and deliver your bookings including managing
@@ -126,29 +123,31 @@ const PrivacyPolicy = () => {
               set your browser to refuse all or some browser cookies.
             </p>
           </Section>
+        </div>
 
-          <div className="mt-8 bg-gradient-to-br from-sky-500 to-blue-600 rounded-3xl p-8 md:p-10 text-white shadow-xl shadow-sky-200 relative overflow-hidden">
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                  <Mail className="w-6 h-6" /> Have Questions?
-                </h3>
-                <p className="text-sky-100 max-w-md">
-                  If you have any concerns about your privacy or this policy,
-                  our legal team is here to help.
-                </p>
+        <div className="bg-slate-900 rounded-2xl p-8 sm:p-10 border border-slate-800 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-slate-800 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 opacity-50" />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+            <div>
+              <div className="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center text-white mb-4 mx-auto md:mx-0">
+                <Shield className="w-6 h-6" />
               </div>
-              <a
-                href="mailto:calvinatakasi@outlook.com"
-                className="bg-white text-sky-700 px-6 py-3 rounded-xl font-bold hover:bg-sky-50 transition-colors shadow-lg"
-              >
-                Contact Legal Team
-              </a>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+                Have Questions?
+              </h3>
+              <p className="text-sm sm:text-base text-slate-400 max-w-md">
+                If you have any concerns about your privacy or this policy, our
+                legal team is here to help.
+              </p>
             </div>
-
-            {/* Decor */}
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-2xl" />
-            <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-white/10 rounded-full blur-2xl" />
+            <a
+              href="mailto:calvinatakasi@outlook.com"
+              className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3.5 rounded-xl text-sm font-bold hover:bg-slate-100 transition-colors active:scale-95 shrink-0"
+            >
+              <Mail className="w-4 h-4" />
+              Contact Legal Team
+            </a>
           </div>
         </div>
       </div>

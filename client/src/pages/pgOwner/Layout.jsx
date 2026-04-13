@@ -12,15 +12,13 @@ const Layout = () => {
     }
   }, [isOwner, navigate]);
 
-  if (isOwner === null) {
-    return null;
-  }
+  if (isOwner === null) return null;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#fafaf8]">
       <div className="flex flex-1">
         <Sidebar />
-        <div className="flex-1 p-3 pt-16 md:pt-6 md:p-4 lg:px-10 w-full overflow-x-hidden">
+        <div className="flex-1 pt-16 md:pt-0 w-full overflow-x-hidden min-w-0">
           <Outlet />
         </div>
       </div>

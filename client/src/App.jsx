@@ -15,6 +15,7 @@ import { useAppContext } from "./context/AppContext.jsx";
 import About from "./pages/About.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import TermsOfService from "./pages/TermsOfService.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 function App() {
   const { showPgReg } = useAppContext();
@@ -42,6 +43,7 @@ function App() {
           <Route path="addroom" element={<AddRoom />} />
           <Route path="listroom" element={<ListRoom />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

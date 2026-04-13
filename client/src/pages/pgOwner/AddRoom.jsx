@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Upload, Image as ImageIcon, Check } from "lucide-react";
+import { X, Upload, Check, Loader2 } from "lucide-react";
 import { useAppContext } from "../../context/AppContext";
 import { toast } from "react-hot-toast";
 
@@ -30,12 +30,10 @@ export default function AddRoom() {
     const files = Array.from(e.target.files);
     const newImages = {};
     const previews = [];
-
     files.slice(0, 4).forEach((file, index) => {
       newImages[index + 1] = file;
       previews.push(URL.createObjectURL(file));
     });
-
     setImages((prev) => ({ ...prev, ...newImages }));
     setPreviewImages(previews);
   };
@@ -47,7 +45,6 @@ export default function AddRoom() {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
     if (
       !inputs.roomType ||
       !inputs.pricePerBed ||
@@ -58,14 +55,11 @@ export default function AddRoom() {
       toast.error("Please fill in all required fields");
       return;
     }
-
     if (parseInt(inputs.availableBeds) > parseInt(inputs.totalBeds)) {
       toast.error("Available beds cannot exceed total beds");
       return;
     }
-
     setLoading(true);
-
     try {
       const formData = new FormData();
       formData.append("roomType", inputs.roomType);
@@ -73,29 +67,23 @@ export default function AddRoom() {
       formData.append("totalBeds", inputs.totalBeds);
       formData.append("availableBeds", inputs.availableBeds);
       formData.append("gender", inputs.gender);
-
       const amenitiesArray = Object.keys(inputs.amenities).filter(
-        (key) => inputs.amenities[key]
+        (key) => inputs.amenities[key],
       );
       formData.append("amenities", JSON.stringify(amenitiesArray));
-
       Object.values(images).forEach((img) => {
         if (img) formData.append("images", img);
       });
-
       const token = await getToken();
-
       const { data } = await axios.post("/api/rooms", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
-
       if (data.success) {
         toast.success("Room added successfully");
         fetchPgs();
-
         setInputs({
           roomType: "",
           pricePerBed: "",
@@ -123,27 +111,56 @@ export default function AddRoom() {
     }
   };
 
+  const labelClass =
+    "block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2";
+  const inputClass =
+    "w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:border-slate-400 focus:outline-none transition-all";
+  const selectClass = `${inputClass} appearance-none cursor-pointer`;
+
+  const ChevronDown = () => (
+    <svg
+      className="w-4 h-4 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  );
+
   return (
-    <div className="p-6 md:p-8 font-[Poppins] bg-gray-50/50 min-h-screen">
-      <div className="max-w-4xl mx-auto">
+    <div className="p-4 sm:p-6 md:p-8 bg-[#fafaf8] min-h-screen">
+      <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Add New Room</h1>
-          <p className="text-gray-500 mt-2">
-            Enter the details below to list a new room.
+          <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-1">
+            Owner
+          </p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">
+            Add new room
+          </h1>
+          <p className="text-slate-500 text-sm mt-1">
+            Fill in the details below to list a new room.
           </p>
         </div>
 
-        <form onSubmit={onSubmitHandler} className="space-y-8">
-          {/* Card 1: Basic Details */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <div className="w-1 h-6 bg-blue-500 rounded-full" />
-              Room Information
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <form onSubmit={onSubmitHandler} className="space-y-5">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-7">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-1 h-5 bg-amber-500 rounded-full" />
+              <p className="text-sm font-semibold text-slate-900">
+                Room information
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Room Type <span className="text-red-500">*</span>
+                <label className={labelClass}>
+                  Room type <span className="text-rose-400">*</span>
                 </label>
                 <div className="relative">
                   <select
@@ -151,34 +168,20 @@ export default function AddRoom() {
                     onChange={(e) =>
                       setInputs({ ...inputs, roomType: e.target.value })
                     }
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer"
+                    className={selectClass}
                   >
                     <option value="">Select type</option>
-                    <option value="single">Single Bed</option>
-                    <option value="double">Double Bed</option>
-                    <option value="triple">Triple Sharing</option>
+                    <option value="single">Single bed</option>
+                    <option value="double">Double bed</option>
+                    <option value="triple">Triple sharing</option>
                   </select>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg
-                      className="w-4 h-4 text-gray-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </div>
+                  <ChevronDown />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Gender Preference <span className="text-red-500">*</span>
+                <label className={labelClass}>
+                  Gender preference <span className="text-rose-400">*</span>
                 </label>
                 <div className="relative">
                   <select
@@ -186,37 +189,23 @@ export default function AddRoom() {
                     onChange={(e) =>
                       setInputs({ ...inputs, gender: e.target.value })
                     }
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer"
+                    className={selectClass}
                   >
                     <option value="">Select gender</option>
                     <option value="Boys">Boys</option>
                     <option value="Girls">Girls</option>
                     <option value="Mixed">Mixed</option>
                   </select>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg
-                      className="w-4 h-4 text-gray-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </div>
+                  <ChevronDown />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Price per Bed <span className="text-red-500">*</span>
+                <label className={labelClass}>
+                  Price per bed <span className="text-rose-400">*</span>
                 </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">
                     ₹
                   </span>
                   <input
@@ -225,19 +214,19 @@ export default function AddRoom() {
                     onChange={(e) =>
                       setInputs({ ...inputs, pricePerBed: e.target.value })
                     }
-                    placeholder="0.00"
-                    className="w-full pl-8 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                    placeholder="0"
+                    className={`${inputClass} pl-8 pr-16`}
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-slate-400">
                     /month
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Total Beds <span className="text-red-500">*</span>
+                  <label className={labelClass}>
+                    Total beds <span className="text-rose-400">*</span>
                   </label>
                   <input
                     type="number"
@@ -246,12 +235,13 @@ export default function AddRoom() {
                     onChange={(e) =>
                       setInputs({ ...inputs, totalBeds: e.target.value })
                     }
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="0"
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Available <span className="text-red-500">*</span>
+                  <label className={labelClass}>
+                    Available <span className="text-rose-400">*</span>
                   </label>
                   <input
                     type="number"
@@ -260,133 +250,132 @@ export default function AddRoom() {
                     onChange={(e) =>
                       setInputs({ ...inputs, availableBeds: e.target.value })
                     }
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="0"
+                    className={inputClass}
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Card 2: Amenities */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <div className="w-1 h-6 bg-purple-500 rounded-full" />
-              Amenities
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {Object.keys(inputs.amenities).map((item) => (
-                <label
-                  key={item}
-                  className={`
-                    relative flex items-center p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 group
-                    ${
-                      inputs.amenities[item]
-                        ? "border-blue-500 bg-blue-50/50"
-                        : "border-gray-100 hover:border-gray-200 bg-gray-50/50 hover:bg-gray-100"
-                    }
-                  `}
-                >
-                  <input
-                    type="checkbox"
-                    checked={inputs.amenities[item]}
-                    onChange={() =>
-                      setInputs({
-                        ...inputs,
-                        amenities: {
-                          ...inputs.amenities,
-                          [item]: !inputs.amenities[item],
-                        },
-                      })
-                    }
-                    className="hidden"
-                  />
-                  <div
-                    className={`w-5 h-5 rounded border flex items-center justify-center mr-3 transition-colors ${
-                      inputs.amenities[item]
-                        ? "bg-blue-500 border-blue-500"
-                        : "border-gray-300 bg-white"
-                    }`}
-                  >
-                    {inputs.amenities[item] && (
-                      <Check size={12} className="text-white" />
-                    )}
-                  </div>
-                  <span
-                    className={`text-sm font-medium ${
-                      inputs.amenities[item] ? "text-blue-700" : "text-gray-600"
-                    }`}
-                  >
-                    {item}
-                  </span>
-                </label>
-              ))}
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-7">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-1 h-5 bg-slate-400 rounded-full" />
+              <p className="text-sm font-semibold text-slate-900">Amenities</p>
             </div>
-          </div>
 
-          {/* Card 3: Images */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <div className="w-1 h-6 bg-emerald-500 rounded-full" />
-              Room Images
-            </h2>
-
-            <div className="space-y-4">
-              <div className="relative border-2 border-dashed border-gray-300 rounded-2xl p-8 hover:bg-gray-50 transition-colors text-center group cursor-pointer">
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-                <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
-                  <Upload size={24} />
-                </div>
-                <p className="text-sm font-medium text-gray-900">
-                  Click to upload or drag and drop
-                </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  SVG, PNG, JPG or GIF (max 4 images)
-                </p>
-              </div>
-
-              {previewImages.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {previewImages.map((src, index) => (
-                    <div key={index} className="relative group aspect-square">
-                      <img
-                        src={src}
-                        alt={`Preview ${index + 1}`}
-                        className="w-full h-full object-cover rounded-xl shadow-sm"
-                      />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center">
-                        <button
-                          type="button"
-                          onClick={() => removeImage(index)}
-                          className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transform hover:scale-110 transition-all"
-                        >
-                          <X size={16} />
-                        </button>
-                      </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {Object.keys(inputs.amenities).map((item) => {
+                const checked = inputs.amenities[item];
+                return (
+                  <label
+                    key={item}
+                    className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                      checked
+                        ? "border-slate-900 bg-slate-50"
+                        : "border-slate-200 hover:border-slate-300 bg-white"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() =>
+                        setInputs({
+                          ...inputs,
+                          amenities: { ...inputs.amenities, [item]: !checked },
+                        })
+                      }
+                      className="hidden"
+                    />
+                    <div
+                      className={`w-4 h-4 rounded-md border flex items-center justify-center shrink-0 transition-colors ${
+                        checked
+                          ? "bg-slate-900 border-slate-900"
+                          : "border-slate-300"
+                      }`}
+                    >
+                      {checked && <Check className="w-3 h-3 text-white" />}
                     </div>
-                  ))}
-                </div>
-              )}
+                    <span
+                      className={`text-xs font-medium ${checked ? "text-slate-900" : "text-slate-600"}`}
+                    >
+                      {item}
+                    </span>
+                  </label>
+                );
+              })}
             </div>
           </div>
 
-          <div className="flex justify-end pt-4">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-7">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-1 h-5 bg-green-500 rounded-full" />
+              <p className="text-sm font-semibold text-slate-900">
+                Room images
+              </p>
+            </div>
+
+            <div className="relative border-2 border-dashed border-slate-200 hover:border-slate-300 rounded-2xl p-8 text-center transition-colors cursor-pointer group mb-4">
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+              <div className="w-11 h-11 bg-slate-100 group-hover:bg-slate-200 rounded-xl flex items-center justify-center mx-auto mb-3 transition-colors">
+                <Upload className="w-5 h-5 text-slate-500" />
+              </div>
+              <p className="text-sm font-medium text-slate-700">
+                Click to upload or drag and drop
+              </p>
+              <p className="text-xs text-slate-400 mt-1">
+                PNG, JPG, GIF — up to 4 images
+              </p>
+            </div>
+
+            {previewImages.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {previewImages.map((src, index) => (
+                  <div
+                    key={index}
+                    className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200"
+                  >
+                    <img
+                      src={src}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="bg-white text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-end pt-2 pb-4">
             <button
               type="submit"
               disabled={loading}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-blue-200 hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="flex items-center gap-2 px-7 py-3.5 bg-slate-900 hover:bg-slate-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-all active:scale-95 cursor-pointer"
             >
               {loading ? (
-                <>Processing...</>
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Processing…
+                </>
               ) : (
                 <>
-                  <Check size={20} />
-                  Create Room Listing
+                  <Check className="w-4 h-4" />
+                  Create room listing
                 </>
               )}
             </button>
