@@ -1,5 +1,6 @@
 import Room from "../models/room.js";
 import PG from "../models/pg.js";
+import Rating from "../models/rating.js";
 import { cloudinary } from "../config/cloudinary.js";
 
 export const createRoom = async (req, res) => {
@@ -86,17 +87,29 @@ export const getRooms = async (req, res) => {
     const rooms = await Room.find({ isAvailable: true })
       .populate({
         path: "pg",
-        select: "name city address location", // ✅ Location included here
+        select: "name city address location",
         populate: {
           path: "owner",
           select: "image",
         },
       })
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const roomsWithRatings = await Promise.all(
+      rooms.map(async (room) => {
+        const ratings = await Rating.find({ room: room._id });
+        const totalRatings = ratings.length;
+        const averageRating = totalRatings
+          ? ratings.reduce((sum, r) => sum + r.rating, 0) / totalRatings
+          : 0;
+        return { ...room, averageRating, totalRatings };
+      })
+    );
 
     return res.status(200).json({
       success: true,
-      rooms,
+      rooms: roomsWithRatings,
     });
   } catch (error) {
     return res.status(500).json({
@@ -120,11 +133,23 @@ export const getOwnerRooms = async (req, res) => {
 
     const rooms = await Room.find({ pg: pg._id })
       .populate("pg", "name city address location")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const roomsWithRatings = await Promise.all(
+      rooms.map(async (room) => {
+        const ratings = await Rating.find({ room: room._id });
+        const totalRatings = ratings.length;
+        const averageRating = totalRatings
+          ? ratings.reduce((sum, r) => sum + r.rating, 0) / totalRatings
+          : 0;
+        return { ...room, averageRating, totalRatings };
+      })
+    );
 
     return res.status(200).json({
       success: true,
-      rooms,
+      rooms: roomsWithRatings,
     });
   } catch (error) {
     return res.status(500).json({
