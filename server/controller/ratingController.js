@@ -90,7 +90,7 @@ export const getRoomRatings = async (req, res) => {
     const { roomId } = req.params;
 
     const ratings = await Rating.find({ room: roomId })
-      .populate("user", "name email image")
+      .populate("user", "username email image")
       .sort({ createdAt: -1 });
 
     const totalRatings = ratings.length;

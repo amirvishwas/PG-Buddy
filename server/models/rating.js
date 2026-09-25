@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const ratingSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: String, ref: "User", required: true },
     room: { type: mongoose.Schema.Types.ObjectId, ref: "Room", required: true },
     booking: {
       type: mongoose.Schema.Types.ObjectId,

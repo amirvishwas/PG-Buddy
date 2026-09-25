@@ -1,5 +1,7 @@
 import React from "react";
 import { Search, Home, UserPlus } from "lucide-react";
+import { useAppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const steps = [
   {
@@ -32,6 +34,13 @@ const steps = [
 ];
 
 const HowItWorks = () => {
+  const { pgs } = useAppContext();
+  const navigate = useNavigate();
+  
+  // Calculate total occupied beds from real database
+  const occupiedBeds = pgs ? pgs.reduce((acc, room) => acc + Math.max(0, (room.totalBeds || 0) - (room.availableBeds || 0)), 0) : 0;
+  const displayPeople = occupiedBeds > 0 ? `${occupiedBeds}` : "1,200+";
+
   return (
     <section className="py-20 sm:py-28 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-14">
@@ -99,12 +108,15 @@ const HowItWorks = () => {
           ))}
         </div>
         <p className="text-slate-300 text-sm flex-1">
-          <span className="text-white font-semibold">1,200+ people</span> found
-          their room this month — most within 3 days of searching.
+          <span className="text-white font-semibold">{displayPeople} people</span> found
+          their room recently — most within 3 days of searching.
         </p>
-        <span className="text-amber-400 text-sm font-medium whitespace-nowrap">
+        <button 
+          onClick={() => navigate('/listings')}
+          className="text-amber-400 hover:text-amber-300 active:text-amber-500 text-sm font-medium whitespace-nowrap cursor-pointer transition-colors"
+        >
           You could be next →
-        </span>
+        </button>
       </div>
     </section>
   );

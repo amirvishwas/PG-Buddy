@@ -139,6 +139,14 @@ const PGDetails = () => {
     });
   };
 
+  const getDisplayName = (user) => {
+    if (!user) return "User";
+    if (user.username && user.username !== "User") return user.username;
+    if (user.name && user.name !== "User") return user.name;
+    if (user.email) return user.email.split("@")[0];
+    return "User";
+  };
+
   const renderStars = (rating) => (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
@@ -518,12 +526,12 @@ const PGDetails = () => {
                     >
                       <div className="flex items-start justify-between mb-2.5">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold text-sm shrink-0">
-                            {rating.user?.name?.[0] || "U"}
+                          <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold text-sm shrink-0 uppercase">
+                            {getDisplayName(rating.user)[0]}
                           </div>
                           <div>
                             <p className="text-sm font-semibold text-slate-900">
-                              {rating.user?.name || "User"}
+                              {getDisplayName(rating.user)}
                             </p>
                             <p className="text-xs text-slate-400">
                               {formatDate(rating.createdAt)}

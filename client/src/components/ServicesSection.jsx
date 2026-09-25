@@ -1,5 +1,6 @@
 import React from "react";
 import { MapPin, Calendar, Gift } from "lucide-react";
+import { useAppContext } from "../context/AppContext";
 
 const services = [
   {
@@ -35,6 +36,17 @@ const services = [
 ];
 
 export default function ServicesSection() {
+  const { pgs } = useAppContext();
+
+  // Dynamic calculations
+  const totalRooms = pgs ? pgs.reduce((acc, room) => acc + (room.totalBeds || 1), 0) : 0;
+  const uniqueCities = pgs ? new Set(pgs.map(r => r.pg?.city).filter(Boolean)).size : 0;
+  const uniqueLocations = pgs ? new Set(pgs.map(r => r.pg?.address).filter(Boolean)).size : 0;
+
+  const displayRooms = totalRooms > 0 ? `${totalRooms}+` : "4,200+";
+  const displayCities = uniqueCities > 0 ? `${uniqueCities}+` : "12+";
+  const displayLocations = uniqueLocations > 0 ? `${uniqueLocations}+` : "100+";
+
   return (
     <section className="py-20 sm:py-28 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-14">
@@ -69,7 +81,7 @@ export default function ServicesSection() {
                 <span
                   className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${service.statBg}`}
                 >
-                  {service.stat} {service.statLabel}
+                  {service.statLabel === "locations" ? displayLocations : service.stat} {service.statLabel}
                 </span>
               </div>
 
@@ -80,18 +92,7 @@ export default function ServicesSection() {
                 {service.description}
               </p>
 
-              <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-1.5">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-3.5 h-3.5 text-amber-400 fill-current"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-                <span className="text-xs text-slate-400 ml-1">Rated 5.0</span>
-              </div>
+
             </div>
           );
         })}
@@ -99,8 +100,8 @@ export default function ServicesSection() {
 
       <div className="mt-10 grid sm:grid-cols-3 gap-4">
         {[
-          { value: "4,200+", label: "Verified rooms" },
-          { value: "12+", label: "Cities covered" },
+          { value: displayRooms, label: "Verified rooms" },
+          { value: displayCities, label: "Cities covered" },
           { value: "98%", label: "Happy tenants" },
         ].map((stat) => (
           <div
