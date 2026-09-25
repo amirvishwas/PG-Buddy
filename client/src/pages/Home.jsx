@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { MdLocationOn } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, Wifi, Coffee, Sparkles } from "lucide-react";
 import HowItWorks from "../components/howItWorks";
 import WallOfLove from "../components/WallOfLove";
 import Footer from "../components/Footer";
 import FeaturedPGs from "../components/FeaturedPGs";
 import ServicesSection from "../components/ServicesSection";
 import FAQSection from "../components/FAQSection";
+import { useAppContext } from "../context/AppContext";
 
 const cities = [
   { name: "Delhi", emoji: "🏛️" },
@@ -21,7 +22,11 @@ const trustPills = ["No brokerage", "Verified listings", "Move in this week"];
 const Home = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const { pgs, currency } = useAppContext();
 
+  const heroPgs = pgs && pgs.length >= 2 ? pgs.slice(0, 2) : null;
+  const totalRooms = pgs ? pgs.reduce((acc, room) => acc + (room.totalBeds || 1), 0) : 0;
+  
   const handleSearch = () => {
     if (search.trim() !== "") {
       navigate(`/listings?search=${encodeURIComponent(search.trim())}`);
@@ -102,29 +107,29 @@ const Home = () => {
 
           <div className="hidden lg:grid grid-cols-2 gap-4">
             <div className="space-y-4">
-              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-pointer hover:border-slate-300 hover:-translate-y-1 transition-all duration-300" onClick={() => heroPgs ? navigate(`/pg/${heroPgs[0]._id}`) : null}>
                 <img
-                  src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&q=80"
+                  src={heroPgs ? (heroPgs[0].images?.[0] || heroPgs[0].pg?.images?.[0] || "/placeholder.svg") : "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&q=80"}
                   alt="Cozy room"
                   className="w-full h-40 object-cover"
                 />
                 <div className="p-4">
-                  <p className="text-sm font-semibold text-slate-800">
-                    Koramangala, Bangalore
+                  <p className="text-sm font-semibold text-slate-800 truncate">
+                    {heroPgs ? `${heroPgs[0].pg?.name || "PG"}, ${heroPgs[0].pg?.city || "City"}` : "Koramangala, Bangalore"}
                   </p>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    ₹8,500 / month
+                    {heroPgs ? `${currency}${heroPgs[0].pricePerBed} / month` : "₹8,500 / month"}
                   </p>
                   <div className="mt-2">
                     <span className="text-xs bg-green-50 text-green-700 border border-green-100 px-2 py-0.5 rounded-full">
-                      Available now
+                      {heroPgs && heroPgs[0].availableBeds > 0 ? "Available now" : (!heroPgs ? "Available now" : "Full")}
                     </span>
                   </div>
                 </div>
               </div>
 
               <div className="bg-amber-50 border border-amber-100 rounded-2xl p-4">
-                <p className="text-2xl font-bold text-slate-900">4,200+</p>
+                <p className="text-2xl font-bold text-slate-900">{totalRooms > 0 ? `${totalRooms}+` : '4,200+'}</p>
                 <p className="text-sm text-slate-500 mt-1">
                   verified rooms across India
                 </p>
@@ -133,34 +138,42 @@ const Home = () => {
 
             <div className="space-y-4 mt-8">
               <div className="bg-slate-900 rounded-2xl p-4 text-white">
-                <p className="text-sm font-medium mb-3">Recently moved in</p>
-                {["Priya, Delhi", "Arjun, Mumbai", "Sneha, Bangalore"].map(
-                  (name) => (
-                    <div
-                      key={name}
-                      className="flex items-center gap-2 py-2 border-b border-slate-700 last:border-0"
-                    >
-                      <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-xs">
-                        {name[0]}
-                      </div>
-                      <span className="text-xs text-slate-300">{name}</span>
-                    </div>
-                  ),
-                )}
+                <p className="text-sm font-medium mb-3">Included Amenities</p>
+                
+                <div className="flex items-center gap-3 py-2 border-b border-slate-700">
+                  <div className="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center">
+                    <Wifi className="w-3.5 h-3.5 text-amber-400" />
+                  </div>
+                  <span className="text-xs text-slate-300">High-speed WiFi</span>
+                </div>
+                
+                <div className="flex items-center gap-3 py-2 border-b border-slate-700">
+                  <div className="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center">
+                    <Coffee className="w-3.5 h-3.5 text-amber-400" />
+                  </div>
+                  <span className="text-xs text-slate-300">Homely Meals</span>
+                </div>
+                
+                <div className="flex items-center gap-3 py-2">
+                  <div className="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  </div>
+                  <span className="text-xs text-slate-300">Daily Housekeeping</span>
+                </div>
               </div>
 
-              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden cursor-pointer hover:border-slate-300 hover:-translate-y-1 transition-all duration-300" onClick={() => heroPgs ? navigate(`/pg/${heroPgs[1]._id}`) : null}>
                 <img
-                  src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=400&q=80"
+                  src={heroPgs ? (heroPgs[1].images?.[0] || heroPgs[1].pg?.images?.[0] || "/placeholder.svg") : "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=400&q=80"}
                   alt="Modern room"
                   className="w-full h-36 object-cover"
                 />
                 <div className="p-3">
-                  <p className="text-sm font-semibold text-slate-800">
-                    Hauz Khas, Delhi
+                  <p className="text-sm font-semibold text-slate-800 truncate">
+                    {heroPgs ? `${heroPgs[1].pg?.name || "PG"}, ${heroPgs[1].pg?.city || "City"}` : "Hauz Khas, Delhi"}
                   </p>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    ₹12,000 / month
+                    {heroPgs ? `${currency}${heroPgs[1].pricePerBed} / month` : "₹12,000 / month"}
                   </p>
                 </div>
               </div>
